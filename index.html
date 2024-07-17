@@ -1,13 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<title>Ruizhe Li's Homepage</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>李睿哲 (Ruizhe Li) - Personal Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            background-color: #151E2F; /* Dark blue background inspired by Starry Night */
+            color: #ecf0f1; /* Light text color */
+            height: 200vh; /* Ensure there's enough space to scroll */
+        }
+        .folder {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 70%;
+            height: 60vh;
+            background: #303F63; /* Dark blue background */
+            clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding: 20px;
+            transition: bottom 1s ease;
+            z-index: 10;
+        }
+        .folder h2 {
+            font-size: 11vw; /* Slightly smaller font size for English name */
+            font-family: Brush Script MT, Serif;
+            font-weight: 100;
+            color: #DAD69F; /* Bright yellow text */
+            margin: 110px;
+        }
+        .content {
+            position: absolute;
+            top: 20vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: top 1s ease;
+            z-index: 5;
+        }
+        .section {
+            margin: 20px;
+            padding: 20px;
+            background-color: rgba(109,130,177, 0.8); /* Semi-transparent yellow background */
+            width: 60%;
+            transition: transform 1s ease;
+        }
+        .section-title {
+            font-size: 2em;
+            padding-top: 30px;
+            color: #feeb54; /* Dark blue text color */
+            text-transform: uppercase;
+        }
+        .skills ul, .activities ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .skills ul li, .activities ul li {
+            background-color: #1b263b; /* Dark blue background for items */
+            color: #ecf0f1; /* Light text color */
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #29251d;
+            color: #ecf0f1;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+    <div class="folder" id="folder">
+        <div>
+            <h2>Ruizhe Li</h2>
+        </div>
+    </div>
+    <div class="content" id="content">
+        <section class="section" style="margin-top: 20vh;">
+            <div class="section-title">Education</div>
+            <div class="section-content">
+                <p><strong>University of Science and Technology of China (USTC), Hefei, China</strong><br>
+                B.S., School of Artificial Intelligence and Data Science</p>
+            </div>
 
-<h1>I am Li Ruizhe.</h1>
-<p>There is nothing else.</p>
+            <div class="section-title">Experiences</div>
+            <div class="section-content">
+                <p><strong>Facial Expression Recognition</strong><br>
+                Algorithm Engineer, USTC<br>
+                Conducted extensive research on facial expression recognition datasets and implemented deep learning algorithms.</p>
 
+                <p><strong>Literature Review and Paper Illustration</strong><br>
+                Assistant, Lab for Data Science, USTC<br>
+                Conducted literature reviews and created illustrations for research papers.</p>
+
+                <p><strong>Restaurant Review System</strong><br>
+                Team Leader, Database System Course Design, USTC<br>
+                Led a team in designing and implementing a comprehensive database system.</p>
+            </div>
+
+            <div class="section-title">Skills</div>
+            <div class="section-content">
+                <ul class="skills">
+                    <li>C</li>
+                    <li>Python</li>
+                    <li>HTML</li>
+                    <li>SQL</li>
+                    <li>LATEX</li>
+                    <li>Markdown</li>
+                </ul>
+            </div>
+
+            <div class="section-title">Leadership and Activities</div>
+            <div class="section-content">
+                <ul class="activities">
+                    <li>President, Student Union, School of Artificial Intelligence and Data Science</li>
+                    <li>Member, Tang Zhongying Charity Society</li>
+                </ul>
+            </div>
+
+            <div class="section-title">To be continued</div>
+            <div class="section-content">
+                <ul class="activities">
+                    <li>This section is just to make the page look less spacey.</li>
+                    <li>This section is just to make the page look less spacey.</li>
+                    <li>This section is just to make the page look less spacey.</li>
+                </ul>
+            </div>
+
+            <div class="section-title">To be continued</div>
+            <div class="section-content">
+                <ul class="activities">
+                    <li>This section is just to make the page look less spacey.</li>
+                    <li>This section is just to make the page look less spacey。</li>
+                    <li>This section is just to make the page look less spacey。</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2024 李睿哲 (Ruizhe Li). All rights reserved.</p>
+    </footer>
+    <script src="starry-night.js"></script>
+    <script>
+        window.addEventListener('scroll', function() {
+            let folder = document.getElementById('folder');
+            let content = document.getElementById('content');
+
+            let scrollPos = window.scrollY;
+
+            if (scrollPos > 0) {
+                folder.style.bottom = '-100vh';
+                content.style.top = '0';
+            } else {
+                folder.style.bottom = '0';
+                content.style.top = '100vh';
+            }
+        });
+    </script>
 </body>
 </html>
