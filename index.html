@@ -5,159 +5,389 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>李睿哲 (Ruizhe Li) - Personal Website</title>
     <style>
+        :root {
+            --deep-navy: #0a1628;
+            --mid-blue: #1a2a4a;
+            --card-bg: rgba(22, 38, 70, 0.55);
+            --gold: #fde68a;
+            --bright-gold: #f0c040;
+            --text-primary: #e8e0d0;
+            --text-muted: rgba(232, 224, 208, 0.6);
+            --border-glow: rgba(253, 230, 138, 0.12);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            background-color: #151E2F; /* Dark blue background inspired by Starry Night */
-            color: #ecf0f1; /* Light text color */
-            height: 200vh; /* Ensure there's enough space to scroll */
+            font-family: Georgia, 'Times New Roman', serif;
+            background: var(--deep-navy);
+            color: var(--text-primary);
+            overflow-x: hidden;
         }
-        .folder {
+
+        /* ── Fixed starry canvas ── */
+        #starry-canvas {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 70%;
-            height: 60vh;
-            background: #303F63; /* Dark blue background */
-            clip-path: polygon(0 0, 80% 0, 100% 100%, 0 100%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: flex-start;
-            padding: 20px;
-            transition: bottom 1s ease;
-            z-index: 10;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
-        .folder h2 {
-            font-size: 11vw; /* Slightly smaller font size for English name */
-            font-family: Brush Script MT, Serif;
-            font-weight: 100;
-            color: #DAD69F; /* Bright yellow text */
-            margin: 110px;
-        }
-        .content {
-            position: absolute;
-            top: 20vh;
-            width: 100%;
+
+        /* ── Hero section ── */
+        .hero {
+            position: relative;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            transition: top 1s ease;
-            z-index: 5;
+            justify-content: center;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
         }
-        .section {
-            margin: 20px;
-            padding: 20px;
-            background-color: rgba(109,130,177, 0.8); /* Semi-transparent yellow background */
-            width: 60%;
-            transition: transform 1s ease;
-        }
-        .section-title {
-            font-size: 2em;
-            padding-top: 30px;
-            color: #feeb54; /* Dark blue text color */
-            text-transform: uppercase;
-        }
-        .skills ul, .activities ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        .skills ul li, .activities ul li {
-            background-color: #1b263b; /* Dark blue background for items */
-            color: #ecf0f1; /* Light text color */
-            padding: 10px 20px;
-            margin: 10px;
-            border-radius: 5px;
-        }
-        footer {
+
+        .hero-content {
             text-align: center;
-            padding: 20px;
-            background-color: #29251d;
-            color: #ecf0f1;
-            position: relative;
-            bottom: 0;
+            will-change: transform, opacity;
+        }
+
+        .hero h1 {
+            font-family: 'Brush Script MT', 'Segoe Script', cursive;
+            font-size: clamp(4rem, 12vw, 11rem);
+            font-weight: 300;
+            color: var(--gold);
+            text-shadow:
+                0 0 60px rgba(253, 230, 138, 0.25),
+                0 0 120px rgba(253, 230, 138, 0.08);
+            letter-spacing: 0.04em;
+            line-height: 1.1;
+            animation: heroFadeIn 1.8s ease both;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+            color: var(--text-muted);
+            font-weight: 400;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            margin-top: 16px;
+            animation: heroFadeIn 1.8s ease 0.4s both;
+        }
+
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 44px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            animation: heroFadeIn 1.6s ease 1.2s both;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(232, 224, 208, 0.4);
+        }
+
+        .scroll-arrow {
+            width: 20px; height: 20px;
+            border-right: 1.5px solid rgba(253, 230, 138, 0.5);
+            border-bottom: 1.5px solid rgba(253, 230, 138, 0.5);
+            transform: rotate(45deg);
+            animation: bounceArrow 2.4s ease infinite;
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.6; }
+            50%      { transform: rotate(45deg) translateY(8px); opacity: 1; }
+        }
+
+        /* Village silhouette at bottom of hero */
+        .silhouette {
+            position: absolute;
+            bottom: -1px; left: 0;
             width: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ── Main content ── */
+        .main-content {
+            position: relative;
+            z-index: 1;
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 60px 20px 40px;
+        }
+
+        /* Glassmorphism card */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--border-glow);
+            border-radius: 18px;
+            padding: 44px 40px;
+            margin-bottom: 36px;
+            /* reveal animation */
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.9s cubic-bezier(.23,1,.32,1),
+                        transform 0.9s cubic-bezier(.23,1,.32,1),
+                        border-color 0.4s, box-shadow 0.4s;
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            border-color: rgba(253, 230, 138, 0.22);
+            box-shadow: 0 0 40px rgba(253, 230, 138, 0.04);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            color: var(--gold);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            position: relative;
+            padding-bottom: 14px;
+        }
+
+        .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 52px; height: 2px;
+            background: linear-gradient(to right, var(--gold), transparent);
+        }
+
+        /* Experience item */
+        .exp-item {
+            margin-bottom: 28px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(253, 230, 138, 0.15);
+        }
+
+        .exp-item:last-child { margin-bottom: 0; }
+
+        .exp-item h3 {
+            font-size: 1.05rem;
+            color: var(--gold);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .exp-item .role {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-style: italic;
+        }
+
+        .exp-item p {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: rgba(232, 224, 208, 0.78);
+        }
+
+        /* Skill tags */
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .skill-tags li {
+            background: rgba(253, 230, 138, 0.08);
+            border: 1px solid rgba(253, 230, 138, 0.18);
+            color: var(--gold);
+            padding: 8px 22px;
+            border-radius: 28px;
+            font-size: 0.88rem;
+            transition: background 0.3s, transform 0.3s;
+            cursor: default;
+        }
+
+        .skill-tags li:hover {
+            background: rgba(253, 230, 138, 0.18);
+            transform: translateY(-2px);
+        }
+
+        /* Activity list */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-list li {
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(253, 230, 138, 0.06);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: rgba(232, 224, 208, 0.78);
+        }
+
+        .activity-list li:last-child { border-bottom: none; }
+
+        .activity-list li::before {
+            content: '\2726';
+            color: var(--gold);
+            margin-right: 12px;
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 48px 20px;
+            color: rgba(232, 224, 208, 0.3);
+            font-size: 0.82rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .card { padding: 28px 22px; }
+            .main-content { padding: 36px 14px; }
         }
     </style>
 </head>
 <body>
-    <div class="folder" id="folder">
-        <div>
-            <h2>Ruizhe Li</h2>
+
+    <canvas id="starry-canvas"></canvas>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-content" id="hero-content">
+            <h1>Ruizhe Li</h1>
+            <p class="hero-subtitle">USTC &middot; AI &amp; Data Science</p>
         </div>
-    </div>
-    <div class="content" id="content">
-        <section class="section" style="margin-top: 20vh;">
-            <div class="section-title">Education</div>
-            <div class="section-content">
-                <p><strong>University of Science and Technology of China (USTC), Hefei, China</strong><br>
-                B.S., School of Artificial Intelligence and Data Science</p>
+
+        <div class="scroll-indicator" id="scroll-indicator">
+            <span>Scroll to Explore</span>
+            <div class="scroll-arrow"></div>
+        </div>
+
+        <!-- Village / hills silhouette -->
+        <svg class="silhouette" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- distant hills -->
+            <path d="M0,220 L0,155 Q120,125 240,145 Q360,165 480,135 Q560,115 680,130
+                     Q800,145 920,115 Q1020,90 1120,125 Q1260,160 1380,140 L1440,148 L1440,220Z"
+                  fill="#0e1726"/>
+            <!-- village with steeples -->
+            <path d="M0,220 L0,178
+                     L80,178 L80,155 L86,140 L92,155 L92,178
+                     L200,180 L200,165 L212,165 L212,180
+                     L340,182 L340,128 L344,108 L348,128 L348,182
+                     L480,184 L480,168 L496,168 L496,184
+                     L640,186 L720,183 L720,160 L728,150 L736,160 L736,183
+                     L880,186 L920,184 L920,170 L936,170 L936,184
+                     L1080,186 L1080,172 L1088,162 L1096,172 L1096,186
+                     L1260,188 L1360,186 L1440,188 L1440,220Z"
+                  fill="#080d16"/>
+        </svg>
+    </section>
+
+    <!-- Content -->
+    <main class="main-content">
+        <div class="card">
+            <div class="card-title">Education</div>
+            <div class="exp-item">
+                <h3>University of Science and Technology of China</h3>
+                <div class="role">B.S., School of Artificial Intelligence and Data Science</div>
+                <p>Hefei, China</p>
             </div>
+        </div>
 
-            <div class="section-title">Experiences</div>
-            <div class="section-content">
-                <p><strong>Facial Expression Recognition</strong><br>
-                Algorithm Engineer, USTC<br>
-                Conducted extensive research on facial expression recognition datasets and implemented deep learning algorithms.</p>
-
-                <p><strong>Literature Review and Paper Illustration</strong><br>
-                Assistant, Lab for Data Science, USTC<br>
-                Conducted literature reviews and created illustrations for research papers.</p>
-
-                <p><strong>Restaurant Review System</strong><br>
-                Team Leader, Database System Course Design, USTC<br>
-                Led a team in designing and implementing a comprehensive database system.</p>
+        <div class="card">
+            <div class="card-title">Experiences</div>
+            <div class="exp-item">
+                <h3>Facial Expression Recognition</h3>
+                <div class="role">Algorithm Engineer, USTC</div>
+                <p>Conducted extensive research on facial expression recognition datasets and implemented deep learning algorithms.</p>
             </div>
-
-            <div class="section-title">Skills</div>
-            <div class="section-content">
-                <ul class="skills">
-                    <li>C</li>
-                    <li>Python</li>
-                    <li>LATEX</li>
-                    <li>Markdown</li>
-                </ul>
+            <div class="exp-item">
+                <h3>Literature Review &amp; Paper Illustration</h3>
+                <div class="role">Assistant, Lab for Data Science, USTC</div>
+                <p>Conducted literature reviews and created illustrations for research papers.</p>
             </div>
-
-            <div class="section-title">Leadership and Activities</div>
-            <div class="section-content">
-                <ul class="activities">
-                    <li>President, Student Union, School of Artificial Intelligence and Data Science</li>
-                    <li>Member, Tang Zhongying Charity Society</li>
-                </ul>
+            <div class="exp-item">
+                <h3>Restaurant Review System</h3>
+                <div class="role">Team Leader, Database System Course Design, USTC</div>
+                <p>Led a team in designing and implementing a comprehensive database system.</p>
             </div>
+        </div>
 
-            <div class="section-title">To be continued</div>
-            <div class="section-content">
-                <ul class="activities">
-                    <li>This section is just to make the page look less spacey.</li>
-                    <li>This section is just to make the page look less spacey.</li>
-                    <li>This section is just to make the page look less spacey.</li>
-                </ul>
-            </div>
-        </section>
-    </div>
+        <div class="card">
+            <div class="card-title">Skills</div>
+            <ul class="skill-tags">
+                <li>C</li>
+                <li>Python</li>
+                <li>LaTeX</li>
+                <li>Markdown</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Leadership &amp; Activities</div>
+            <ul class="activity-list">
+                <li>President, Student Union, School of AI and Data Science</li>
+                <li>Member, Tang Zhongying Charity Society</li>
+            </ul>
+        </div>
+    </main>
+
     <footer>
         <p>&copy; 2024 李睿哲 (Ruizhe Li). All rights reserved.</p>
     </footer>
+
     <script src="starry-night.js"></script>
     <script>
-        window.addEventListener('scroll', function() {
-            let folder = document.getElementById('folder');
-            let content = document.getElementById('content');
+        /* ── Hero parallax on scroll ── */
+        const heroContent  = document.getElementById('hero-content');
+        const scrollIndEl  = document.getElementById('scroll-indicator');
 
-            let scrollPos = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const y  = window.scrollY;
+            const vh = window.innerHeight;
+            const p  = Math.min(y / (vh * 0.55), 1);          // 0 → 1
 
-            if (scrollPos > 0) {
-                folder.style.bottom = '-100vh';
-                content.style.top = '0';
-            } else {
-                folder.style.bottom = '0';
-                content.style.top = '100vh';
-            }
-        });
+            heroContent.style.opacity   = 1 - p;
+            heroContent.style.transform = `translateY(${-y * 0.35}px)`;
+            scrollIndEl.style.opacity   = 1 - p * 4;          // fades faster
+        }, { passive: true });
+
+        /* ── Card reveal with IntersectionObserver ── */
+        const cards = document.querySelectorAll('.card');
+        cards.forEach((c, i) => { c.style.transitionDelay = `${i * 0.12}s`; });
+
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        cards.forEach(c => observer.observe(c));
     </script>
 </body>
 </html>
