@@ -208,11 +208,13 @@
             s.x += s.vx;
             s.y += s.vy;
 
-            // ── Wrap edges ──
-            if (s.x < -20) s.x += W + 40;
-            if (s.x > W + 20) s.x -= W + 40;
-            if (s.y < -20) s.y += H + 40;
-            if (s.y > H + 20) s.y -= H + 40;
+            // ── Wrap edges (clear trail on wrap to avoid cross-screen lines) ──
+            let wrapped = false;
+            if (s.x < -20)     { s.x += W + 40; wrapped = true; }
+            if (s.x > W + 20)  { s.x -= W + 40; wrapped = true; }
+            if (s.y < -20)     { s.y += H + 40; wrapped = true; }
+            if (s.y > H + 20)  { s.y -= H + 40; wrapped = true; }
+            if (wrapped) s.trail.length = 0;
 
             // ── Trail ──
             s.trail.push({ x: s.x, y: s.y });
@@ -250,6 +252,11 @@
             if (len < 2) continue;
 
             for (let j = 1; j < len; j++) {
+                // Skip segments that span too far (safety net for edge wraps)
+                const segDx = t[j].x - t[j - 1].x;
+                const segDy = t[j].y - t[j - 1].y;
+                if (segDx * segDx + segDy * segDy > 10000) continue;   // > ~100px
+
                 const progress = j / len;                         // 0→1
                 const alpha    = progress * 0.35 * dim;
                 const lw       = s.size * progress * 1.6;
