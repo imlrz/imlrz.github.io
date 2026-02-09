@@ -15,7 +15,7 @@
 
 ### Hero 着陆区
 
-页面首屏为全视口 Hero 区域，中央以 Brush Script 字体大字展示姓名 **Ruizhe Li**，
+页面首屏为全视口 Hero 区域，中央以 Brush Script 字体大字展示姓名 **Ruizhe Li**（中文模式下以楷体显示**李睿哲**），
 配以带辉光的金色文字阴影；下方为校名副标题。底部有箭头提示"Scroll to Explore"。
 
 - **视差滚动**：用户向下滚动时，Hero 文字以 0.35 倍速向上浮出并渐隐，箭头更快消失
@@ -30,6 +30,39 @@
 - **渐入动画**：通过 IntersectionObserver 监测，卡片进入视口时依次做 `translateY + opacity` 过渡，
   相邻卡片之间有 0.12s 的交错延迟
 - 经历项左侧有金色竖线时间轴；技能标签为圆角胶囊样式，hover 上浮
+
+### 亮暗主题切换
+
+页面右上角提供主题切换按钮（太阳/月亮图标）：
+
+| 主题 | 说明 |
+|------|------|
+| **暗色（默认）** | 经典星夜风格：深蓝背景 + 金色强调色 + Canvas 粒子全亮度 |
+| **亮色** | 温暖奶油色背景 `#f8f3eb` + 深金色强调 `#795813` + 白底卡片带柔和阴影 + Canvas 降至 15% 透明度呈现金色微光 |
+| **跟随系统** | 首次访问时自动检测 `prefers-color-scheme`；用户手动切换后覆盖系统偏好 |
+
+- 所有颜色通过 CSS 自定义属性 (`--bg`, `--accent`, `--accent-rgb` 等) 统一管理
+- 主题切换时所有元素带 0.6s `transition` 平滑过渡
+- 村庄剪影 SVG 在亮色模式下变为暖米色，营造白天田园风光
+- 用户偏好保存在 `localStorage`
+
+### 中英文切换
+
+页面右上角提供语言切换按钮（中/EN）：
+
+- 所有文本节点通过 `data-i18n` 属性标记，JS 维护完整的中英翻译字典
+- 切换时文字先淡出再淡入（0.2s opacity 过渡），避免突兀跳变
+- 中文模式下 Hero 姓名切换为楷体 (`STKaiti`) + 字间距调整
+- `<html lang>` 属性和 `document.title` 同步更新
+- 用户偏好保存在 `localStorage`
+
+### 控制栏 UI
+
+- 两个 42px 圆形毛玻璃按钮，固定在右上角
+- Hover 放大 + 边框高亮 + 外发光；按下缩小反馈
+- SVG 图标（太阳/月亮）内置，随主题切换显示对应图标
+- 入场带 `fadeSlideDown` 动画，延迟 1s 出现
+- 支持键盘 `focus-visible` 无障碍焦点环
 
 ## 星夜粒子动画（starry-night.js）
 
@@ -52,16 +85,20 @@
   无需鼠标即可产生自然的梵高式漩涡运动
 - **鼠标交互**：鼠标 280px 半径内对粒子施加柔和旋转力，星群围绕指尖缓慢流转
 - **速度阻尼**：每帧 ×0.975，防止粒子加速失控
-- **边界环绕**：粒子飞出屏幕一侧后从对侧回来，保持视觉连续性
+- **边界环绕**：粒子飞出屏幕一侧后从对侧回来，环绕时清空轨迹避免跨屏长线
 - **滚动响应**：随页面下滚，`scrollDim` 从 1 渐降至 0.35，星光和月光同步变暗，
   确保阅读简历内容时不被背景干扰
+- **亮色模式**：Canvas 通过 CSS `opacity: 0.15` 整体降低至微光效果，金色粒子变为柔和的阳光尘埃
 
 ## 技术栈
 
 - 纯 HTML / CSS / JavaScript，零依赖
-- CSS 自定义属性 (`--deep-navy`, `--gold` 等) 统一调色板
+- CSS 自定义属性 + `rgba(var(--accent-rgb), alpha)` 模式实现主题切换
+- `<head>` 内联同步脚本读取 `localStorage` / `matchMedia` 预设主题，防止闪烁 (FOUC)
+- `data-i18n` 属性 + JS 翻译字典实现中英切换
 - CSS `backdrop-filter` 玻璃拟态卡片
 - CSS `clamp()` 响应式字号
 - SVG `preserveAspectRatio="none"` 全宽剪影
 - IntersectionObserver 卡片入场
 - Canvas 2D + `requestAnimationFrame` 60fps 粒子动画
+- `localStorage` 持久化用户偏好（主题 + 语言）
