@@ -1,104 +1,53 @@
 # imlrz.github.io
 
-李睿哲 (Ruizhe Li) 的个人主页，整体视觉风格灵感来源于梵高的《星月夜》。
+李睿哲 (Ruizhe Li) 的个人主页 —— 单页、零依赖、可在四种视觉主题间实时切换。
 
-## 页面概览
+> 本科生 @ 中国科学技术大学 · 人工智能与数据科学学院 · 数据科学
+> 研究方向：深度研究系统（Deep Research）与智能体记忆（Agent Memory）
 
-这是一个单页个人网站，主要展示个人简历信息，包含以下板块：
+## ✨ 四套主题，一键切换
 
-- **教育背景** — 中国科学技术大学，人工智能与数据科学学院，理学学士
-- **项目经历** — 人脸表情识别算法、文献综述与论文插图绘制、餐厅点评数据库系统
-- **技能** — C、Python、LaTeX、Markdown
-- **领导力与社团活动** — 人工智能与数据科学学院学生会主席、唐仲英爱心社成员
+右上角的主题按钮可在四种完全不同的设计语言之间切换，选择保存在 `localStorage`：
 
-## 交互设计
+| 主题 | 风格 | 说明 |
+|------|------|------|
+| **Editorial** | 米白 · 衬线 | 暖米色纸张质感 + Fraunces/Newsreader 衬线排版，学术、克制、隽永（默认） |
+| **Terminal** | 等宽 · 荧光 | 近黑底 + 磷光绿，命令行美学：`$` 提示符、闪烁光标、扫描线纹理 |
+| **Academic** | 浅色 · 侧栏 | 仿顶尖 ML 研究者主页的左侧固定栏布局，头像 + 链接 + 卡片化论文列表 |
+| **Starry Night** | 梵高 · 画布 | 保留原《星月夜》Canvas 粒子动画（漩涡星辰 / 弯月 / 流星）+ 玻璃拟态卡片 |
 
-### Hero 着陆区
+每个主题拥有独立的配色、字体与版式——不是简单换肤，而是四种排版结构。
 
-页面首屏为全视口 Hero 区域，中央以 Brush Script 字体大字展示姓名 **Ruizhe Li**（中文模式下以楷体显示**李睿哲**），
-配以带辉光的金色文字阴影；下方为校名副标题。底部有箭头提示"Scroll to Explore"。
+## 🌐 中英双语
 
-- **视差滚动**：用户向下滚动时，Hero 文字以 0.35 倍速向上浮出并渐隐，箭头更快消失
-- **村庄剪影**：Hero 底部是一组 SVG 绘制的远山与教堂尖顶轮廓，致敬画作中的村庄意象
+右上角语言按钮在中 / EN 间切换；所有正文通过 `data-i18n` 标记，英文为 DOM 默认、中文由 JS 字典覆盖，切换即时且保存偏好。
 
-### 内容卡片
+## 📄 内容板块
 
-简历信息被拆分为 4 张独立的 **玻璃拟态 (Glassmorphism)** 卡片：
+- **About** —— 研究简介与兴趣标签
+- **News** —— 近期动态
+- **Publications** —— 论文列表（含 arXiv / Code / Website / Dataset 链接）
+  - *DeepResearch Bench II: Diagnosing Deep Research Agents via Rubrics from Expert Reports*，arXiv:2601.08536（共同一作）
+- **Projects** —— DeepResearch-Bench-II、Diabetica、Eat-at-USTC、Claude Code 源码精读
+- **Education · Service · Skills** —— 教育背景、学生工作与志愿服务、技能
 
-- 半透明深蓝底色 + `backdrop-filter: blur(24px)` 毛玻璃模糊
-- 金色微光边框，hover 时边框亮度增强并带外发光
-- **渐入动画**：通过 IntersectionObserver 监测，卡片进入视口时依次做 `translateY + opacity` 过渡，
-  相邻卡片之间有 0.12s 的交错延迟
-- 经历项左侧有金色竖线时间轴；技能标签为圆角胶囊样式，hover 上浮
+## 🛠 技术栈
 
-### 亮暗主题切换
+- 纯 HTML / CSS / JavaScript，**零构建、零依赖**
+- 主题与语言均通过根元素 `data-theme` / `data-lang` 属性 + CSS 自定义属性驱动
+- `<head>` 内联脚本预读 `localStorage`，避免主题闪烁（FOUC）
+- Google Fonts：Fraunces · Newsreader · JetBrains Mono · Bricolage Grotesque · Source Serif 4 · Cormorant Garamond
+- 遵循前端设计规范：**UI 元素一律纯色 + 阴影 / 描边，不使用渐变**；噪点 / 扫描线 / 点阵仅作纹理
+- `IntersectionObserver` 滚动渐入；`prefers-reduced-motion` 降级
+- 《星月夜》画布动画见 `starry-night.js`，仅在切到 Starry 主题时按需懒加载
 
-页面右上角提供主题切换按钮（太阳/月亮图标）：
+## 📁 文件
 
-| 主题 | 说明 |
+| 文件 | 说明 |
 |------|------|
-| **暗色（默认）** | 经典星夜风格：深蓝背景 + 金色强调色 + Canvas 粒子全亮度 |
-| **亮色** | 温暖奶油色背景 `#f8f3eb` + 深金色强调 `#795813` + 白底卡片带柔和阴影 + Canvas 降至 15% 透明度呈现金色微光 |
-| **跟随系统** | 首次访问时自动检测 `prefers-color-scheme`；用户手动切换后覆盖系统偏好 |
+| `index.html` | 全部页面、四套主题样式、i18n 字典与交互逻辑 |
+| `starry-night.js` | 星月夜 Canvas 粒子系统（按需加载） |
 
-- 所有颜色通过 CSS 自定义属性 (`--bg`, `--accent`, `--accent-rgb` 等) 统一管理
-- 主题切换时所有元素带 0.6s `transition` 平滑过渡
-- 村庄剪影 SVG 在亮色模式下变为暖米色，营造白天田园风光
-- 用户偏好保存在 `localStorage`
+## 🚀 本地预览
 
-### 中英文切换
-
-页面右上角提供语言切换按钮（中/EN）：
-
-- 所有文本节点通过 `data-i18n` 属性标记，JS 维护完整的中英翻译字典
-- 切换时文字先淡出再淡入（0.2s opacity 过渡），避免突兀跳变
-- 中文模式下 Hero 姓名切换为楷体 (`STKaiti`) + 字间距调整
-- `<html lang>` 属性和 `document.title` 同步更新
-- 用户偏好保存在 `localStorage`
-
-### 控制栏 UI
-
-- 两个 42px 圆形毛玻璃按钮，固定在右上角
-- Hover 放大 + 边框高亮 + 外发光；按下缩小反馈
-- SVG 图标（太阳/月亮）内置，随主题切换显示对应图标
-- 入场带 `fadeSlideDown` 动画，延迟 1s 出现
-- 支持键盘 `focus-visible` 无障碍焦点环
-
-## 星夜粒子动画（starry-night.js）
-
-页面背景运行着一个基于 Canvas 2D 的粒子动画系统，营造沉浸式星夜氛围：
-
-### 视觉元素
-
-| 元素 | 说明 |
-|------|------|
-| **月亮** | 画面右上方的弯月，由径向渐变绘制月体 + 圆形遮罩做新月缺口，外围多层辉光 |
-| **多层星辰** | ~280 颗粒子分为四类：大亮白星 (4%)、淡蓝星 (10%)、亮金星 (18%)、标准金星 (68%) |
-| **闪烁效果** | 每颗星有独立正弦周期，大小在 baseSize 的 65%–100% 之间振荡 |
-| **笔触尾迹** | 保留最近 12–30 帧轨迹，透明度由远及近渐变，`lineCap: round` 模拟笔触质感 |
-| **大星辉光** | baseSize > 2 的星体额外绘制径向渐变光晕 |
-| **流星** | 随机出现（约 0.25%/帧），带 28 帧拖尾，亮度随 life 衰减 |
-
-### 物理系统
-
-- **涡旋力场**：画面中预设 5 个固定漩涡中心，对范围内星体施加切向旋转力 + 微弱向心力，
-  无需鼠标即可产生自然的梵高式漩涡运动
-- **鼠标交互**：鼠标 280px 半径内对粒子施加柔和旋转力，星群围绕指尖缓慢流转
-- **速度阻尼**：每帧 ×0.975，防止粒子加速失控
-- **边界环绕**：粒子飞出屏幕一侧后从对侧回来，环绕时清空轨迹避免跨屏长线
-- **滚动响应**：随页面下滚，`scrollDim` 从 1 渐降至 0.35，星光和月光同步变暗，
-  确保阅读简历内容时不被背景干扰
-- **亮色模式**：Canvas 通过 CSS `opacity: 0.15` 整体降低至微光效果，金色粒子变为柔和的阳光尘埃
-
-## 技术栈
-
-- 纯 HTML / CSS / JavaScript，零依赖
-- CSS 自定义属性 + `rgba(var(--accent-rgb), alpha)` 模式实现主题切换
-- `<head>` 内联同步脚本读取 `localStorage` / `matchMedia` 预设主题，防止闪烁 (FOUC)
-- `data-i18n` 属性 + JS 翻译字典实现中英切换
-- CSS `backdrop-filter` 玻璃拟态卡片
-- CSS `clamp()` 响应式字号
-- SVG `preserveAspectRatio="none"` 全宽剪影
-- IntersectionObserver 卡片入场
-- Canvas 2D + `requestAnimationFrame` 60fps 粒子动画
-- `localStorage` 持久化用户偏好（主题 + 语言）
+直接用浏览器打开 `index.html` 即可，无需服务器。

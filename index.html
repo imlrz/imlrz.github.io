@@ -1,747 +1,684 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="editorial" data-lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0a1628" id="meta-theme">
-    <title>李睿哲 (Ruizhe Li) - Personal Website</title>
-    <style>
-        /* ═══════════════════════════════════════════
-           CSS Custom Properties – Dark (default)
-           ═══════════════════════════════════════════ */
-        :root {
-            --bg: #0a1628;
-            --card-bg: rgba(22, 38, 70, 0.55);
-            --card-shadow: none;
-            --accent: #fde68a;
-            --accent-rgb: 253, 230, 138;
-            --text-1: #e8e0d0;
-            --text-2: rgba(232, 224, 208, 0.78);
-            --text-3: rgba(232, 224, 208, 0.6);
-            --text-4: rgba(232, 224, 208, 0.4);
-            --text-5: rgba(232, 224, 208, 0.3);
-            --sil-1: #0e1726;
-            --sil-2: #080d16;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4efe6" id="meta-theme">
+<meta name="description" content="Ruizhe Li (李睿哲) — undergraduate researcher at USTC working on deep research systems and agent memory.">
+<title>Ruizhe Li (李睿哲)</title>
 
-        /* ── Light theme overrides ── */
-        [data-theme="light"] {
-            --bg: #f8f3eb;
-            --card-bg: rgba(255, 255, 255, 0.78);
-            --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
-            --accent: #795813;
-            --accent-rgb: 121, 88, 19;
-            --text-1: #1e293b;
-            --text-2: #475569;
-            --text-3: #64748b;
-            --text-4: #94a3b8;
-            --text-5: #b0bac9;
-            --sil-1: #d9cfbe;
-            --sil-2: #c8bba4;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-        /* ═══════════════════════════════════════════
-           Reset & Base
-           ═══════════════════════════════════════════ */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+<style>
+/* ════════════════════════════════════════════════════════════════
+   THEME TOKENS  ·  four self-contained palettes
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  --maxw: 760px;
+  --ease: cubic-bezier(.22,1,.36,1);
+}
 
-        body {
-            font-family: Georgia, 'Times New Roman', serif;
-            background: var(--bg);
-            color: var(--text-1);
-            overflow-x: hidden;
-            opacity: 0;
-            transition: background-color 0.6s ease;
-        }
+/* ── 1 · EDITORIAL ── warm ivory, ink, terracotta ── */
+[data-theme="editorial"]{
+  --bg:#f4efe6; --bg-2:#ece4d6; --surface:#faf6ee;
+  --ink:#241f1a; --ink-2:#5c5347; --ink-3:#8a7e6d; --ink-4:#b3a795;
+  --accent:#a8430f; --accent-2:#7a5a1e; --rule:#d8cdb9;
+  --font-display:"Fraunces", Georgia, serif;
+  --font-body:"Newsreader", Georgia, serif;
+  --font-mono:"JetBrains Mono", monospace;
+}
+/* ── 2 · TERMINAL ── near-black, phosphor green ── */
+[data-theme="terminal"]{
+  --bg:#0a0d0b; --bg-2:#0f1411; --surface:#10160f;
+  --ink:#cdd6cd; --ink-2:#8b9a89; --ink-3:#5f6e5e; --ink-4:#42513f;
+  --accent:#7ee787; --accent-2:#e3b341; --rule:#1d271c;
+  --font-display:"JetBrains Mono", monospace;
+  --font-body:"JetBrains Mono", monospace;
+  --font-mono:"JetBrains Mono", monospace;
+}
+/* ── 3 · MODERN ACADEMIC ── crisp white, indigo ── */
+[data-theme="academic"]{
+  --bg:#fbfbfc; --bg-2:#f1f2f6; --surface:#ffffff;
+  --ink:#15181f; --ink-2:#4a5160; --ink-3:#79808f; --ink-4:#aab0bd;
+  --accent:#2f4af0; --accent-2:#0b7d6b; --rule:#e5e7ee;
+  --font-display:"Bricolage Grotesque", system-ui, sans-serif;
+  --font-body:"Source Serif 4", Georgia, serif;
+  --font-mono:"JetBrains Mono", monospace;
+}
+/* ── 4 · STARRY NIGHT ── deep blue, gold ── */
+[data-theme="starry"]{
+  --bg:#0a1628; --bg-2:#0e1d34; --surface:rgba(22,38,70,.5);
+  --ink:#ece4d2; --ink-2:#c3bca8; --ink-3:#9a937f; --ink-4:#6f6857;
+  --accent:#fbe08a; --accent-2:#f2c14e; --rule:rgba(251,224,138,.16);
+  --font-display:"Cormorant Garamond", Georgia, serif;
+  --font-body:"Newsreader", Georgia, serif;
+  --font-mono:"JetBrains Mono", monospace;
+}
 
-        body.loaded {
-            opacity: 1;
-            transition: opacity 0.4s ease, background-color 0.6s ease;
-        }
+/* ════════════════════════════════════════════════════════════════
+   RESET / BASE
+   ════════════════════════════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-body);
+  font-size:18px; line-height:1.65;
+  overflow-x:hidden;
+  transition:background-color .6s var(--ease), color .6s var(--ease);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--accent);color:var(--bg)}
 
-        /* Chinese font */
-        [data-lang="zh"] body {
-            font-family: 'STSong', 'SimSun', 'Songti SC', Georgia, serif;
-        }
+/* Page texture overlays (per theme) */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  opacity:0; transition:opacity .6s ease;
+}
+[data-theme="editorial"] body::before,
+body[data-active="editorial"]::before{}
+/* paper grain for editorial */
+[data-theme="editorial"] body::before{
+  opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+}
+/* scanline grid for terminal */
+[data-theme="terminal"] body::before{
+  opacity:1;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(126,231,135,.025) 0 1px, transparent 1px 3px),
+    radial-gradient(circle at 50% 0%, rgba(126,231,135,.05), transparent 60%);
+}
+/* faint dot grid for academic */
+[data-theme="academic"] body::before{
+  opacity:1;
+  background-image:radial-gradient(var(--rule) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:linear-gradient(180deg, rgba(0,0,0,.5), transparent 70%);
+          mask-image:linear-gradient(180deg, rgba(0,0,0,.5), transparent 70%);
+}
 
-        /* ═══════════════════════════════════════════
-           Canvas
-           ═══════════════════════════════════════════ */
-        #starry-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            transition: opacity 0.8s ease;
-        }
+/* Starry canvas (only visible under starry theme) */
+#starry-canvas{
+  position:fixed; inset:0; width:100%; height:100%;
+  z-index:0; pointer-events:none; opacity:0;
+  transition:opacity .8s ease;
+}
+[data-theme="starry"] #starry-canvas{opacity:1}
+#starry-sil{
+  position:fixed; bottom:-1px; left:0; width:100%; z-index:1;
+  pointer-events:none; opacity:0; transition:opacity .8s ease;
+}
+[data-theme="starry"] #starry-sil{opacity:1}
+#starry-sil path:first-of-type{fill:#0e1726}
+#starry-sil path:last-of-type{fill:#080d16}
 
-        [data-theme="light"] #starry-canvas {
-            opacity: 0.15;
-        }
+/* ════════════════════════════════════════════════════════════════
+   CONTROLS  ·  theme picker + language
+   ════════════════════════════════════════════════════════════════ */
+.controls{
+  position:fixed; top:22px; right:22px; z-index:200;
+  display:flex; gap:10px; align-items:flex-start;
+  animation:dropIn .9s var(--ease) .3s both;
+}
+@keyframes dropIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
 
-        /* ═══════════════════════════════════════════
-           Controls Bar
-           ═══════════════════════════════════════════ */
-        .controls {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 100;
-            display: flex;
-            gap: 10px;
-            animation: fadeSlideDown 1s ease 1s both;
-            user-select: none;
-        }
+.ctrl{
+  height:40px; padding:0 14px; border-radius:9px;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--rule);
+  font-family:var(--font-mono); font-size:.74rem; font-weight:500;
+  letter-spacing:.06em; cursor:pointer; display:flex; align-items:center; gap:8px;
+  transition:transform .25s var(--ease), border-color .25s, color .25s, background-color .25s;
+  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+.ctrl:hover{transform:translateY(-2px); border-color:var(--accent); color:var(--accent)}
+.ctrl:active{transform:translateY(0)}
+.ctrl .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--bg) inset}
 
-        @keyframes fadeSlideDown {
-            from { opacity: 0; transform: translateY(-14px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+.theme-wrap{position:relative}
+.theme-menu{
+  position:absolute; top:48px; right:0; width:226px;
+  background:var(--surface); border:1px solid var(--rule); border-radius:13px;
+  padding:7px; box-shadow:0 18px 50px rgba(0,0,0,.22);
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  opacity:0; transform:translateY(-8px) scale(.97); pointer-events:none;
+  transition:opacity .22s var(--ease), transform .22s var(--ease);
+}
+.theme-menu.open{opacity:1; transform:none; pointer-events:auto}
+.theme-opt{
+  display:flex; align-items:center; gap:12px; width:100%;
+  padding:10px 11px; border-radius:9px; cursor:pointer; border:0; background:transparent;
+  color:var(--ink); font-family:var(--font-mono); font-size:.78rem; text-align:left;
+  transition:background-color .18s;
+}
+.theme-opt:hover{background:var(--bg-2)}
+.theme-opt .sw{width:30px;height:30px;border-radius:8px;flex:none;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.12)}
+.theme-opt .sw i{position:absolute;inset:0}
+.theme-opt .sw i:nth-child(2){left:62%}
+.theme-opt b{display:block;font-weight:600;font-size:.82rem}
+.theme-opt small{color:var(--ink-3);font-size:.68rem}
+.theme-opt[aria-checked="true"]{background:var(--bg-2)}
+.theme-opt[aria-checked="true"] .check{margin-left:auto;color:var(--accent);font-weight:700}
+.theme-opt .check{margin-left:auto;opacity:0}
+.theme-opt[aria-checked="true"] .check{opacity:1}
 
-        .ctrl-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1px solid rgba(var(--accent-rgb), 0.22);
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            color: var(--accent);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.82rem;
-            font-weight: 600;
-            font-family: inherit;
-            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s,
-                        background-color 0.6s, color 0.6s;
-            outline: none;
-        }
+/* swatches */
+.sw.ed i:first-child{background:#f4efe6} .sw.ed i:last-child{background:#a8430f}
+.sw.te i:first-child{background:#0a0d0b} .sw.te i:last-child{background:#7ee787}
+.sw.ac i:first-child{background:#ffffff} .sw.ac i:last-child{background:#2f4af0}
+.sw.st i:first-child{background:#0a1628} .sw.st i:last-child{background:#fbe08a}
 
-        .ctrl-btn:hover {
-            transform: scale(1.1);
-            border-color: rgba(var(--accent-rgb), 0.45);
-            box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.1);
-        }
+/* ════════════════════════════════════════════════════════════════
+   LAYOUT SHELL
+   ════════════════════════════════════════════════════════════════ */
+.page{position:relative; z-index:2; max-width:var(--maxw); margin:0 auto; padding:120px 28px 40px}
+.masthead{margin-bottom:18px}
+.body{display:flex; flex-direction:column}
 
-        .ctrl-btn:active {
-            transform: scale(0.93);
-        }
+/* MASTHEAD */
+.eyebrow{
+  font-family:var(--font-mono); font-size:.72rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:18px;
+  display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--accent)}
+.name{
+  font-family:var(--font-display); font-weight:600;
+  font-size:clamp(2.9rem,7vw,4.6rem); line-height:1.02; letter-spacing:-.02em;
+  color:var(--ink); margin-bottom:2px;
+}
+.name-cn{
+  font-family:var(--font-display); font-weight:500;
+  font-size:clamp(1.2rem,3vw,1.6rem); color:var(--ink-3); letter-spacing:.14em;
+  margin-bottom:22px;
+}
+.tagline{
+  font-size:1.16rem; color:var(--ink-2); max-width:46ch; margin-bottom:22px; line-height:1.55;
+}
+.tagline b{color:var(--ink); font-weight:600}
+.affil{
+  font-family:var(--font-mono); font-size:.8rem; color:var(--ink-3);
+  line-height:1.9; margin-bottom:22px;
+}
+.affil b{color:var(--ink-2); font-weight:500}
 
-        .ctrl-btn:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
+.links{display:flex; flex-wrap:wrap; gap:9px}
+.link{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:8px 15px; border-radius:8px;
+  border:1px solid var(--rule); background:var(--surface);
+  font-family:var(--font-mono); font-size:.76rem; color:var(--ink-2);
+  transition:transform .2s var(--ease), border-color .2s, color .2s, background-color .2s;
+}
+.link svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
+.link:hover{transform:translateY(-2px); color:var(--accent); border-color:var(--accent)}
 
-        .ctrl-btn svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: stroke 0.6s ease, transform 0.3s ease;
-        }
+/* SECTIONS */
+.section{padding:34px 0; border-top:1px solid var(--rule)}
+.section:first-child{border-top:0}
+.section-title{
+  font-family:var(--font-mono); font-size:.76rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-3); margin-bottom:24px; display:flex; align-items:baseline; gap:10px;
+}
+.section-title .idx{color:var(--accent); font-weight:700}
 
-        .ctrl-btn:hover svg {
-            transform: rotate(18deg);
-        }
+.lede{font-size:1.12rem; line-height:1.72; color:var(--ink-2); max-width:60ch}
+.lede b{color:var(--ink); font-weight:600}
+.lede a{color:var(--accent); border-bottom:1px solid var(--rule)}
+.lede a:hover{border-color:var(--accent)}
 
-        /* ═══════════════════════════════════════════
-           Hero Section
-           ═══════════════════════════════════════════ */
-        .hero {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-            overflow: hidden;
-            pointer-events: none;
-        }
+/* interests chips */
+.chips{display:flex; flex-wrap:wrap; gap:9px; margin-top:22px}
+.chip{
+  font-family:var(--font-mono); font-size:.74rem; padding:6px 13px;
+  border-radius:50px; border:1px solid var(--rule); color:var(--ink-2); background:var(--surface);
+  transition:transform .2s var(--ease), color .2s, border-color .2s;
+}
+.chip:hover{transform:translateY(-2px); color:var(--accent); border-color:var(--accent)}
 
-        .hero-content {
-            text-align: center;
-            will-change: transform, opacity;
-        }
+/* NEWS */
+.news{list-style:none; display:flex; flex-direction:column; gap:2px}
+.news li{display:flex; gap:18px; padding:11px 0; border-bottom:1px solid var(--rule); font-size:.98rem; color:var(--ink-2); line-height:1.5}
+.news li:last-child{border-bottom:0}
+.news .date{font-family:var(--font-mono); font-size:.76rem; color:var(--accent); flex:none; width:74px; padding-top:3px}
+.news a{color:var(--ink); border-bottom:1px solid var(--rule)}
+.news a:hover{color:var(--accent); border-color:var(--accent)}
 
-        .hero h1 {
-            font-family: 'Brush Script MT', 'Segoe Script', cursive;
-            font-size: clamp(4rem, 12vw, 11rem);
-            font-weight: 300;
-            color: var(--accent);
-            text-shadow:
-                0 0 60px rgba(var(--accent-rgb), 0.25),
-                0 0 120px rgba(var(--accent-rgb), 0.08);
-            letter-spacing: 0.04em;
-            line-height: 1.1;
-            animation: heroFadeIn 1.8s ease both;
-            transition: color 0.6s ease, text-shadow 0.6s ease;
-        }
+/* PUBLICATIONS */
+.pub{
+  position:relative; padding:22px; margin-bottom:16px;
+  border:1px solid var(--rule); border-radius:14px; background:var(--surface);
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+}
+.pub:hover{transform:translateY(-3px); border-color:var(--accent); box-shadow:0 14px 36px rgba(0,0,0,.08)}
+.pub-badge{
+  display:inline-block; font-family:var(--font-mono); font-size:.66rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--accent); border:1px solid var(--accent);
+  padding:2px 9px; border-radius:5px; margin-bottom:12px;
+}
+.pub-title{font-family:var(--font-display); font-weight:600; font-size:1.28rem; line-height:1.25; color:var(--ink); margin-bottom:9px; letter-spacing:-.01em}
+.pub-authors{font-size:.94rem; color:var(--ink-2); margin-bottom:5px; line-height:1.5}
+.pub-authors .me{color:var(--accent); font-weight:600}
+.pub-authors .eq{color:var(--ink-3)}
+.pub-venue{font-family:var(--font-mono); font-size:.78rem; color:var(--ink-3); margin-bottom:14px}
+.pub-tldr{font-size:.96rem; color:var(--ink-2); line-height:1.6; margin-bottom:16px; padding-left:14px; border-left:2px solid var(--rule)}
+.pub-links{display:flex; flex-wrap:wrap; gap:8px}
+.pub-links a{
+  font-family:var(--font-mono); font-size:.74rem; padding:6px 13px; border-radius:7px;
+  border:1px solid var(--rule); color:var(--ink-2); display:inline-flex; align-items:center; gap:6px;
+  transition:transform .2s var(--ease), background-color .2s, color .2s, border-color .2s;
+}
+.pub-links a:hover{transform:translateY(-2px); background:var(--accent); color:var(--bg); border-color:var(--accent)}
 
-        [data-lang="zh"] .hero h1 {
-            font-family: 'STKaiti', 'KaiTi', 'Kaiti SC', serif;
-            font-size: clamp(3.5rem, 10vw, 9rem);
-            font-weight: 400;
-            letter-spacing: 0.12em;
-        }
+/* PROJECTS */
+.proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.proj{
+  padding:20px; border:1px solid var(--rule); border-radius:13px; background:var(--surface);
+  transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
+  display:flex; flex-direction:column;
+}
+.proj:hover{transform:translateY(-3px); border-color:var(--accent); box-shadow:0 12px 30px rgba(0,0,0,.07)}
+.proj-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:9px}
+.proj-name{font-family:var(--font-display); font-weight:600; font-size:1.08rem; color:var(--ink)}
+.proj-star{font-family:var(--font-mono); font-size:.72rem; color:var(--accent-2); display:flex; align-items:center; gap:4px}
+.proj p{font-size:.9rem; color:var(--ink-2); line-height:1.55; flex:1}
+.proj-foot{display:flex; align-items:center; justify-content:space-between; margin-top:14px; font-family:var(--font-mono); font-size:.72rem; color:var(--ink-3)}
+.proj-foot a{color:var(--accent)}
+.proj-foot a:hover{text-decoration:underline}
 
-        .hero-subtitle {
-            font-size: clamp(0.85rem, 1.8vw, 1.15rem);
-            color: var(--text-4);
-            font-weight: 400;
-            letter-spacing: 0.35em;
-            text-transform: uppercase;
-            margin-top: 16px;
-            animation: heroFadeIn 1.8s ease 0.4s both;
-            transition: color 0.6s ease;
-        }
+/* TWO-COLUMN MISC (service + skills) */
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:34px}
+.minilist{list-style:none}
+.minilist li{padding:9px 0; border-bottom:1px solid var(--rule); font-size:.95rem; color:var(--ink-2); line-height:1.5}
+.minilist li:last-child{border-bottom:0}
+.minilist li b{color:var(--ink); font-weight:600; display:block}
+.minilist li span{font-family:var(--font-mono); font-size:.74rem; color:var(--ink-3)}
+.skillset{display:flex; flex-wrap:wrap; gap:8px}
+.skillset span{font-family:var(--font-mono); font-size:.76rem; padding:6px 12px; border-radius:7px; border:1px solid var(--rule); color:var(--ink-2); background:var(--surface)}
 
-        [data-lang="zh"] .hero-subtitle {
-            text-transform: none;
-            letter-spacing: 0.25em;
-        }
+footer{
+  position:relative; z-index:2; max-width:var(--maxw); margin:0 auto;
+  padding:30px 28px 60px; border-top:1px solid var(--rule);
+  font-family:var(--font-mono); font-size:.74rem; color:var(--ink-4);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+}
+footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
-        @keyframes heroFadeIn {
-            from { opacity: 0; transform: translateY(28px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+/* reveal on load */
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease), transform .8s var(--ease)}
+.reveal.in{opacity:1; transform:none}
 
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 44px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            animation: heroFadeIn 1.6s ease 1.2s both;
-        }
+/* ════════════════════════════════════════════════════════════════
+   THEME-SPECIFIC TREATMENTS
+   ════════════════════════════════════════════════════════════════ */
 
-        .scroll-indicator span {
-            font-size: 0.7rem;
-            letter-spacing: 0.25em;
-            text-transform: uppercase;
-            color: var(--text-4);
-            transition: color 0.6s ease;
-        }
+/* — EDITORIAL — drop cap-ish big serif, drawn rules */
+[data-theme="editorial"] .name{font-variation-settings:"opsz" 144; font-style:normal}
+[data-theme="editorial"] .pub-badge,
+[data-theme="editorial"] .pub-links a:hover{color:#fff}
+[data-theme="editorial"] ::selection{color:#fff}
 
-        [data-lang="zh"] .scroll-indicator span {
-            text-transform: none;
-            letter-spacing: 0.15em;
-        }
+/* — TERMINAL — command-line motifs */
+[data-theme="terminal"] body{font-size:16.5px}
+[data-theme="terminal"] .eyebrow{color:var(--accent)}
+[data-theme="terminal"] .name{letter-spacing:0; font-weight:700}
+[data-theme="terminal"] .name::after{
+  content:"_"; color:var(--accent); animation:blink 1.05s steps(1) infinite; margin-left:6px;
+}
+@keyframes blink{50%{opacity:0}}
+[data-theme="terminal"] .section-title::before{content:"$ "; color:var(--accent)}
+[data-theme="terminal"] .section-title .idx{display:none}
+[data-theme="terminal"] .pub-title,
+[data-theme="terminal"] .proj-name,
+[data-theme="terminal"] .pub-authors,
+[data-theme="terminal"] .name-cn{font-family:var(--font-mono)}
+[data-theme="terminal"] .pub-title{font-weight:700; font-size:1.12rem}
+[data-theme="terminal"] .pub,[data-theme="terminal"] .proj{border-radius:6px}
+[data-theme="terminal"] .pub::before{
+  content:"> "; color:var(--accent); font-family:var(--font-mono); position:absolute; left:8px; top:22px; opacity:.5;
+}
+[data-theme="terminal"] .link,[data-theme="terminal"] .chip,
+[data-theme="terminal"] .pub-links a,[data-theme="terminal"] .ctrl,
+[data-theme="terminal"] .skillset span{border-radius:5px}
+[data-theme="terminal"] ::selection{background:var(--accent);color:#0a0d0b}
 
-        .scroll-arrow {
-            width: 20px; height: 20px;
-            border-right: 1.5px solid rgba(var(--accent-rgb), 0.5);
-            border-bottom: 1.5px solid rgba(var(--accent-rgb), 0.5);
-            transform: rotate(45deg);
-            animation: bounceArrow 2.4s ease infinite;
-        }
+/* — MODERN ACADEMIC — sidebar layout */
+[data-theme="academic"]{--maxw:1040px}
+[data-theme="academic"] .page{
+  display:grid; grid-template-columns:300px 1fr; gap:54px; align-items:start; padding-top:96px;
+}
+[data-theme="academic"] .masthead{
+  position:sticky; top:96px; margin-bottom:0;
+}
+[data-theme="academic"] .name{font-size:clamp(2.1rem,4vw,2.7rem)}
+[data-theme="academic"] .avatar{
+  width:120px; height:120px; border-radius:20px; background:var(--bg-2);
+  border:1px solid var(--rule); display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-display); font-weight:800; font-size:3rem; color:var(--accent);
+  margin-bottom:22px; box-shadow:0 10px 30px rgba(0,0,0,.06);
+}
+[data-theme="academic"] .tagline{font-size:1rem}
+[data-theme="academic"] .links{flex-direction:column; align-items:flex-start}
+[data-theme="academic"] .link{width:100%}
+[data-theme="academic"] .section:first-child{border-top:1px solid var(--rule); padding-top:0; border-top:0}
+[data-theme="academic"] .body .section:first-child{padding-top:6px}
+[data-theme="academic"] .pub-title{font-family:var(--font-display); font-weight:700}
+/* hide avatar in non-academic themes */
+.avatar{display:none}
+[data-theme="academic"] .avatar{display:flex}
 
-        @keyframes bounceArrow {
-            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.6; }
-            50%      { transform: rotate(45deg) translateY(8px); opacity: 1; }
-        }
+/* — STARRY — glassmorphism + glow */
+[data-theme="starry"]{--maxw:780px}
+[data-theme="starry"] .page{padding-top:0}
+[data-theme="starry"] .masthead{
+  min-height:88vh; display:flex; flex-direction:column; justify-content:center;
+  text-align:center; align-items:center; margin-bottom:30px;
+}
+[data-theme="starry"] .eyebrow{justify-content:center}
+[data-theme="starry"] .eyebrow::before{display:none}
+[data-theme="starry"] .name{
+  font-size:clamp(3.4rem,11vw,7rem); font-weight:500; font-style:italic;
+  color:var(--accent); letter-spacing:.01em;
+  text-shadow:0 0 50px rgba(251,224,138,.28), 0 0 110px rgba(251,224,138,.1);
+}
+[data-theme="starry"] .name::after{display:none}
+[data-theme="starry"] .tagline,[data-theme="starry"] .affil{margin-left:auto;margin-right:auto;text-align:center}
+[data-theme="starry"] .links{justify-content:center}
+[data-theme="starry"] .section{
+  background:var(--surface); border:1px solid var(--rule); border-radius:18px;
+  padding:34px 32px; margin-bottom:26px; border-top:1px solid var(--rule);
+  -webkit-backdrop-filter:blur(22px); backdrop-filter:blur(22px);
+}
+[data-theme="starry"] .section-title{color:var(--accent)}
+[data-theme="starry"] .pub,[data-theme="starry"] .proj{background:rgba(255,255,255,.03)}
+[data-theme="starry"] .link,[data-theme="starry"] .chip,
+[data-theme="starry"] .ctrl,[data-theme="starry"] .theme-menu,
+[data-theme="starry"] .skillset span,[data-theme="starry"] .pub-links a{
+  background:rgba(22,38,70,.5); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
+}
+[data-theme="starry"] .pub-links a:hover{color:#0a1628}
+[data-theme="starry"] .pub-badge{color:var(--accent)}
+[data-theme="starry"] ::selection{color:#0a1628}
 
-        /* Village silhouette */
-        .silhouette {
-            position: absolute;
-            bottom: -1px; left: 0;
-            width: 100%;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .silhouette path:first-of-type {
-            fill: var(--sil-1);
-            transition: fill 0.8s ease;
-        }
-
-        .silhouette path:last-of-type {
-            fill: var(--sil-2);
-            transition: fill 0.8s ease;
-        }
-
-        /* ═══════════════════════════════════════════
-           Main Content
-           ═══════════════════════════════════════════ */
-        .main-content {
-            position: relative;
-            z-index: 1;
-            max-width: 780px;
-            margin: 0 auto;
-            padding: 60px 20px 40px;
-        }
-
-        /* Glassmorphism Card */
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(var(--accent-rgb), 0.12);
-            border-radius: 18px;
-            padding: 44px 40px;
-            margin-bottom: 36px;
-            box-shadow: var(--card-shadow);
-            /* Reveal animation */
-            opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.9s cubic-bezier(.23,1,.32,1),
-                        transform 0.9s cubic-bezier(.23,1,.32,1),
-                        border-color 0.4s, box-shadow 0.4s,
-                        background-color 0.6s ease;
-        }
-
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card:hover {
-            border-color: rgba(var(--accent-rgb), 0.25);
-            box-shadow: var(--card-shadow), 0 0 40px rgba(var(--accent-rgb), 0.04);
-        }
-
-        [data-theme="light"] .card:hover {
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-        }
-
-        .card-title {
-            font-size: 1.4rem;
-            color: var(--accent);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            margin-bottom: 28px;
-            position: relative;
-            padding-bottom: 14px;
-            transition: color 0.6s ease;
-        }
-
-        [data-lang="zh"] .card-title {
-            text-transform: none;
-            letter-spacing: 0.08em;
-        }
-
-        .card-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 52px; height: 2px;
-            background: linear-gradient(to right, var(--accent), transparent);
-        }
-
-        /* Experience item */
-        .exp-item {
-            margin-bottom: 28px;
-            padding-left: 20px;
-            border-left: 2px solid rgba(var(--accent-rgb), 0.15);
-            transition: border-color 0.6s ease;
-        }
-
-        .exp-item:last-child { margin-bottom: 0; }
-
-        .exp-item h3 {
-            font-size: 1.05rem;
-            color: var(--accent);
-            margin-bottom: 4px;
-            font-weight: 600;
-            transition: color 0.6s ease;
-        }
-
-        .exp-item .role {
-            font-size: 0.88rem;
-            color: var(--text-3);
-            margin-bottom: 8px;
-            font-style: italic;
-            transition: color 0.6s ease;
-        }
-
-        .exp-item p {
-            font-size: 0.92rem;
-            line-height: 1.7;
-            color: var(--text-2);
-            transition: color 0.6s ease;
-        }
-
-        /* Skill tags */
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            list-style: none;
-        }
-
-        .skill-tags li {
-            background: rgba(var(--accent-rgb), 0.08);
-            border: 1px solid rgba(var(--accent-rgb), 0.18);
-            color: var(--accent);
-            padding: 8px 22px;
-            border-radius: 28px;
-            font-size: 0.88rem;
-            transition: background 0.3s, transform 0.3s,
-                        color 0.6s ease, border-color 0.6s ease;
-            cursor: default;
-        }
-
-        .skill-tags li:hover {
-            background: rgba(var(--accent-rgb), 0.18);
-            transform: translateY(-2px);
-        }
-
-        /* Activity list */
-        .activity-list {
-            list-style: none;
-        }
-
-        .activity-list li {
-            padding: 14px 0;
-            border-bottom: 1px solid rgba(var(--accent-rgb), 0.06);
-            font-size: 0.92rem;
-            line-height: 1.7;
-            color: var(--text-2);
-            transition: color 0.6s ease, border-color 0.6s ease;
-        }
-
-        .activity-list li:last-child { border-bottom: none; }
-
-        .activity-list li::before {
-            content: '\2726';
-            color: var(--accent);
-            margin-right: 12px;
-            font-size: 0.65rem;
-            vertical-align: middle;
-        }
-
-        /* Footer */
-        footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 48px 20px;
-            color: var(--text-5);
-            font-size: 0.82rem;
-            letter-spacing: 0.05em;
-            transition: color 0.6s ease;
-        }
-
-        /* i18n text fade */
-        [data-i18n] {
-            transition: opacity 0.2s ease;
-        }
-
-        /* ═══════════════════════════════════════════
-           Responsive
-           ═══════════════════════════════════════════ */
-        @media (max-width: 768px) {
-            .card { padding: 28px 22px; }
-            .main-content { padding: 36px 14px; }
-            .controls { top: 16px; right: 16px; gap: 8px; }
-            .ctrl-btn { width: 38px; height: 38px; font-size: 0.75rem; }
-            .ctrl-btn svg { width: 16px; height: 16px; }
-        }
-    </style>
-
-    <!-- Early theme & language init (prevents FOUC) -->
-    <script>
-        (function () {
-            var t = localStorage.getItem('theme');
-            if (t !== 'light' && t !== 'dark')
-                t = window.matchMedia('(prefers-color-scheme:light)').matches ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', t);
-
-            var l = localStorage.getItem('lang');
-            if (l !== 'zh' && l !== 'en') l = 'en';
-            document.documentElement.setAttribute('data-lang', l);
-            document.documentElement.lang = l === 'zh' ? 'zh-CN' : 'en';
-        })();
-    </script>
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════════ */
+@media(max-width:860px){
+  [data-theme="academic"] .page{grid-template-columns:1fr; gap:30px}
+  [data-theme="academic"] .masthead{position:static}
+  [data-theme="academic"] .links{flex-direction:row}
+  [data-theme="academic"] .link{width:auto}
+  [data-theme="academic"] .avatar{width:92px;height:92px;font-size:2.4rem}
+}
+@media(max-width:620px){
+  body{font-size:16.5px}
+  .page{padding:96px 18px 30px}
+  .proj-grid,.two-col{grid-template-columns:1fr; gap:18px}
+  .two-col{gap:24px}
+  .controls{top:14px;right:14px}
+  .ctrl{height:36px;padding:0 11px;font-size:.7rem}
+  .news li{flex-direction:column;gap:3px}
+  .news .date{width:auto}
+  [data-theme="starry"] .masthead{min-height:80vh}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important; transition-duration:.001s!important}
+}
+</style>
 </head>
 <body>
 
-    <!-- ── Controls ── -->
-    <div class="controls">
-        <button class="ctrl-btn" id="lang-btn" type="button" aria-label="Switch language">
-            <span id="lang-label">中</span>
-        </button>
-        <button class="ctrl-btn" id="theme-btn" type="button" aria-label="Switch theme">
-            <!-- Sun icon (shown in dark mode → switch to light) -->
-            <svg id="icon-sun" viewBox="0 0 24 24" style="display:none">
-                <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="1" x2="12" y2="3"/>
-                <line x1="12" y1="21" x2="12" y2="23"/>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                <line x1="1" y1="12" x2="3" y2="12"/>
-                <line x1="21" y1="12" x2="23" y2="12"/>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-            <!-- Moon icon (shown in light mode → switch to dark) -->
-            <svg id="icon-moon" viewBox="0 0 24 24" style="display:none">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-        </button>
+<!-- starry background (lazy) -->
+<canvas id="starry-canvas"></canvas>
+<svg id="starry-sil" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,220 L0,155 Q120,125 240,145 Q360,165 480,135 Q560,115 680,130 Q800,145 920,115 Q1020,90 1120,125 Q1260,160 1380,140 L1440,148 L1440,220Z"/>
+  <path d="M0,220 L0,178 L80,178 L80,155 L86,140 L92,155 L92,178 L200,180 L200,165 L212,165 L212,180 L340,182 L340,128 L344,108 L348,128 L348,182 L480,184 L480,168 L496,168 L496,184 L640,186 L720,183 L720,160 L728,150 L736,160 L736,183 L880,186 L920,184 L920,170 L936,170 L936,184 L1080,186 L1080,172 L1088,162 L1096,172 L1096,186 L1260,188 L1360,186 L1440,188 L1440,220Z"/>
+</svg>
+
+<!-- ── controls ── -->
+<div class="controls">
+  <div class="theme-wrap">
+    <button class="ctrl" id="theme-btn" aria-haspopup="true" aria-expanded="false">
+      <span class="dot"></span><span id="theme-name">Editorial</span>
+    </button>
+    <div class="theme-menu" id="theme-menu" role="menu">
+      <button class="theme-opt" role="menuitemradio" data-set="editorial">
+        <span class="sw ed"><i></i><i></i></span><span><b>Editorial</b><small data-i18n="thEd">Ivory · serif</small></span><span class="check">✓</span>
+      </button>
+      <button class="theme-opt" role="menuitemradio" data-set="terminal">
+        <span class="sw te"><i></i><i></i></span><span><b>Terminal</b><small data-i18n="thTe">Mono · phosphor</small></span><span class="check">✓</span>
+      </button>
+      <button class="theme-opt" role="menuitemradio" data-set="academic">
+        <span class="sw ac"><i></i><i></i></span><span><b>Academic</b><small data-i18n="thAc">Light · sidebar</small></span><span class="check">✓</span>
+      </button>
+      <button class="theme-opt" role="menuitemradio" data-set="starry">
+        <span class="sw st"><i></i><i></i></span><span><b>Starry Night</b><small data-i18n="thSt">Van Gogh · canvas</small></span><span class="check">✓</span>
+      </button>
     </div>
+  </div>
+  <button class="ctrl" id="lang-btn" aria-label="Switch language"><span id="lang-label">中</span></button>
+</div>
 
-    <canvas id="starry-canvas"></canvas>
+<!-- ── page ── -->
+<div class="page">
+  <header class="masthead reveal">
+    <div class="avatar">李</div>
+    <div class="eyebrow" data-i18n="eyebrow">USTC · AI &amp; Data Science</div>
+    <h1 class="name">Ruizhe Li</h1>
+    <div class="name-cn">李睿哲</div>
+    <p class="tagline" data-i18n="tagline">Undergraduate researcher working on <b>deep research systems</b> and <b>agent memory</b> — how LLM agents gather, verify, and synthesize information at expert level.</p>
+    <div class="affil" data-i18n="affil">
+      <b>University of Science and Technology of China</b> · Hefei<br>
+      School of Artificial Intelligence and Data Science<br>
+      Group of Prof. Zhendong Mao (USTC-CMI)
+    </div>
+    <div class="links">
+      <a class="link" href="mailto:imlrz@mail.ustc.edu.cn">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a>
+      <a class="link" href="https://github.com/imlrz" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 20 4.8a4.9 4.9 0 0 0-.1-3.6s-1.1-.4-3.7 1.4a12.6 12.6 0 0 0-6.6 0C7 .8 5.9 1.2 5.9 1.2A4.9 4.9 0 0 0 5.8 4.8 5.2 5.2 0 0 0 4.4 8.4c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>GitHub</a>
+      <a class="link" href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>arXiv</a>
+      <a class="link" href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>Lab</a>
+    </div>
+  </header>
 
-    <!-- ── Hero ── -->
-    <section class="hero" id="hero">
-        <div class="hero-content" id="hero-content">
-            <h1 data-i18n="heroName">Ruizhe Li</h1>
-            <p class="hero-subtitle" data-i18n="heroSub">USTC &middot; AI &amp; Data Science</p>
-        </div>
-
-        <div class="scroll-indicator" id="scroll-indicator">
-            <span data-i18n="scroll">Scroll to Explore</span>
-            <div class="scroll-arrow"></div>
-        </div>
-
-        <!-- Village / hills silhouette -->
-        <svg class="silhouette" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0,220 L0,155 Q120,125 240,145 Q360,165 480,135 Q560,115 680,130
-                     Q800,145 920,115 Q1020,90 1120,125 Q1260,160 1380,140 L1440,148 L1440,220Z"
-                  fill="#0e1726"/>
-            <path d="M0,220 L0,178
-                     L80,178 L80,155 L86,140 L92,155 L92,178
-                     L200,180 L200,165 L212,165 L212,180
-                     L340,182 L340,128 L344,108 L348,128 L348,182
-                     L480,184 L480,168 L496,168 L496,184
-                     L640,186 L720,183 L720,160 L728,150 L736,160 L736,183
-                     L880,186 L920,184 L920,170 L936,170 L936,184
-                     L1080,186 L1080,172 L1088,162 L1096,172 L1096,186
-                     L1260,188 L1360,186 L1440,188 L1440,220Z"
-                  fill="#080d16"/>
-        </svg>
+  <main class="body">
+    <!-- ABOUT -->
+    <section class="section reveal" id="about">
+      <div class="section-title"><span class="idx">01</span><span data-i18n="aboutT">About</span></div>
+      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), an undergraduate at <b>USTC</b> majoring in Data Science. My research asks how LLM-based agents can perform <b>deep research</b> — searching, reasoning over evidence, and writing reports at expert level — and how they should <b>remember</b> across long horizons. I care about rigorous, verifiable evaluation: most of what we claim about agents is only as good as the yardstick we measure it with.</p>
+      <div class="chips">
+        <span class="chip" data-i18n="i1">Deep Research Systems</span>
+        <span class="chip" data-i18n="i2">Agent Memory</span>
+        <span class="chip" data-i18n="i3">LLM Agents</span>
+        <span class="chip" data-i18n="i4">Evaluation &amp; Benchmarking</span>
+      </div>
     </section>
 
-    <!-- ── Content ── -->
-    <main class="main-content">
-        <div class="card">
-            <div class="card-title" data-i18n="eduTitle">Education</div>
-            <div class="exp-item">
-                <h3 data-i18n="eduSchool">University of Science and Technology of China</h3>
-                <div class="role" data-i18n="eduRole">B.S., School of Artificial Intelligence and Data Science</div>
-                <p data-i18n="eduLoc">Hefei, China</p>
-            </div>
+    <!-- NEWS -->
+    <section class="section reveal" id="news">
+      <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">News</span></div>
+      <ul class="news">
+        <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv; the public leaderboard is live at agentresearchlab.com.</span></li>
+        <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
+        <li><span class="date">2025.05</span><span data-i18n="n3">Released <a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener">Eat-at-USTC</a>, a campus dining recommender (Yuqing Cup project).</span></li>
+      </ul>
+    </section>
+
+    <!-- PUBLICATIONS -->
+    <section class="section reveal" id="pub">
+      <div class="section-title"><span class="idx">03</span><span data-i18n="pubT">Publications</span></div>
+      <article class="pub">
+        <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
+        <h3 class="pub-title" data-i18n="p1title">DeepResearch Bench II: Diagnosing Deep Research Agents via Rubrics from Expert Reports</h3>
+        <p class="pub-authors"><span class="me">Ruizhe Li</span><span class="eq">*</span>, Mingxuan Du<span class="eq">*</span>, Benfeng Xu, Chiwei Zhu, Xiaorui Wang, Zhendong Mao<span class="eq" data-i18n="eqNote"> · *equal contribution</span></p>
+        <p class="pub-venue">arXiv:2601.08536 · 2026</p>
+        <p class="pub-tldr" data-i18n="p1tldr">A benchmark of 132 expert-grounded tasks across 22 domains and 9,430 fully-verifiable binary rubrics, scoring deep-research reports on information recall, analysis, and presentation. Built with a four-stage LLM+human pipeline and 400+ expert-hours — even the strongest systems satisfy fewer than 50% of rubrics.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">arXiv</a>
+          <a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener">Code</a>
+          <a href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">Website</a>
+          <a href="https://huggingface.co/datasets/muset-ai/DeepResearch-Bench-II-Dataset" target="_blank" rel="noopener">Dataset</a>
         </div>
+      </article>
+    </section>
 
-        <div class="card">
-            <div class="card-title" data-i18n="expTitle">Experiences</div>
-            <div class="exp-item">
-                <h3 data-i18n="exp1Name">Facial Expression Recognition</h3>
-                <div class="role" data-i18n="exp1Role">Algorithm Engineer, USTC</div>
-                <p data-i18n="exp1Desc">Conducted extensive research on facial expression recognition datasets and implemented deep learning algorithms.</p>
-            </div>
-            <div class="exp-item">
-                <h3 data-i18n="exp2Name">Literature Review &amp; Paper Illustration</h3>
-                <div class="role" data-i18n="exp2Role">Assistant, Lab for Data Science, USTC</div>
-                <p data-i18n="exp2Desc">Conducted literature reviews and created illustrations for research papers.</p>
-            </div>
-            <div class="exp-item">
-                <h3 data-i18n="exp3Name">Restaurant Review System</h3>
-                <div class="role" data-i18n="exp3Role">Team Leader, Database System Course Design, USTC</div>
-                <p data-i18n="exp3Desc">Led a team in designing and implementing a comprehensive database system.</p>
-            </div>
+    <!-- PROJECTS -->
+    <section class="section reveal" id="proj">
+      <div class="section-title"><span class="idx">04</span><span data-i18n="projT">Projects</span></div>
+      <div class="proj-grid">
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 59</span></div>
+          <p data-i18n="pr1">Evaluation suite and leaderboard for deep-research agents, grounded in expert-written reports. Rubric extraction, batched LLM-as-judge scoring, and token accounting.</p>
+          <div class="proj-foot"><span>Python</span><a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
-
-        <div class="card">
-            <div class="card-title" data-i18n="skillTitle">Skills</div>
-            <ul class="skill-tags">
-                <li>C</li>
-                <li>Python</li>
-                <li>LaTeX</li>
-                <li>Markdown</li>
-            </ul>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">Diabetica</span></div>
+          <p data-i18n="pr2">Specialized LLMs for diabetes-related tasks — domain fine-tuning and evaluation on clinical question answering.</p>
+          <div class="proj-foot"><span>Python · LLM</span><a href="https://github.com/imlrz/Diabetica" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
-
-        <div class="card">
-            <div class="card-title" data-i18n="actTitle">Leadership &amp; Activities</div>
-            <ul class="activity-list">
-                <li data-i18n="act1">President, Student Union, School of AI and Data Science</li>
-                <li data-i18n="act2">Member, Tang Zhongying Charity Society</li>
-            </ul>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">Eat-at-USTC</span></div>
+          <p data-i18n="pr3">Campus dining recommendation system built for the Yuqing Cup — data pipeline, ranking, and a lightweight web client.</p>
+          <div class="proj-foot"><span>Python · Web</span><a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
-    </main>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name" data-i18n="pr4name">Claude Code — source study</span></div>
+          <p data-i18n="pr4">Annotated reading of an agentic coding CLI's internals to understand tool-use loops, planning, and prompt orchestration.</p>
+          <div class="proj-foot"><span>TypeScript</span><a href="https://github.com/imlrz/claude-code-source-code" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
+        </div>
+      </div>
+    </section>
 
-    <footer>
-        <p data-i18n="footer">&copy; 2024 李睿哲 (Ruizhe Li). All rights reserved.</p>
-    </footer>
+    <!-- SERVICE + SKILLS -->
+    <section class="section reveal" id="more">
+      <div class="section-title"><span class="idx">05</span><span data-i18n="moreT">Education · Service · Skills</span></div>
+      <div class="two-col">
+        <ul class="minilist">
+          <li><b data-i18n="ed1">B.S. in Data Science <span>USTC · School of AI &amp; Data Science</span></b></li>
+          <li><b data-i18n="sv1">President, Student Union <span>School of AI &amp; Data Science, USTC</span></b></li>
+          <li><b data-i18n="sv2">Teaching Assistant, DS4001 <span>Data Science course · 2025 Spring</span></b></li>
+          <li><b data-i18n="sv3">Member, Tang Zhongying Charity Society <span>Volunteering</span></b></li>
+        </ul>
+        <div class="skillset">
+          <span>Python</span><span>PyTorch</span><span>LLM / Agents</span><span>RAG</span>
+          <span>LaTeX</span><span>Git</span><span>HTML / CSS / JS</span><span>C</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
 
-    <script src="starry-night.js"></script>
-    <script>
-        /* ════════════════════════════════════════════
-           Translations
-           ════════════════════════════════════════════ */
-        const T = {
-            en: {
-                heroName:  'Ruizhe Li',
-                heroSub:   'USTC \u00b7 AI & Data Science',
-                scroll:    'Scroll to Explore',
-                eduTitle:  'Education',
-                eduSchool: 'University of Science and Technology of China',
-                eduRole:   'B.S., School of Artificial Intelligence and Data Science',
-                eduLoc:    'Hefei, China',
-                expTitle:  'Experiences',
-                exp1Name:  'Facial Expression Recognition',
-                exp1Role:  'Algorithm Engineer, USTC',
-                exp1Desc:  'Conducted extensive research on facial expression recognition datasets and implemented deep learning algorithms.',
-                exp2Name:  'Literature Review & Paper Illustration',
-                exp2Role:  'Assistant, Lab for Data Science, USTC',
-                exp2Desc:  'Conducted literature reviews and created illustrations for research papers.',
-                exp3Name:  'Restaurant Review System',
-                exp3Role:  'Team Leader, Database System Course Design, USTC',
-                exp3Desc:  'Led a team in designing and implementing a comprehensive database system.',
-                skillTitle:'Skills',
-                actTitle:  'Leadership & Activities',
-                act1:      'President, Student Union, School of AI and Data Science',
-                act2:      'Member, Tang Zhongying Charity Society',
-                footer:    '\u00a9 2024 \u674e\u777f\u54f2 (Ruizhe Li). All rights reserved.',
-            },
-            zh: {
-                heroName:  '\u674e\u777f\u54f2',
-                heroSub:   '\u4e2d\u56fd\u79d1\u5b66\u6280\u672f\u5927\u5b66 \u00b7 \u4eba\u5de5\u667a\u80fd\u4e0e\u6570\u636e\u79d1\u5b66',
-                scroll:    '\u5411\u4e0b\u6eda\u52a8\u6d4f\u89c8',
-                eduTitle:  '\u6559\u80b2\u80cc\u666f',
-                eduSchool: '\u4e2d\u56fd\u79d1\u5b66\u6280\u672f\u5927\u5b66',
-                eduRole:   '\u7406\u5b66\u5b66\u58eb\uff0c\u4eba\u5de5\u667a\u80fd\u4e0e\u6570\u636e\u79d1\u5b66\u5b66\u9662',
-                eduLoc:    '\u4e2d\u56fd \u5408\u80a5',
-                expTitle:  '\u9879\u76ee\u7ecf\u5386',
-                exp1Name:  '\u4eba\u8138\u8868\u60c5\u8bc6\u522b',
-                exp1Role:  '\u7b97\u6cd5\u5de5\u7a0b\u5e08\uff0c\u4e2d\u56fd\u79d1\u5b66\u6280\u672f\u5927\u5b66',
-                exp1Desc:  '\u5bf9\u4eba\u8138\u8868\u60c5\u8bc6\u522b\u6570\u636e\u96c6\u8fdb\u884c\u4e86\u5e7f\u6cdb\u7814\u7a76\uff0c\u5e76\u5b9e\u73b0\u4e86\u6df1\u5ea6\u5b66\u4e60\u7b97\u6cd5\u3002',
-                exp2Name:  '\u6587\u732e\u7efc\u8ff0\u4e0e\u8bba\u6587\u63d2\u56fe',
-                exp2Role:  '\u52a9\u7406\u7814\u7a76\u5458\uff0c\u6570\u636e\u79d1\u5b66\u5b9e\u9a8c\u5ba4\uff0c\u4e2d\u56fd\u79d1\u5b66\u6280\u672f\u5927\u5b66',
-                exp2Desc:  '\u8d1f\u8d23\u6587\u732e\u7efc\u8ff0\u64b0\u5199\u53ca\u7814\u7a76\u8bba\u6587\u63d2\u56fe\u5236\u4f5c\u3002',
-                exp3Name:  '\u9910\u5385\u70b9\u8bc4\u7cfb\u7edf',
-                exp3Role:  '\u56e2\u961f\u8d1f\u8d23\u4eba\uff0c\u6570\u636e\u5e93\u7cfb\u7edf\u8bfe\u7a0b\u8bbe\u8ba1\uff0c\u4e2d\u56fd\u79d1\u5b66\u6280\u672f\u5927\u5b66',
-                exp3Desc:  '\u5e26\u9886\u56e2\u961f\u8bbe\u8ba1\u5e76\u5b9e\u73b0\u4e86\u4e00\u4e2a\u5b8c\u6574\u7684\u6570\u636e\u5e93\u7cfb\u7edf\u3002',
-                skillTitle:'\u6280\u80fd',
-                actTitle:  '\u9886\u5bfc\u529b\u4e0e\u793e\u56e2\u6d3b\u52a8',
-                act1:      '\u4eba\u5de5\u667a\u80fd\u4e0e\u6570\u636e\u79d1\u5b66\u5b66\u9662\u5b66\u751f\u4f1a\u4e3b\u5e2d',
-                act2:      '\u5510\u4ef2\u82f1\u7231\u5fc3\u793e\u6210\u5458',
-                footer:    '\u00a9 2024 \u674e\u777f\u54f2. \u4fdd\u7559\u6240\u6709\u6743\u5229\u3002',
-            }
-        };
+<footer>
+  <span data-i18n="foot">© 2026 Ruizhe Li · 李睿哲</span>
+  <span><a href="mailto:imlrz@mail.ustc.edu.cn">imlrz@mail.ustc.edu.cn</a> · <a href="https://github.com/imlrz" target="_blank" rel="noopener">github.com/imlrz</a></span>
+</footer>
 
-        /* ════════════════════════════════════════════
-           State
-           ════════════════════════════════════════════ */
-        let currentLang  = document.documentElement.getAttribute('data-lang')  || 'en';
-        let currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+<script>
+/* ─────────── early-saved prefs (applied inline above via attrs) ─────────── */
+(function(){
+  var t=localStorage.getItem('rl-theme');
+  if(['editorial','terminal','academic','starry'].indexOf(t)<0) t='editorial';
+  document.documentElement.setAttribute('data-theme',t);
+  var l=localStorage.getItem('rl-lang'); if(l!=='zh'&&l!=='en') l='en';
+  document.documentElement.setAttribute('data-lang',l);
+})();
 
-        /* ════════════════════════════════════════════
-           Language Switching
-           ════════════════════════════════════════════ */
-        function applyLang(lang) {
-            currentLang = lang;
-            const dict = T[lang];
+/* ─────────── i18n ─────────── */
+const T={
+  en:{}, // English is the in-HTML default; keys below override for ZH only
+  zh:{
+    eyebrow:'中国科学技术大学 · 人工智能与数据科学',
+    tagline:'本科研究者，研究<b>深度研究系统</b>与<b>智能体记忆</b>——让大模型智能体以专家水准检索、核验并综合信息。',
+    affil:'<b>中国科学技术大学</b> · 合肥<br>人工智能与数据科学学院<br>毛震东教授课题组（USTC-CMI）',
+    aboutT:'关于',
+    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>数据科学专业本科生。我的研究关注大模型智能体如何进行<b>深度研究</b>——检索、基于证据推理、并撰写专家水准的报告——以及它们应如何在长时程中<b>记忆</b>。我尤其在意严谨、可验证的评测：我们对智能体的一切论断，都不会优于衡量它的那把尺子。',
+    i1:'深度研究系统', i2:'智能体记忆', i3:'大模型智能体', i4:'评测与基准',
+    newsT:'近况',
+    n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv，公开榜单上线 agentresearchlab.com。',
+    n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
+    n3:'发布 <a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener">Eat-at-USTC</a> 校园餐饮推荐系统（羽青杯项目）。',
+    pubT:'论文',
+    pubBadge:'预印本 · 2026',
+    p1title:'DeepResearch Bench II：以专家报告衍生的细粒度评分标准诊断深度研究智能体',
+    eqNote:' · *共同一作',
+    p1tldr:'一个涵盖 22 个领域、132 个以专家报告为依据的任务、共 9,430 条完全可验证二元评分标准的基准，从信息召回、分析、表达三个维度评测深度研究报告。采用四阶段「大模型+人工」流程、超过 400 专家工时构建——即便最强系统也只满足不到 50% 的评分项。',
+    projT:'项目',
+    pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
+    pr2:'面向糖尿病相关任务的专用大模型——领域微调与临床问答评测。',
+    pr3:'为羽青杯打造的校园餐饮推荐系统——数据流水线、排序与轻量级网页前端。',
+    pr4name:'Claude Code 源码精读',
+    pr4:'对一款智能体编码 CLI 内部实现的注释式精读，理解工具调用循环、规划与提示编排。',
+    repo:'仓库 ↗',
+    moreT:'教育 · 服务 · 技能',
+    ed1:'数据科学 理学学士 <span>中国科学技术大学 · 人工智能与数据科学学院</span>',
+    sv1:'学生会主席 <span>人工智能与数据科学学院，中国科学技术大学</span>',
+    sv2:'助教，DS4001 <span>数据科学课程 · 2025 春</span>',
+    sv3:'唐仲英爱心社 成员 <span>志愿服务</span>',
+    foot:'© 2026 李睿哲 · Ruizhe Li',
+    thEd:'米白 · 衬线', thTe:'等宽 · 荧光', thAc:'浅色 · 侧栏', thSt:'梵高 · 画布',
+  }
+};
+/* snapshot English defaults from DOM so we can toggle back */
+const EN={};
+document.querySelectorAll('[data-i18n]').forEach(el=>{ EN[el.getAttribute('data-i18n')]=el.innerHTML; });
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (dict[key] !== undefined) el.textContent = dict[key];
-            });
+let lang=document.documentElement.getAttribute('data-lang');
+function applyLang(l){
+  lang=l;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    const v = l==='zh' ? (T.zh[k]!==undefined?T.zh[k]:EN[k]) : EN[k];
+    if(v!==undefined) el.innerHTML=v;
+  });
+  document.documentElement.setAttribute('data-lang',l);
+  document.documentElement.lang = l==='zh'?'zh-CN':'en';
+  document.getElementById('lang-label').textContent = l==='en'?'中':'EN';
+  localStorage.setItem('rl-lang',l);
+}
+document.getElementById('lang-btn').addEventListener('click',()=>applyLang(lang==='en'?'zh':'en'));
 
-            document.documentElement.setAttribute('data-lang', lang);
-            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-            document.title = lang === 'zh'
-                ? '\u674e\u777f\u54f2 - \u4e2a\u4eba\u4e3b\u9875'
-                : '\u674e\u777f\u54f2 (Ruizhe Li) - Personal Website';
+/* ─────────── theme picker ─────────── */
+const THEME_NAMES={editorial:'Editorial',terminal:'Terminal',academic:'Academic',starry:'Starry Night'};
+const META={editorial:'#f4efe6',terminal:'#0a0d0b',academic:'#fbfbfc',starry:'#0a1628'};
+let starryLoaded=false;
+const btn=document.getElementById('theme-btn'), menu=document.getElementById('theme-menu');
 
-            // Button label: show what you CAN switch to
-            document.getElementById('lang-label').textContent = lang === 'en' ? '\u4e2d' : 'EN';
-            localStorage.setItem('lang', lang);
-        }
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme',t);
+  document.getElementById('theme-name').textContent=THEME_NAMES[t];
+  document.getElementById('meta-theme').content=META[t];
+  document.querySelectorAll('.theme-opt').forEach(o=>o.setAttribute('aria-checked', o.dataset.set===t?'true':'false'));
+  localStorage.setItem('rl-theme',t);
+  if(t==='starry' && !starryLoaded){
+    const s=document.createElement('script'); s.src='starry-night.js'; document.body.appendChild(s); starryLoaded=true;
+  }
+}
+btn.addEventListener('click',e=>{
+  e.stopPropagation();
+  const open=menu.classList.toggle('open'); btn.setAttribute('aria-expanded',open);
+});
+document.querySelectorAll('.theme-opt').forEach(o=>{
+  o.addEventListener('click',()=>{ setTheme(o.dataset.set); menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+});
+document.addEventListener('click',()=>{ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){menu.classList.remove('open'); btn.setAttribute('aria-expanded','false');} });
 
-        function toggleLang() {
-            const els = document.querySelectorAll('[data-i18n]');
-            els.forEach(el => el.style.opacity = '0');
-            setTimeout(() => {
-                applyLang(currentLang === 'en' ? 'zh' : 'en');
-                els.forEach(el => el.style.opacity = '1');
-            }, 220);
-        }
+/* ─────────── reveal on scroll ─────────── */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i*0.07)+'s'; io.observe(el); });
 
-        /* ════════════════════════════════════════════
-           Theme Switching
-           ════════════════════════════════════════════ */
-        function applyTheme(theme) {
-            currentTheme = theme;
-            document.documentElement.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
-
-            // Meta theme-color for mobile browsers
-            const metaEl = document.getElementById('meta-theme');
-            if (metaEl) metaEl.content = theme === 'light' ? '#f8f3eb' : '#0a1628';
-
-            // Toggle icon: show what you CAN switch to
-            document.getElementById('icon-sun').style.display  = theme === 'dark'  ? 'block' : 'none';
-            document.getElementById('icon-moon').style.display = theme === 'light' ? 'block' : 'none';
-        }
-
-        function toggleTheme() {
-            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        }
-
-        /* ════════════════════════════════════════════
-           Event Listeners
-           ════════════════════════════════════════════ */
-        document.getElementById('lang-btn').addEventListener('click', toggleLang);
-        document.getElementById('theme-btn').addEventListener('click', toggleTheme);
-
-        // Listen for OS theme changes (when user hasn't manually chosen)
-        window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                applyTheme(e.matches ? 'light' : 'dark');
-            }
-        });
-
-        /* ════════════════════════════════════════════
-           Hero Parallax
-           ════════════════════════════════════════════ */
-        const heroContent = document.getElementById('hero-content');
-        const scrollIndEl = document.getElementById('scroll-indicator');
-
-        window.addEventListener('scroll', () => {
-            const y  = window.scrollY;
-            const vh = window.innerHeight;
-            const p  = Math.min(y / (vh * 0.55), 1);
-
-            heroContent.style.opacity   = 1 - p;
-            heroContent.style.transform = `translateY(${-y * 0.35}px)`;
-            scrollIndEl.style.opacity   = 1 - p * 4;
-        }, { passive: true });
-
-        /* ════════════════════════════════════════════
-           Card Reveal
-           ════════════════════════════════════════════ */
-        const cards = document.querySelectorAll('.card');
-        cards.forEach((c, i) => { c.style.transitionDelay = `${i * 0.12}s`; });
-
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(e => {
-                if (e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    observer.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.08 });
-
-        cards.forEach(c => observer.observe(c));
-
-        /* ════════════════════════════════════════════
-           Boot
-           ════════════════════════════════════════════ */
-        applyTheme(currentTheme);
-        applyLang(currentLang);
-        document.body.classList.add('loaded');
-    </script>
+/* ─────────── boot ─────────── */
+setTheme(document.documentElement.getAttribute('data-theme'));
+applyLang(lang);
+</script>
 </body>
 </html>
