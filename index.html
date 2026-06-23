@@ -481,8 +481,6 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a>
       <a class="link" href="https://github.com/imlrz" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 20 4.8a4.9 4.9 0 0 0-.1-3.6s-1.1-.4-3.7 1.4a12.6 12.6 0 0 0-6.6 0C7 .8 5.9 1.2 5.9 1.2A4.9 4.9 0 0 0 5.8 4.8 5.2 5.2 0 0 0 4.4 8.4c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>GitHub</a>
-      <a class="link" href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>arXiv</a>
       <a class="link" href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>Lab</a>
     </div>
@@ -492,12 +490,11 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- ABOUT -->
     <section class="section reveal" id="about">
       <div class="section-title"><span class="idx">01</span><span data-i18n="aboutT">About</span></div>
-      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), an undergraduate at <b>USTC</b> majoring in Data Science. My research asks how LLM-based agents can perform <b>deep research</b> — searching, reasoning over evidence, and writing reports at expert level — and how they should <b>remember</b> across long horizons. I care about rigorous, verifiable evaluation: most of what we claim about agents is only as good as the yardstick we measure it with.</p>
+      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), an undergraduate at <b>USTC</b> majoring in Data Science. I'm interested in <b>LLM agents</b>, <b>deep research</b>, and <b>agent memory</b>.</p>
       <div class="chips">
-        <span class="chip" data-i18n="i1">Deep Research Systems</span>
-        <span class="chip" data-i18n="i2">Agent Memory</span>
-        <span class="chip" data-i18n="i3">LLM Agents</span>
-        <span class="chip" data-i18n="i4">Evaluation &amp; Benchmarking</span>
+        <span class="chip" data-i18n="i1">LLM Agents</span>
+        <span class="chip" data-i18n="i2">Deep Research</span>
+        <span class="chip" data-i18n="i3">Agent Memory</span>
       </div>
     </section>
 
@@ -532,26 +529,11 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- PROJECTS -->
     <section class="section reveal" id="proj">
       <div class="section-title"><span class="idx">04</span><span data-i18n="projT">Projects</span></div>
-      <div class="proj-grid">
+      <div class="proj-solo">
         <div class="proj">
           <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 59</span></div>
           <p data-i18n="pr1">Evaluation suite and leaderboard for deep-research agents, grounded in expert-written reports. Rubric extraction, batched LLM-as-judge scoring, and token accounting.</p>
           <div class="proj-foot"><span>Python</span><a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
-        </div>
-        <div class="proj">
-          <div class="proj-head"><span class="proj-name">Diabetica</span></div>
-          <p data-i18n="pr2">Specialized LLMs for diabetes-related tasks — domain fine-tuning and evaluation on clinical question answering.</p>
-          <div class="proj-foot"><span>Python · LLM</span><a href="https://github.com/imlrz/Diabetica" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
-        </div>
-        <div class="proj">
-          <div class="proj-head"><span class="proj-name">Eat-at-USTC</span></div>
-          <p data-i18n="pr3">Campus dining recommendation system built for the Yuqing Cup — data pipeline, ranking, and a lightweight web client.</p>
-          <div class="proj-foot"><span>Python · Web</span><a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
-        </div>
-        <div class="proj">
-          <div class="proj-head"><span class="proj-name" data-i18n="pr4name">Claude Code — source study</span></div>
-          <p data-i18n="pr4">Annotated reading of an agentic coding CLI's internals to understand tool-use loops, planning, and prompt orchestration.</p>
-          <div class="proj-foot"><span>TypeScript</span><a href="https://github.com/imlrz/claude-code-source-code" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
       </div>
     </section>
@@ -598,8 +580,8 @@ const T={
     tagline:'本科研究者，研究<b>深度研究系统</b>与<b>智能体记忆</b>——让大模型智能体以专家水准检索、核验并综合信息。',
     affil:'<b>中国科学技术大学</b> · 合肥<br>人工智能与数据科学学院<br>毛震东教授课题组（USTC-CMI）',
     aboutT:'关于',
-    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>数据科学专业本科生。我的研究关注大模型智能体如何进行<b>深度研究</b>——检索、基于证据推理、并撰写专家水准的报告——以及它们应如何在长时程中<b>记忆</b>。我尤其在意严谨、可验证的评测：我们对智能体的一切论断，都不会优于衡量它的那把尺子。',
-    i1:'深度研究系统', i2:'智能体记忆', i3:'大模型智能体', i4:'评测与基准',
+    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>数据科学专业本科生。我对 <b>LLM agent</b>、<b>deep research</b> 与 <b>agent memory</b> 感兴趣。',
+    i1:'LLM Agents', i2:'Deep Research', i3:'Agent Memory',
     newsT:'近况',
     n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv，公开榜单上线 agentresearchlab.com。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
@@ -611,10 +593,6 @@ const T={
     p1tldr:'一个涵盖 22 个领域、132 个以专家报告为依据的任务、共 9,430 条完全可验证二元评分标准的基准，从信息召回、分析、表达三个维度评测深度研究报告。采用四阶段「大模型+人工」流程、超过 400 专家工时构建——即便最强系统也只满足不到 50% 的评分项。',
     projT:'项目',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
-    pr2:'面向糖尿病相关任务的专用大模型——领域微调与临床问答评测。',
-    pr3:'为羽青杯打造的校园餐饮推荐系统——数据流水线、排序与轻量级网页前端。',
-    pr4name:'Claude Code 源码精读',
-    pr4:'对一款智能体编码 CLI 内部实现的注释式精读，理解工具调用循环、规划与提示编排。',
     repo:'仓库 ↗',
     moreT:'教育 · 服务 · 技能',
     ed1:'数据科学 理学学士 <span>中国科学技术大学 · 人工智能与数据科学学院</span>',
