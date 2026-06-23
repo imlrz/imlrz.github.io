@@ -3,176 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f4efe6">
-<meta name="description" content="组会 2026.06.24 · 主题：用户建模 · RQ1 — 真实世界多轮用户交互 vs. benchmark / naive 模拟的差距">
-<title>组会 · 用户建模 · RQ1｜李睿哲</title>
+<meta name="theme-color" content="#faf8f3">
+<meta name="description" content="组会综述 2026.06.24 · 用户建模 · RQ1：真实多轮用户交互与基准/朴素模拟的差异">
+<title>用户建模 · RQ1 综述｜组会 2026.06.24</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#f4efe6; --bg-2:#ece4d6; --surface:#faf6ee; --surface-2:#fffdf8;
-  --ink:#241f1a; --ink-2:#5c5347; --ink-3:#8a7e6d; --ink-4:#b3a795;
-  --accent:#a8430f; --accent-soft:#c4622b; --gold:#7a5a1e; --rule:#ddd2bd;
-  --green:#3f6d4e; --blue:#2f5275; --red:#9c3424;
-  --serif:"Fraunces","Noto Serif SC",Georgia,serif;
+  --bg:#faf8f3; --surface:#ffffff; --surface-2:#f6f2e9;
+  --ink:#1b1814; --ink-2:#433d34; --ink-3:#766e60; --ink-4:#a89e8b;
+  --accent:#8a3b1d; --accent-2:#6a4a16; --rule:#e4ddcd; --rule-2:#efe9db;
+  --pos:#3a5a44; --neg:#7d3a2c;
+  --display:"Spectral","Noto Serif SC",Georgia,serif;
   --body:"Newsreader","Noto Serif SC",Georgia,serif;
   --mono:"JetBrains Mono",monospace;
-  --maxw:840px;
-  --ease:cubic-bezier(.22,1,.36,1);
+  --maxw:760px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg); color:var(--ink);
-  font-family:var(--body); font-size:18.5px; line-height:1.72;
-  -webkit-font-smoothing:antialiased; overflow-x:hidden;
-}
-body::before{
-  content:""; position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.5;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
-}
-a{color:var(--accent);text-decoration:none}
-a:hover{color:var(--accent-soft)}
-::selection{background:var(--accent);color:#fff}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18.5px;line-height:1.78;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(138,59,29,.28)}
+a:hover{border-bottom-color:var(--accent)}
+::selection{background:#e7d9c4}
 
-/* reading progress */
-#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:60;transition:width .1s linear}
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);opacity:.55;z-index:60}
 
 /* top bar */
-.top{
-  position:sticky; top:0; z-index:50; background:rgba(244,239,230,.82);
-  -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--rule);
-}
-.top-in{max-width:var(--maxw);margin:0 auto;padding:13px 26px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-.top .brand{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-.top .brand b{color:var(--accent);font-weight:600}
-.top a.home{font-family:var(--mono);font-size:.74rem;color:var(--ink-2);border:1px solid var(--rule);padding:6px 13px;border-radius:8px;background:var(--surface);transition:.2s var(--ease)}
-.top a.home:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+.top{position:sticky;top:0;z-index:50;background:rgba(250,248,243,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--rule)}
+.top-in{max-width:var(--maxw);margin:0 auto;padding:11px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top .brand{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;color:var(--ink-3)}
+.top a.home{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:none;border-bottom:1px solid var(--rule)}
+.top a.home:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
-.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 26px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 
-/* hero */
-.hero{padding:74px 0 38px;border-bottom:1px solid var(--rule)}
-.kicker{font-family:var(--mono);font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:11px;margin-bottom:22px}
-.kicker::before{content:"";width:30px;height:1px;background:var(--accent)}
-.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1.08;letter-spacing:-.01em;margin-bottom:18px}
-.hero h1 em{font-style:italic;color:var(--accent)}
-.hero .sub{font-size:1.18rem;color:var(--ink-2);max-width:62ch;margin-bottom:26px}
-.meta-row{display:flex;flex-wrap:wrap;gap:10px;font-family:var(--mono);font-size:.78rem}
-.meta-row span{padding:6px 13px;border:1px solid var(--rule);border-radius:50px;background:var(--surface);color:var(--ink-2)}
-.meta-row span b{color:var(--accent);font-weight:600}
+/* title block */
+.head{padding:64px 0 30px;border-bottom:2px solid var(--ink)}
+.head .venue{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:20px}
+.head h1{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,3.6vw,2.3rem);line-height:1.34;letter-spacing:.005em;margin-bottom:18px}
+.head .byline{font-size:.96rem;color:var(--ink-2)}
+.head .byline .mono{font-family:var(--mono);font-size:.82rem;color:var(--ink-3)}
 
-/* RQ nav pills */
-.rqnav{display:flex;flex-wrap:wrap;gap:9px;margin:30px 0 8px}
-.rqpill{font-family:var(--mono);font-size:.78rem;padding:8px 16px;border-radius:9px;border:1px solid var(--rule);background:var(--surface);color:var(--ink-3);transition:.2s var(--ease)}
-.rqpill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.rqpill.soon{opacity:.55;cursor:not-allowed}
-.rqpill.active:hover{transform:translateY(-1px)}
+/* abstract */
+.abstract{margin:30px 0 8px;padding:22px 26px;background:var(--surface-2);border:1px solid var(--rule);border-radius:4px}
+.abstract h2{font-family:var(--mono);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+.abstract p{font-size:1rem;color:var(--ink-2);text-align:justify}
+.keywords{margin-top:14px;font-size:.9rem;color:var(--ink-3)}
+.keywords b{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-right:8px}
 
-/* panel */
-.panel{margin:46px 0 30px;border:1px solid var(--rule);border-radius:20px;background:var(--surface);box-shadow:0 18px 48px rgba(60,40,20,.06);overflow:hidden}
-.panel-head{padding:30px 34px 26px;border-bottom:1px solid var(--rule);background:var(--surface-2)}
-.panel-head .tag{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
-.panel-head h2{font-family:var(--serif);font-weight:600;font-size:1.66rem;line-height:1.22;margin:10px 0 0}
-.rq-callout{margin-top:18px;padding:16px 20px;border-left:3px solid var(--accent);background:rgba(168,67,15,.05);border-radius:0 10px 10px 0;font-size:1.04rem;color:var(--ink)}
-.rq-callout b{color:var(--accent)}
-.panel-body{padding:14px 34px 38px}
+/* contents */
+.toc{margin:26px 0 10px;padding:18px 24px;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+.toc h2{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+.toc ol{list-style:none;counter-reset:t;font-size:.96rem}
+.toc li{counter-increment:t;padding:4px 0;color:var(--ink-2)}
+.toc li a{border:none;color:var(--ink-2)}
+.toc li a:hover{color:var(--accent)}
+.toc li::before{content:counter(t)". ";font-family:var(--mono);font-size:.82rem;color:var(--accent);font-weight:600}
+.toc li ul{list-style:none;margin:3px 0 3px 22px;counter-reset:s}
+.toc li ul li{counter-increment:s;font-size:.9rem;color:var(--ink-3)}
+.toc li ul li::before{content:counter(t)"." counter(s)" ";color:var(--ink-4)}
 
-/* tldr */
-.tldr{margin:26px 0;padding:20px 22px;border:1px dashed var(--accent-soft);border-radius:13px;background:var(--surface-2)}
-.tldr .lab{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.tldr p{font-size:1.06rem;color:var(--ink)}
-
-/* section headings inside panel */
-.sec{margin:42px 0 0;scroll-margin-top:80px}
-.sec-eyebrow{font-family:var(--mono);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.sec-eyebrow .n{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;background:var(--accent);color:#fff;font-size:.72rem;font-weight:700}
-.sec h3{font-family:var(--serif);font-weight:600;font-size:1.5rem;line-height:1.25;margin-bottom:8px;letter-spacing:-.01em}
-.sec h4{font-family:var(--serif);font-weight:600;font-size:1.18rem;margin:26px 0 6px}
-.sec p{margin:13px 0;color:var(--ink-2)}
+/* section */
+.sec{margin:50px 0 0;scroll-margin-top:72px}
+.sec>h2{font-family:var(--display);font-weight:600;font-size:1.5rem;line-height:1.32;padding-bottom:10px;border-bottom:1px solid var(--rule);margin-bottom:18px}
+.sec>h2 .num{font-family:var(--mono);font-size:1rem;color:var(--accent);font-weight:600;margin-right:12px}
+.sec h3{font-family:var(--display);font-weight:600;font-size:1.18rem;margin:32px 0 8px}
+.sec h3 .num{font-family:var(--mono);font-size:.86rem;color:var(--accent);margin-right:10px}
+.sec h4{font-family:var(--body);font-weight:600;font-size:1.04rem;color:var(--ink);margin:22px 0 4px}
+.sec p{margin:13px 0;color:var(--ink-2);text-align:justify}
 .sec p b,.sec li b{color:var(--ink);font-weight:600}
-.sec p .hl{color:var(--accent);font-weight:600}
-.sec ul{margin:12px 0 12px 2px;list-style:none}
-.sec ul li{position:relative;padding-left:22px;margin:8px 0;color:var(--ink-2)}
-.sec ul li::before{content:"";position:absolute;left:3px;top:.7em;width:6px;height:6px;border-radius:50%;background:var(--accent-soft)}
+.sec ol.num,.sec ul.bul{margin:12px 0;padding-left:0;list-style:none}
+.sec ol.num{counter-reset:li}
+.sec ol.num>li{counter-increment:li;position:relative;padding-left:30px;margin:9px 0;color:var(--ink-2)}
+.sec ol.num>li::before{content:"("counter(li)")";position:absolute;left:0;top:0;font-family:var(--mono);font-size:.82rem;color:var(--accent)}
+.sec ul.bul>li{position:relative;padding-left:22px;margin:8px 0;color:var(--ink-2)}
+.sec ul.bul>li::before{content:"—";position:absolute;left:0;color:var(--ink-4)}
+code{font-family:var(--mono);font-size:.86em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
 
-/* taxonomy grid (总览) */
-.taxo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:24px 0}
-.taxo .cell{padding:18px 18px;border:1px solid var(--rule);border-radius:13px;background:var(--surface-2)}
-.taxo .cell .dim{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
-.taxo .cell h5{font-family:var(--serif);font-weight:600;font-size:1.08rem;margin-bottom:6px}
-.taxo .cell p{font-size:.92rem;margin:6px 0 0;color:var(--ink-2)}
-.taxo .cell .src{font-family:var(--mono);font-size:.7rem;color:var(--ink-4);margin-top:10px}
+/* taxonomy as ordered definition list */
+.deflist{margin:20px 0;border-top:1px solid var(--rule)}
+.deflist .row{display:grid;grid-template-columns:170px 1fr;gap:18px;padding:14px 2px;border-bottom:1px solid var(--rule)}
+.deflist .row .d{font-weight:600;color:var(--ink)}
+.deflist .row .d small{display:block;font-family:var(--mono);font-size:.7rem;color:var(--ink-4);font-weight:400;margin-top:3px}
+.deflist .row p{margin:0;font-size:.96rem;color:var(--ink-2)}
+.deflist .row p .src{color:var(--ink-3);font-style:italic}
 
-/* paper card */
-.paper{margin:22px 0 8px;padding:22px 24px;border:1px solid var(--rule);border-radius:15px;background:var(--surface-2)}
-.paper-h{display:flex;gap:14px;align-items:flex-start;margin-bottom:6px}
-.paper-h .pid{flex:none;font-family:var(--mono);font-size:.7rem;font-weight:600;color:#fff;background:var(--gold);padding:5px 9px;border-radius:7px;margin-top:3px}
-.paper-h .pt{font-family:var(--serif);font-weight:600;font-size:1.2rem;line-height:1.3}
-.paper .authors{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);margin:4px 0 2px}
-.paper .arx{font-family:var(--mono);font-size:.76rem}
+/* paper reference header */
+.work{margin:8px 0 4px;padding:16px 0 14px;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule)}
+.work .wt{font-family:var(--display);font-weight:600;font-size:1.1rem;line-height:1.34;margin-bottom:5px}
+.work .meta{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);line-height:1.7}
+.work .meta a{color:var(--accent);border:none;border-bottom:1px solid rgba(138,59,29,.3)}
 
 /* figure */
-figure{margin:22px 0;border:1px solid var(--rule);border-radius:13px;overflow:hidden;background:var(--surface-2)}
-figure img{display:block;width:100%;height:auto;background:#fff}
-figure figcaption{padding:11px 16px;font-size:.86rem;color:var(--ink-2);border-top:1px solid var(--rule);background:var(--surface)}
-figure figcaption b{color:var(--accent);font-weight:600;font-family:var(--mono);font-size:.78rem}
-.fig2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.fig2 figure{margin:22px 0}
+figure{margin:24px 0}
+figure .frame{border:1px solid var(--rule);border-radius:4px;overflow:hidden;background:#fff}
+figure img{display:block;width:100%;height:auto}
+figure figcaption{margin-top:9px;font-size:.86rem;line-height:1.6;color:var(--ink-3);text-align:justify}
+figure figcaption b{color:var(--ink-2);font-weight:600}
+figure figcaption .src{font-family:var(--mono);font-size:.72rem;color:var(--ink-4)}
 
-/* contrast box: real vs naive */
-.contrast{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:20px 0;border:1px solid var(--rule);border-radius:13px;overflow:hidden}
-.contrast>div{padding:16px 18px}
-.contrast .real{background:rgba(63,109,78,.07);border-right:1px solid var(--rule)}
-.contrast .naive{background:rgba(156,52,36,.05)}
-.contrast .lab{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;font-weight:600}
-.contrast .real .lab{color:var(--green)}
-.contrast .naive .lab{color:var(--red)}
-.contrast p{font-size:.95rem;margin:0;color:var(--ink-2)}
+/* key results — restrained inline metrics */
+.results{margin:16px 0;border:1px solid var(--rule);border-radius:4px;background:var(--surface)}
+.results .rlab{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);padding:9px 16px;border-bottom:1px solid var(--rule);background:var(--surface-2)}
+.results dl{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.results .item{padding:11px 16px;border-bottom:1px solid var(--rule-2);border-right:1px solid var(--rule-2);display:flex;gap:12px;align-items:baseline}
+.results .item:nth-child(2n){border-right:none}
+.results dt{font-family:var(--mono);font-weight:600;font-size:.94rem;color:var(--ink);white-space:nowrap}
+.results dd{font-size:.88rem;color:var(--ink-3)}
 
-/* stat chips */
-.stats{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
-.stat{flex:1 1 140px;padding:14px 16px;border:1px solid var(--rule);border-radius:12px;background:var(--surface-2)}
-.stat .v{font-family:var(--serif);font-weight:700;font-size:1.5rem;color:var(--accent);line-height:1}
-.stat .l{font-size:.84rem;color:var(--ink-2);margin-top:6px}
-
-/* synthesis table */
-.tbl-wrap{overflow-x:auto;margin:22px 0;border:1px solid var(--rule);border-radius:13px}
-table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:640px}
-th,td{text-align:left;padding:12px 15px;border-bottom:1px solid var(--rule);vertical-align:top}
-thead th{background:var(--surface-2);font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--gold);font-weight:600}
-tbody tr:last-child td{border-bottom:none}
-td .dimname{font-weight:600;color:var(--ink)}
-td.real{color:var(--green)} td.naive{color:var(--red)}
+/* comparison table (real vs naive) */
+.tbl-wrap{overflow-x:auto;margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:560px}
+caption{caption-side:top;text-align:left;font-size:.86rem;color:var(--ink-3);margin-bottom:8px}
+caption b{font-weight:600;color:var(--ink-2)}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+tbody tr:last-child td{border-bottom:1px solid var(--ink)}
+td .dn{font-weight:600;color:var(--ink)}
+td.pos{color:var(--pos)} td.neg{color:var(--neg)}
 td .ref{font-family:var(--mono);font-size:.72rem;color:var(--ink-4)}
 
 /* references */
-.refs{margin:38px 0 10px}
 .refs ol{list-style:none;counter-reset:r}
-.refs li{counter-increment:r;position:relative;padding:14px 0 14px 40px;border-bottom:1px solid var(--rule);font-size:.94rem;color:var(--ink-2)}
+.refs li{counter-increment:r;position:relative;padding:11px 0 11px 38px;border-bottom:1px solid var(--rule-2);font-size:.92rem;color:var(--ink-2)}
 .refs li:last-child{border-bottom:none}
-.refs li::before{content:"["counter(r)"]";position:absolute;left:0;top:14px;font-family:var(--mono);font-size:.78rem;color:var(--accent);font-weight:600}
-.refs li b{color:var(--ink)}
+.refs li::before{content:"["counter(r)"]";position:absolute;left:0;top:11px;font-family:var(--mono);font-size:.78rem;color:var(--ink-3)}
+.refs li b{color:var(--ink);font-weight:600}
+.refs li a{color:var(--accent);border:none;border-bottom:1px solid rgba(138,59,29,.3)}
 
-/* future panels */
-.future{margin:18px 0 40px;padding:24px;border:1px dashed var(--rule);border-radius:16px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:.86rem;background:var(--surface)}
-.future b{color:var(--ink-2)}
+.note{margin:30px 0 0;padding-top:14px;border-top:1px solid var(--rule);font-size:.86rem;color:var(--ink-3)}
 
-footer{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:34px 26px 60px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:.76rem;color:var(--ink-4);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
-footer a{color:var(--ink-3)}
+footer{max-width:var(--maxw);margin:0 auto;padding:40px 28px 64px;font-family:var(--mono);font-size:.74rem;color:var(--ink-4);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+footer a{color:var(--ink-3);border:none}
 
 @media(max-width:720px){
   body{font-size:17px}
-  .taxo,.contrast,.fig2{grid-template-columns:1fr}
-  .contrast .real{border-right:none;border-bottom:1px solid var(--rule)}
-  .panel-head,.panel-body{padding-left:20px;padding-right:20px}
-  .paper{padding:18px}
+  .deflist .row{grid-template-columns:1fr;gap:4px}
+  .results dl{grid-template-columns:1fr}
+  .results .item{border-right:none}
 }
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -180,297 +153,255 @@ footer a{color:var(--ink-3)}
 
 <div class="top">
   <div class="top-in">
-    <div class="brand">组会 · <b>Group Meeting</b> · 2026.06.24</div>
+    <div class="brand">组会综述 · 2026.06.24</div>
     <a class="home" href="../../index.html">← 主页</a>
   </div>
 </div>
 
 <div class="wrap">
-  <!-- HERO -->
-  <header class="hero">
-    <div class="kicker">用户建模 · User Modeling</div>
-    <h1>当我们模拟用户时，<br>到底漏掉了<em>什么</em>？</h1>
-    <p class="sub">本期组会围绕「用户建模」展开。我们用若干研究问题（RQ）逐一拆解：要把真实用户搬进评测与训练回路，naive 的模拟到底差在哪、又该如何补齐。下面先看 <b>RQ1</b>。</p>
-    <div class="meta-row">
-      <span>主讲 <b>李睿哲</b></span>
-      <span>主题 <b>用户建模</b></span>
-      <span>本期 <b>4 篇</b> · survey 式梳理</span>
-      <span>结构 <b>总 — 分 — 总</b></span>
-    </div>
 
-    <nav class="rqnav">
-      <span class="rqpill active">RQ1 · 真实 vs. 模拟的差距</span>
-      <span class="rqpill soon">RQ2 · 敬请期待</span>
-      <span class="rqpill soon">RQ3 · 敬请期待</span>
-    </nav>
+  <!-- TITLE BLOCK -->
+  <header class="head">
+    <div class="venue">组会 · 主题：用户建模 (User Modeling) · 研究问题 RQ1</div>
+    <h1>真实多轮用户交互与基准 / 朴素模拟的差异：<br>维度、成因与对用户建模的启示</h1>
+    <div class="byline">主讲：李睿哲　·　<span class="mono">2026 年 6 月 24 日</span>　·　综述范围：4 篇代表性工作</div>
   </header>
 
-  <!-- ═══════════════ RQ1 PANEL ═══════════════ -->
-  <section class="panel" id="rq1">
-    <div class="panel-head">
-      <span class="tag">Research Question 1</span>
-      <h2>真实世界中的多轮用户交互，与 benchmark / naive 模拟之间，究竟有什么区别？</h2>
-      <div class="rq-callout">
-        我们日常用<b>单轮 benchmark</b> 或 <b>naive 的用户模拟器</b>来评测、训练 agent，背后都隐含一个假设：<b>模拟出来的用户 ≈ 真实用户</b>。RQ1 要问的是——这个假设在多大程度上成立？差距出现在哪些维度、有多大、又意味着什么？
-      </div>
-    </div>
-
-    <div class="panel-body">
-
-      <div class="tldr">
-        <div class="lab">TL;DR · 一句话</div>
-        <p>naive 模拟把真实用户「理想化」成了 <b>需求完整规约、全程沉默旁观、措辞彬彬有礼、表里如一</b> 的合作者；而真实用户恰恰相反——<span style="color:var(--accent);font-weight:600">欠规约、会主动干预、风格随意、由潜在状态驱动</span>。四篇工作从四个维度，各自把这条鸿沟量化了出来，并指出共同的解法：<b>用真实数据 grounding + 建模潜在结构</b>。</p>
-      </div>
-
-      <!-- ───────── 总 · OVERVIEW ───────── -->
-      <div class="sec" id="overview">
-        <div class="sec-eyebrow"><span class="n">总</span>问题的全景：差距落在四个维度</div>
-        <h3>把「真实 vs. 模拟」的鸿沟拆成四个正交维度</h3>
-        <p>四篇论文看似各做各的，但放在 RQ1 之下，它们恰好覆盖了真实多轮交互区别于 naive 模拟的<b>四个互不重叠的维度</b>。任何一个维度被 naive 模拟抹平，都会让我们<span class="hl">既高估系统能力，又看不见真实失败</span>。</p>
-
-        <div class="taxo">
-          <div class="cell">
-            <div class="dim">维度 ① 信息流 / 欠规约</div>
-            <h5>真实用户「最省力」，需求一点点挤出来</h5>
-            <p>benchmark 默认一次性给全规约；真实多轮里信息是逐步、乱序、被动揭示的。</p>
-            <div class="src">→ LLMs Get Lost (2505.06120)</div>
-          </div>
-          <div class="cell">
-            <div class="dim">维度 ② 干预 / 控制</div>
-            <h5>真实用户会在不同时机、以不同风格接管</h5>
-            <p>naive 自主 benchmark 假设用户全程旁观；真实用户是有风格的主动参与者。</p>
-            <div class="src">→ Distinct Human Interaction (2602.17588)</div>
-          </div>
-          <div class="cell">
-            <div class="dim">维度 ③ 语言 / 风格真实性</div>
-            <h5>真实用户缩写、小写、无标点、带口头语</h5>
-            <p>无约束的模拟器收敛到流畅、礼貌、合作的「完美人格」，风格匹配率仅个位数。</p>
-            <div class="src">→ RealUserSim (2605.20204)</div>
-          </div>
-          <div class="cell">
-            <div class="dim">维度 ④ 潜在状态 / 意图</div>
-            <h5>真实回复由信念/情绪/立场等潜在状态驱动</h5>
-            <p>而且非确定——同一立场可有不同表达；naive 模拟只模仿表层措辞。</p>
-            <div class="src">→ HumanLM (2603.03303)</div>
-          </div>
-        </div>
-
-        <p>下面按 <b>分</b> 的结构，逐篇看它们如何各自量化一个维度；最后在 <b>总</b> 里把四条线收束成一张对照表与一组对「用户建模」的启示。</p>
-      </div>
-
-      <!-- ───────── 分 · PAPER 1 ───────── -->
-      <div class="sec" id="p1">
-        <div class="sec-eyebrow"><span class="n">分</span>维度① · 信息流与欠规约</div>
-        <div class="paper">
-          <div class="paper-h"><span class="pid">P1</span><span class="pt">LLMs Get Lost in Multi-Turn Conversation</span></div>
-          <div class="authors">Laban, Hayashi, Zhou, Neville · Microsoft / Salesforce Research</div>
-          <div class="arx"><a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a> · 2025</div>
-        </div>
-
-        <p>这篇是 RQ1 的「后果」证据。作者提出 <b>sharded simulation</b>：把一条单轮、完整规约的 benchmark 指令，<b>打碎成多轮逐步揭示的「信息碎片（shards）」</b>——以此把单轮任务改造成贴近真实的「欠规约多轮」交互，再对比三种设定：Full（单轮全规约）/ Concat（碎片拼接，仍单轮）/ Sharded（多轮逐步揭示）。覆盖 <b>15 个 LLM × 6 类任务</b>。</p>
-
-        <figure>
-          <img src="assets/fig-lost-sharding.png" alt="sharding 流程：从全规约指令到多轮碎片，再到评测" loading="lazy">
-          <figcaption><b>Fig.（P1）</b> 把「全规约指令」打碎成多轮 shards，逐步揭示给模型——这正是用来逼近真实欠规约交互的核心装置（覆盖 Code / Database / Actions / Math / Data-to-Text / Summary 六类任务）。</figcaption>
-        </figure>
-
-        <h4>关键发现：掉的不是「能力」，是「可靠性」</h4>
-        <div class="stats">
-          <div class="stat"><div class="v">−39%</div><div class="l">Full → Sharded 平均性能下降</div></div>
-          <div class="stat"><div class="v">−16%</div><div class="l">aptitude（能力上限）仅小幅下降</div></div>
-          <div class="stat"><div class="v">+112%</div><div class="l">unreliability（不可靠性）翻倍</div></div>
-          <div class="stat"><div class="v">95%</div><div class="l">Concat 仍保持 → 信息没丢，是「多轮」本身的锅</div></div>
-        </div>
-        <p>Concat（把所有碎片拼起来一次性给）几乎不掉分，证明<span class="hl">性能崩塌并非源于信息缺失，而是源于多轮过程本身</span>。机制上，模型倾向于<b>在前几轮就臆测、过早给出完整答案、随后过度依赖这个早期答案</b>——一旦走错就「迷路且不回头」。</p>
-
-        <figure>
-          <img src="assets/fig-lost-headline.png" alt="单轮全规约 vs 多轮欠规约下的 aptitude 与 unreliability" loading="lazy">
-          <figcaption><b>Fig.1（P1）</b> 左：单轮全规约；右：多轮欠规约。横轴 unreliability、纵轴 aptitude——进入多轮后所有模型（无论强弱）都被推向「高不可靠」区域。</figcaption>
-        </figure>
-
-        <div class="contrast">
-          <div class="real"><div class="lab">真实交互</div><p>需求欠规约、逐步揭示；还伴随术语误解、因系统失败而<b>挫败放弃</b>等。</p></div>
-          <div class="naive"><div class="lab">naive / benchmark</div><p>单轮、一次性全规约；可一步评分，掩盖了多轮里的可靠性崩塌。</p></div>
-        </div>
-        <p><b>对 RQ1 最关键的一句</b>：作者明确承认，他们的模拟只是一个「<b>良性的试验场（benign testing ground）</b>」，真实交互更糟，因此 39% 的下降「<span class="hl">很可能是低估</span>」。换言之——连一个「较好的模拟」都已暴露出鸿沟，真实世界只会更宽。</p>
-      </div>
-
-      <!-- ───────── 分 · PAPER 2 ───────── -->
-      <div class="sec" id="p2">
-        <div class="sec-eyebrow"><span class="n">分</span>维度② · 干预与控制</div>
-        <div class="paper">
-          <div class="paper-h"><span class="pid">P2</span><span class="pt">Modeling Distinct Human Interaction in Web Agents</span></div>
-          <div class="authors">Huq, Wang, Guo, … , Neubig, Bigham · CMU / Duke</div>
-          <div class="arx"><a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a> · 2026</div>
-        </div>
-
-        <p>如果说 P1 假设用户「只管说话」，这篇直接戳破另一个 naive 假设：<b>用户是沉默的旁观者</b>。作者构建 <b>CowCorpus</b>——<b>400 条真实人机协作 web 轨迹</b>（20 人 × 20 任务，含 2,748 个 agent 动作步与 1,476 个人类动作步），逐步标注「<b>人在何时、为何介入</b>」。</p>
-
-        <figure>
-          <img src="assets/fig-web-overview.png" alt="三步框架：数据构建、CowCorpus 训练、干预感知 agent" loading="lazy">
-          <figcaption><b>Fig.1（P2）</b> 现有自主 agent「不知道人何时会介入、需要人全程盯着」；引入<b>干预预测</b>后，只在需要时请求确认——更少打断、时机更准、保留用户控制权。</figcaption>
-        </figure>
-
-        <h4>真实用户不是一种，而是四种协作风格</h4>
-        <p>对真实轨迹做聚类，得到四类截然不同的协作风格——naive 模拟里「统一、均匀」的用户假设根本不成立：</p>
-        <ul>
-          <li><b>Hands-off</b>：几乎不介入，全程放手。</li>
-          <li><b>Takeover</b>：介入晚而少，但接管后很少把控制权交还。</li>
-          <li><b>Hands-on</b>：高频高强度介入，中等程度交还。</li>
-          <li><b>Collaborative</b>：早期、有选择地介入，且高频交还控制权。</li>
-        </ul>
-        <p>介入的动机也分三类：<b>纠错</b>（agent 选错元素、陷入死循环）、<b>偏好不齐</b>（前置条件未满足、任务描述含糊）、<b>协助接管</b>（替 agent 应对复杂 UI、缺资源或高风险场景）。而且介入时机随用户类型<span class="hl">聚集在不同任务阶段</span>，并非均匀分布。</p>
-
-        <figure>
-          <img src="assets/fig-web-styles.png" alt="四种协作风格在主成分空间的聚类" loading="lazy">
-          <figcaption><b>Fig.3（P2）</b> 真实用户在「介入频率 × 控制权交还率」张成的空间里，自然分化为 Takeover / Hands-on / Hands-off / Collaborative 四簇。</figcaption>
-        </figure>
-
-        <div class="stats">
-          <div class="stat"><div class="v">0.198</div><div class="l">GPT-4o「干预预测」F1（vs 非干预 0.846）→ 过度保守</div></div>
-          <div class="stat"><div class="v">0.918</div><div class="l">Gemma-27B 在 CowCorpus 微调后的 PTS</div></div>
-          <div class="stat"><div class="v">+36.8%</div><div class="l">真实用户研究中「agent 有用性」评分提升</div></div>
-        </div>
-        <div class="contrast">
-          <div class="real"><div class="lab">真实交互</div><p>用户有 4 种风格、3 类动机，主动在特定时机接管；其<b>介入点本身就是评测/训练信号</b>。</p></div>
-          <div class="naive"><div class="lab">naive / benchmark</div><p>把用户当成全程沉默旁观；强模型也只会「非干预」，抓不住「何时该让人接管」。</p></div>
-        </div>
-      </div>
-
-      <!-- ───────── 分 · PAPER 3 ───────── -->
-      <div class="sec" id="p3">
-        <div class="sec-eyebrow"><span class="n">分</span>维度③ · 语言与风格真实性</div>
-        <div class="paper">
-          <div class="paper-h"><span class="pid">P3</span><span class="pt">RealUserSim: Bridging the Reality Gap in Agent Benchmarking via Grounded User Simulation</span></div>
-          <div class="authors">Zhu, Tan, Murthy, … , Wang · Salesforce AI Research</div>
-          <div class="arx"><a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a> · 2026</div>
-        </div>
-
-        <p>这篇把矛头直接指向<b>用户模拟器本身</b>，并诊断出两个系统性病灶：</p>
-        <ul>
-          <li><b>Formalism Ceiling（形式化天花板）</b>：无约束的 LLM 默认演成「礼貌、流畅、合作」的 persona，对真实语言风格（缩写、小写、无标点、口头语 "hmm/ahh"）的匹配率只有 <b>6–8%</b>。</li>
-          <li><b>Directive Amplification（指令放大）</b>：手写行为指令（如「你非常崩溃」）会被模型<b>过度演绎</b>成 *sobbing*、*choking back tears* 这类舞台腔，且不同模型演法不一致——<span class="hl">导致 benchmark 分数在不同模拟器之间不可比</span>。</li>
-        </ul>
-        <p>解法是 grounding：从 <b>WildChat 的 14,000+ 真实对话</b>中抽取 <b>7,275 个可执行用户 profile</b>（语言风格 + 人口属性），并建立 PT3 保真度 benchmark。</p>
-
-        <figure>
-          <img src="assets/fig-rus-archetypes.png" alt="7000+ 真实用户在语言特征上的 t-SNE 投影，分出 8 类原型" loading="lazy">
-          <figcaption><b>Fig.1（P3）</b> 7,000+ 真实用户按 48 维语言特征做 t-SNE，自然分出 8 类行为原型（从 Everyday Casual 到 Formal Expert），且人口属性随之系统性变化——证明抽出的 profile 捕到了真实多样性而非噪声。</figcaption>
-        </figure>
-
-        <div class="stats">
-          <div class="stat"><div class="v">24.2%→45.3%</div><div class="l">五维行为匹配率（+21.1 个百分点）</div></div>
-          <div class="stat"><div class="v">−3.2 / −3.5%</div><div class="l">注入真实 persona 后 τ-bench(Airline/Retail) 任务成功率<b>反降</b></div></div>
-        </div>
-        <p>最反直觉、也最切题的一点：把真实 persona 注入后，agent 的任务成功率<b>反而下降</b>。原因正是真实用户会「信息给不全、ALL-CAPS 触发误操作、对抗场景里不配合」——<span class="hl">这些失败本来一直被「完美 persona」掩盖着</span>。grounding 的价值，不只是更像，而是让<b>此前隐形的 agent 失败暴露出来</b>。</p>
-
-        <figure>
-          <img src="assets/fig-rus-perfect.png" alt="不同模拟器条件下 Airline / Retail 任务成功率对比" loading="lazy">
-          <figcaption><b>Fig.（P3）</b> 同一批 agent，在 Original（带指令）/ NP（去指令）/ Real-Persona（真实画像）三种模拟条件下，任务成功率显著漂移——说明「用哪种模拟器」会直接改写结论。</figcaption>
-        </figure>
-
-        <div class="contrast">
-          <div class="real"><div class="lab">真实交互</div><p>风格随意、信息分散、偶尔不配合；这些「噪声」恰是触发真实失败的关键。</p></div>
-          <div class="naive"><div class="lab">naive / benchmark</div><p>收敛到彬彬有礼的「完美用户」；指令一放大就演过头，跨模拟器分数不可比。</p></div>
-        </div>
-      </div>
-
-      <!-- ───────── 分 · PAPER 4 ───────── -->
-      <div class="sec" id="p4">
-        <div class="sec-eyebrow"><span class="n">分</span>维度④ · 潜在状态与意图</div>
-        <div class="paper">
-          <div class="paper-h"><span class="pid">P4</span><span class="pt">HumanLM：以「状态对齐」模拟用户，胜过「回复模仿」</span></div>
-          <div class="authors">Wu et al.</div>
-          <div class="arx"><a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a> · 2026</div>
-        </div>
-
-        <p>前三篇关注「真实用户长什么样」，这篇追问<b>更深一层：为什么这么说？</b> 作者论证——<b>表层的 response imitation 学不到真实用户</b>：人是非确定的，同一立场可以用完全不同的措辞表达；只对齐表面文本（甚至只是模仿 emoji），抓不住驱动回复的底层逻辑。</p>
-
-        <figure>
-          <img src="assets/fig-humanlm-method.png" alt="SFT 表层模仿 vs HumanLM 先对齐潜在状态再生成" loading="lazy">
-          <figcaption><b>Fig.（P4）</b> 上路 SFT 只做表层模仿；下路 HumanLM 先把回复分解到 belief / goal / value / stance / emotion / communication 等<b>心理状态维度</b>，用 LLM judge 批量打分对齐潜在状态，再据此生成回复。</figcaption>
-        </figure>
-
-        <p>方法：定义 <b>6 个心理学锚定的状态维度</b>（belief、goal、emotion、value、stance、communication），用 <b>RL（GRPO）+ 比较式 LLM judge</b> 先对齐潜在状态、再从状态合成回复。评测基准 <b>Humanual</b> 覆盖 26k 用户、216k 回复、6 个数据集（新闻评论 / 书评 / 观点讨论 / 政治博客 / LLM 对话 / 邮件）。</p>
-        <div class="stats">
-          <div class="stat"><div class="v">+16.3%</div><div class="l">相对最优基线的平均提升</div></div>
-          <div class="stat"><div class="v">76.6%</div><div class="l">human study 中被评为「相当自然」</div></div>
-        </div>
-        <div class="contrast">
-          <div class="real"><div class="lab">真实交互</div><p>回复是<b>潜在状态的投影</b>，且非确定；同一意图 → 多种表达。</p></div>
-          <div class="naive"><div class="lab">naive / benchmark</div><p>模仿表层措辞 / emoji；把「用户」当成可复制的文本分布，丢掉了状态。</p></div>
-        </div>
-      </div>
-
-      <!-- ───────── 总 · SYNTHESIS ───────── -->
-      <div class="sec" id="synthesis">
-        <div class="sec-eyebrow"><span class="n">总</span>收束：一张表 + 一组启示</div>
-        <h3>四条线收束：差距是系统性的、可度量的、方向一致的</h3>
-
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>维度</th><th>真实用户</th><th>naive / benchmark 模拟</th><th>代表证据</th></tr></thead>
-            <tbody>
-              <tr><td><span class="dimname">① 信息流</span></td><td class="real">欠规约、逐步乱序揭示</td><td class="naive">一次性完整规约</td><td>−39% 性能、不可靠性 +112% <span class="ref">P1</span></td></tr>
-              <tr><td><span class="dimname">② 干预控制</span></td><td class="real">4 种风格主动接管</td><td class="naive">全程沉默旁观</td><td>干预 F1 仅 0.198 <span class="ref">P2</span></td></tr>
-              <tr><td><span class="dimname">③ 语言风格</span></td><td class="real">缩写/小写/口头语</td><td class="naive">礼貌、流畅、合作</td><td>风格匹配 6–8% → 45% <span class="ref">P3</span></td></tr>
-              <tr><td><span class="dimname">④ 潜在状态</span></td><td class="real">由信念/情绪/立场驱动、非确定</td><td class="naive">表层措辞模仿</td><td>状态对齐 +16.3% <span class="ref">P4</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4>三点跨论文共识</h4>
-        <ul>
-          <li><b>鸿沟是系统性且可度量的</b>：−39% 的性能、0.198 的干预 F1、6–8% 的风格匹配、+16.3% 的状态对齐增益——都不是噪声级别的差异。</li>
-          <li><b>naive 模拟的偏置方向高度一致</b>：永远朝「理想化」偏——更完整、更合作、更流畅、更表里如一。这种偏置<span class="hl">同时造成两种错误：高估能力（单轮/全规约）+ 隐藏失败（礼貌 persona 不触发 bug）</span>。</li>
-          <li><b>解法也趋同</b>：要么用真实日志 <b>grounding</b>（P2 的轨迹、P3 的 WildChat），要么显式建模 <b>潜在结构</b>（P1 的信息流、P4 的心理状态）——两条路都指向「别再凭空生成一个完美用户」。</li>
-        </ul>
-
-        <h4>对「用户建模」的启示</h4>
-        <ul>
-          <li><b>评测层面</b>：从单轮 → 欠规约多轮；显式引入风格 / 干预 / 状态的分布；并且<b>多次采样</b>去量化 unreliability，而非只看一次均值。</li>
-          <li><b>建模层面</b>：把「用户」建成 <code style="font-family:var(--mono);font-size:.85em">（信息流策略 × 干预策略 × 语言风格 × 潜在状态）</code> 的联合分布，而不是一段提示词里的「人设」。</li>
-          <li><b>数据层面</b>：真实交互日志（WildChat、人机协作轨迹）是不可替代的 anchor——保真度的下界由数据、而非 prompt 决定。</li>
-        </ul>
-
-        <h4>留给后续 RQ 的开放问题</h4>
-        <ul>
-          <li>能否把这四个维度<b>统一</b>进一个「真实用户」生成器？保真度与可控性如何兼顾（P3 揭示的两难）？</li>
-          <li>干预 / 状态标注成本高，如何低成本扩展到新领域？</li>
-          <li>P1 只给了「低估」的定性判断——真实交互相对模拟的<b>退化上界</b>到底有多大，仍未被量化。</li>
-        </ul>
-      </div>
-
-      <!-- REFERENCES -->
-      <div class="sec refs" id="refs">
-        <div class="sec-eyebrow"><span class="n">REF</span>本期文献（仅这 4 篇）</div>
-        <ol>
-          <li><b>LLMs Get Lost in Multi-Turn Conversation.</b> Laban, Hayashi, Zhou, Neville. <a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a>, 2025.</li>
-          <li><b>Modeling Distinct Human Interaction in Web Agents.</b> Huq, Wang, Guo, Arangajaran, Ou, Xu, Zhou, Neubig, Bigham. <a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a>, 2026.</li>
-          <li><b>RealUserSim: Bridging the Reality Gap in Agent Benchmarking via Grounded User Simulation.</b> Zhu, Tan, Murthy, Qiu, Yang, Zhao, Savarese, Heinecke, Wang. <a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a>, 2026.</li>
-          <li><b>HumanLM: Simulating Users with State Alignment Beats Response Imitation.</b> Wu et al. <a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a>, 2026.</li>
-        </ol>
-      </div>
-
-    </div><!-- /panel-body -->
+  <!-- ABSTRACT -->
+  <section class="abstract">
+    <h2>摘要 / Abstract</h2>
+    <p>用户模拟被广泛用于智能体（agent）的评测与训练，其有效性依赖于一个常被默认成立的假设：<b>模拟用户可近似真实用户</b>。本综述围绕 RQ1，系统比较真实世界中的多轮用户交互与基准（benchmark）/ 朴素（naive）模拟之间的差异。我们将差异归纳为四个相互正交的维度——信息流与欠规约、干预与控制、语言与风格真实性、潜在状态与意图，并以四项近期工作为证据逐一刻画。研究一致表明，朴素模拟在上述维度上存在<b>系统性且可度量</b>的偏置，且偏置方向一致地将真实用户「理想化」，从而同时导致对系统能力的高估与对失败模式的遮蔽。我们进一步归纳出两类共同的缓解策略——基于真实数据的 grounding 与对潜在结构的显式建模——并讨论其对用户建模的方法学启示与遗留问题。</p>
+    <div class="keywords"><b>Keywords</b>用户建模 · 用户模拟 · 多轮交互 · 智能体评测 · 欠规约 · 人机协作</div>
   </section>
 
-  <div class="future">下一期将补充 <b>RQ2 / RQ3</b> 面板 · 同一「用户建模」主题下展开</div>
+  <!-- CONTENTS -->
+  <nav class="toc">
+    <h2>目录</h2>
+    <ol>
+      <li><a href="#s1">引言与问题界定</a></li>
+      <li><a href="#s2">代表性工作
+        <ul>
+          <li><a href="#s2-1">信息流与欠规约：多轮交互中的性能退化</a></li>
+          <li><a href="#s2-2">干预与控制：人机协作中的介入建模</a></li>
+          <li><a href="#s2-3">语言与风格真实性：基于真实数据的 grounded 模拟</a></li>
+          <li><a href="#s2-4">潜在状态与意图：状态对齐式用户模拟</a></li>
+        </ul>
+      </li>
+      <li><a href="#s3">横向比较与讨论</a></li>
+      <li><a href="#s4">小结与开放问题</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1. INTRODUCTION -->
+  <section class="sec" id="s1">
+    <h2><span class="num">1</span>引言与问题界定</h2>
+    <p>在以大语言模型为核心的交互式系统中，用户模拟器与多轮基准承担着评测与训练的双重角色。然而，二者的有效性均建立在「模拟用户近似真实用户」这一隐含前提之上。一旦该前提不成立，评测所得的结论便可能在两个方向上失真：其一，在受控、规约完整的设定下<b>高估</b>系统的实际能力；其二，因模拟用户过于「配合」而<b>遮蔽</b>真实交互才会触发的失败模式。</p>
+    <p>本综述以 RQ1 为线索，对四项近期工作进行梳理。尽管这些工作各自的任务与方法不同，但置于「真实交互 vs. 朴素模拟」的框架下，它们恰好覆盖了真实多轮交互区别于朴素模拟的四个相互正交的维度。我们以此作为全文的组织骨架（表述见下）。</p>
+
+    <div class="deflist">
+      <div class="row"><div class="d">① 信息流与欠规约<small>information flow</small></div><p>真实用户遵循「最省力原则」，需求在多轮中逐步、乱序、被动地揭示；基准则倾向于一次性给出完整规约。<span class="src">代表工作：Laban et al., 2025</span></p></div>
+      <div class="row"><div class="d">② 干预与控制<small>intervention</small></div><p>真实用户会在不同时机、以不同风格主动介入或接管任务；朴素的自主基准假设用户全程旁观。<span class="src">代表工作：Huq et al., 2026</span></p></div>
+      <div class="row"><div class="d">③ 语言与风格真实性<small>linguistic style</small></div><p>真实用户使用缩写、小写、省略标点与口头语；无约束的模拟器收敛至礼貌、流畅、合作的「理想人格」。<span class="src">代表工作：Zhu et al., 2026</span></p></div>
+      <div class="row"><div class="d">④ 潜在状态与意图<small>latent state</small></div><p>真实回复由信念、情绪、立场等潜在状态驱动且具非确定性；朴素模拟仅模仿表层措辞。<span class="src">代表工作：Wu et al., 2026</span></p></div>
+    </div>
+
+    <p>第 2 节按上述顺序逐一综述代表性工作；第 3 节以横向比较表收束四条线索，归纳共性结论；第 4 节讨论对用户建模的启示与遗留问题。</p>
+  </section>
+
+  <!-- 2. WORKS -->
+  <section class="sec" id="s2">
+    <h2><span class="num">2</span>代表性工作</h2>
+
+    <!-- 2.1 -->
+    <h3 id="s2-1"><span class="num">2.1</span>信息流与欠规约：多轮交互中的性能退化</h3>
+    <div class="work">
+      <div class="wt">LLMs Get Lost in Multi-Turn Conversation</div>
+      <div class="meta">Laban, Hayashi, Zhou, Neville　·　Microsoft Research / Salesforce Research<br><a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a>　·　2025</div>
+    </div>
+    <p>该工作针对单轮、规约完整的评测设定与真实多轮交互之间的错配，提出<b>分片模拟（sharded simulation）</b>：将一条完整规约的基准指令拆分为若干「信息碎片（shards）」，并在多轮中逐步揭示，从而将单轮任务改造为贴近真实的欠规约多轮交互。实验设置三种条件——Full（单轮完整规约）、Concat（碎片拼接、仍为单轮）与 Sharded（多轮逐步揭示），覆盖 15 个大模型与 6 类任务。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-lost-sharding.png" alt="分片模拟流程：从完整规约指令到多轮碎片再到评测" loading="lazy"></div>
+      <figcaption><b>图 1.</b> 分片模拟的构造流程：完整规约指令被拆分为多轮逐步揭示的碎片，覆盖代码、数据库、API 调用、数学、数据到文本与多文档摘要六类任务。<span class="src">（来源：arXiv:2505.06120, Fig. 2）</span></figcaption>
+    </figure>
+
+    <h4>主要结果</h4>
+    <div class="results">
+      <div class="rlab">关键量化结果</div>
+      <dl>
+        <div class="item"><dt>−39%</dt><dd>Full → Sharded 平均性能下降</dd></div>
+        <div class="item"><dt>−16%</dt><dd>能力上限（aptitude）下降幅度</dd></div>
+        <div class="item"><dt>+112%</dt><dd>不可靠性（unreliability）增幅</dd></div>
+        <div class="item"><dt>95%</dt><dd>Concat 相对 Full 的保留率</dd></div>
+      </dl>
+    </div>
+    <p>Concat 条件几乎不产生性能损失，表明退化并非源于信息缺失，而是源于多轮过程本身。作者据此将退化分解为<b>能力的小幅下降</b>与<b>可靠性的显著崩塌</b>两部分：进入多轮后，模型倾向于在早期轮次即作出假设、过早给出完整解答，并在后续过度依赖该早期解答，从而「迷失」且难以恢复。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-lost-headline.png" alt="单轮完整规约与多轮欠规约下能力与不可靠性的对比" loading="lazy"></div>
+      <figcaption><b>图 2.</b> 横轴为不可靠性、纵轴为能力上限。相较单轮完整规约（左），进入多轮欠规约设定（右）后，各模型无论强弱均被推向高不可靠区域。<span class="src">（来源：arXiv:2505.06120, Fig. 1）</span></figcaption>
+    </figure>
+
+    <p>就 RQ1 而言，本工作尤为重要的一点在于其对自身方法的限定：作者明确指出分片模拟只是一个「良性的试验场（benign testing ground）」，真实交互还包含术语误解、因系统失败而中途放弃等因素，因此所观测到的 39% 退化「很可能是对真实退化的低估」。换言之，即便是相对受控的模拟，已足以暴露真实交互与单轮基准之间的实质性差距。</p>
+
+    <!-- 2.2 -->
+    <h3 id="s2-2"><span class="num">2.2</span>干预与控制：人机协作中的介入建模</h3>
+    <div class="work">
+      <div class="wt">Modeling Distinct Human Interaction in Web Agents</div>
+      <div class="meta">Huq, Wang, Guo, Arangajaran, Ou, Xu, Zhou, Neubig, Bigham　·　CMU / Duke University<br><a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a>　·　2026</div>
+    </div>
+    <p>若 §2.1 默认用户仅以语言参与交互，本工作则针对另一项朴素假设——用户为沉默的旁观者——展开。作者构建 <b>CowCorpus</b>：400 条真实的人机协作网页操作轨迹（20 名被试 × 20 项任务，含 2,748 个智能体动作步与 1,476 个人类动作步），并在步级标注用户介入的时机与类型，进而将「何时应请求用户介入」形式化为一个二分类预测问题。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-web-overview.png" alt="数据构建、CowCorpus 训练与介入感知智能体三阶段框架" loading="lazy"></div>
+      <figcaption><b>图 3.</b> 总体框架：现有自主智能体缺乏对「用户何时介入」的判断、需要持续人工监督；引入介入预测后，智能体仅在必要时请求确认，从而减少打断、改善时机并保留用户控制权。<span class="src">（来源：arXiv:2602.17588, Fig. 1）</span></figcaption>
+    </figure>
+
+    <h4>主要发现</h4>
+    <p>对真实轨迹的聚类显示，用户并非同质，而是呈现四种区别明显的协作风格，这与朴素模拟中「统一、均匀」的用户假设相悖：</p>
+    <ul class="bul">
+      <li><b>Hands-off</b>：全程几乎不介入；</li>
+      <li><b>Takeover</b>：介入晚而少，接管后较少交还控制权；</li>
+      <li><b>Hands-on</b>：高频、高强度介入，控制权交还程度中等；</li>
+      <li><b>Collaborative</b>：早期、有选择地介入，且高频交还控制权。</li>
+    </ul>
+    <p>介入动机可归为三类：纠错（智能体选错元素或陷入循环）、偏好不一致（前置条件未满足、任务描述含糊）与协助接管（替智能体应对复杂界面、资源缺失或高风险情形）。此外，介入时机随用户类型聚集于不同任务阶段，并非均匀分布。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-web-styles.png" alt="四种协作风格在主成分空间中的聚类" loading="lazy"></div>
+      <figcaption><b>图 4.</b> 在「介入频率 × 控制权交还率」张成的空间中，真实用户自然分化为 Takeover、Hands-on、Hands-off 与 Collaborative 四类。<span class="src">（来源：arXiv:2602.17588, Fig. 3）</span></figcaption>
+    </figure>
+
+    <div class="results">
+      <div class="rlab">关键量化结果</div>
+      <dl>
+        <div class="item"><dt>0.198</dt><dd>GPT-4o 介入预测 F1（非介入为 0.846）</dd></div>
+        <div class="item"><dt>0.918</dt><dd>Gemma-27B 微调后 Perfect Timing Score</dd></div>
+        <div class="item"><dt>+36.8%</dt><dd>用户研究中智能体「有用性」评分提升</dd></div>
+        <div class="item"><dt>400</dt><dd>CowCorpus 真实协作轨迹数</dd></div>
+      </dl>
+    </div>
+    <p>专有模型在「非介入」上表现良好而在「介入预测」上显著失效，表明其过度保守、难以捕捉介入的时序动态；而在真实轨迹上微调可大幅改善。这一结果说明：真实用户的介入点本身即构成有价值的评测与训练信号，而朴素的自主基准恰恰将其抹去。</p>
+
+    <!-- 2.3 -->
+    <h3 id="s2-3"><span class="num">2.3</span>语言与风格真实性：基于真实数据的 grounded 模拟</h3>
+    <div class="work">
+      <div class="wt">RealUserSim: Bridging the Reality Gap in Agent Benchmarking via Grounded User Simulation</div>
+      <div class="meta">Zhu, Tan, Murthy, Qiu, Yang, Zhao, Savarese, Heinecke, Wang　·　Salesforce AI Research<br><a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a>　·　2026</div>
+    </div>
+    <p>本工作将分析对象转向用户模拟器自身，并诊断出两种系统性失效模式。其一为<b>形式化天花板（Formalism Ceiling）</b>：无约束的大模型默认生成礼貌、流畅、合作的人格，对真实语言风格（缩写、小写、省略标点、口头语等）的匹配率仅为 6–8%。其二为<b>指令放大（Directive Amplification）</b>：手写的行为指令会被模型过度演绎为夸张的舞台化表达，且不同模型的演绎程度不一，致使跨模拟器的基准分数不可比。</p>
+    <p>为此，作者提出基于真实行为数据的 grounded 模拟：从 WildChat 的 14,000 余条真实对话中抽取 7,275 个可执行用户画像（包含语言风格与人口属性），并构建 PT3 保真度基准，在五个行为维度上评估模拟与真实用户的匹配程度。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-rus-archetypes.png" alt="真实用户按语言特征的 t-SNE 投影与人口属性构成" loading="lazy"></div>
+      <figcaption><b>图 5.</b> 7,000 余名真实用户按 48 维语言特征作 t-SNE 投影，自然分化为 8 类行为原型（自 Everyday Casual 至 Formal Expert），且人口属性随之系统性变化，表明所抽取的画像捕捉到真实的行为多样性。<span class="src">（来源：arXiv:2605.20204, Fig. 1）</span></figcaption>
+    </figure>
+
+    <div class="results">
+      <div class="rlab">关键量化结果</div>
+      <dl>
+        <div class="item"><dt>6–8%</dt><dd>无约束模拟器的语言风格匹配率</dd></div>
+        <div class="item"><dt>24.2→45.3%</dt><dd>五维行为匹配率（+21.1 个百分点）</dd></div>
+        <div class="item"><dt>−3.2 / −3.5%</dt><dd>注入真实画像后 τ-bench 任务成功率变化</dd></div>
+        <div class="item"><dt>7,275</dt><dd>从真实对话抽取的可执行用户画像数</dd></div>
+      </dl>
+    </div>
+    <p>值得注意的是，注入真实画像后智能体的任务成功率不升反降。其原因在于真实用户会出现信息提供不全、以全大写触发误操作、在对抗情形下不予配合等行为，而这些失败此前一直被「理想画像」所掩盖。因此，grounded 模拟的价值不仅在于「更像」，更在于使此前隐形的智能体失败得以暴露。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-rus-perfect.png" alt="不同模拟条件下 Airline 与 Retail 的任务成功率" loading="lazy"></div>
+      <figcaption><b>图 6.</b> 同一组智能体在 Original（含指令）、NP（去除指令）与 Real-Persona（真实画像）三种模拟条件下的任务成功率出现显著漂移，说明模拟器的选择会直接改写评测结论。<span class="src">（来源：arXiv:2605.20204）</span></figcaption>
+    </figure>
+
+    <!-- 2.4 -->
+    <h3 id="s2-4"><span class="num">2.4</span>潜在状态与意图：状态对齐式用户模拟</h3>
+    <div class="work">
+      <div class="wt">HumanLM: Simulating Users with State Alignment Beats Response Imitation</div>
+      <div class="meta">Wu et al.<br><a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a>　·　2026</div>
+    </div>
+    <p>前述工作刻画真实用户的外在特征，本工作则进一步追问其内在成因。作者论证，表层的回复模仿（response imitation）不足以刻画真实用户：人类回复具非确定性，相同立场可经由不同措辞表达；仅对齐表层文本无法捕捉驱动回复的底层机制。其核心主张是——应先对齐潜在状态，再据此合成回复。</p>
+
+    <figure>
+      <div class="frame"><img src="assets/fig-humanlm-method.png" alt="表层模仿与状态对齐两种用户模拟范式的对比" loading="lazy"></div>
+      <figcaption><b>图 7.</b> 上路为监督微调式的表层模仿；下路为 HumanLM：先将回复分解至信念、目标、价值、立场、情绪与沟通等心理状态维度，经 LLM 评审批量打分以对齐潜在状态，再由状态合成回复。<span class="src">（来源：arXiv:2603.03303）</span></figcaption>
+    </figure>
+
+    <p>方法上，作者定义 6 个心理学锚定的状态维度（belief、goal、emotion、value、stance、communication），以强化学习（GRPO）结合比较式 LLM 评审对齐潜在状态，再从状态合成回复。评测基准 Humanual 覆盖 26k 用户、216k 条回复与 6 个数据集（新闻评论、书评、观点讨论、政治博客、对话与邮件）。</p>
+    <div class="results">
+      <div class="rlab">关键量化结果</div>
+      <dl>
+        <div class="item"><dt>+16.3%</dt><dd>相对最优基线的平均提升</dd></div>
+        <div class="item"><dt>76.6%</dt><dd>人评中被判定为「相当自然」的比例</dd></div>
+      </dl>
+    </div>
+    <p>结果表明，状态对齐显著优于表层回复模仿。其方法学含义在于：对真实用户的建模对象应是驱动行为的潜在状态分布，而非可被直接复制的文本分布。</p>
+  </section>
+
+  <!-- 3. SYNTHESIS -->
+  <section class="sec" id="s3">
+    <h2><span class="num">3</span>横向比较与讨论</h2>
+    <p>将四项工作并置可见，真实交互与朴素模拟之间的差异并非个别现象，而是沿四个维度系统性出现，且方向一致。表 1 对此作横向汇总。</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption><b>表 1.</b> 真实用户与朴素 / 基准模拟在四个维度上的对照及代表性证据。</caption>
+        <thead><tr><th>维度</th><th>真实用户</th><th>朴素 / 基准模拟</th><th>代表证据</th></tr></thead>
+        <tbody>
+          <tr><td><span class="dn">① 信息流</span></td><td class="pos">欠规约，逐步、乱序揭示</td><td class="neg">一次性完整规约</td><td>性能 −39%，不可靠性 +112%<br><span class="ref">Laban et al., 2025</span></td></tr>
+          <tr><td><span class="dn">② 干预控制</span></td><td class="pos">四种风格，主动接管</td><td class="neg">全程沉默旁观</td><td>介入预测 F1 仅 0.198<br><span class="ref">Huq et al., 2026</span></td></tr>
+          <tr><td><span class="dn">③ 语言风格</span></td><td class="pos">缩写、小写、口头语</td><td class="neg">礼貌、流畅、合作</td><td>风格匹配 6–8% → 45.3%<br><span class="ref">Zhu et al., 2026</span></td></tr>
+          <tr><td><span class="dn">④ 潜在状态</span></td><td class="pos">由潜在状态驱动、非确定</td><td class="neg">表层措辞模仿</td><td>状态对齐增益 +16.3%<br><span class="ref">Wu et al., 2026</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>共性结论</h4>
+    <ol class="num">
+      <li><b>差异是系统性且可度量的。</b> 39% 的性能退化、0.198 的介入 F1、6–8% 的风格匹配率与 16.3% 的状态对齐增益，均远超噪声水平，指向稳定存在的差距而非偶发现象。</li>
+      <li><b>朴素模拟的偏置方向一致。</b> 其偏置始终朝向「理想化」——更完整、更合作、更流畅、更表里如一。该偏置同时引发两类误差：在受控设定下高估能力，以及因模拟用户过于配合而遮蔽真实失败。</li>
+      <li><b>缓解策略趋同。</b> 现有工作或诉诸基于真实数据的 grounding（真实协作轨迹、WildChat 对话），或诉诸对潜在结构的显式建模（信息流、心理状态）；二者共同指向「避免凭空生成一个理想用户」。</li>
+    </ol>
+  </section>
+
+  <!-- 4. CLOSING -->
+  <section class="sec" id="s4">
+    <h2><span class="num">4</span>小结与开放问题</h2>
+    <h4>对用户建模的启示</h4>
+    <ul class="bul">
+      <li><b>评测层面：</b>由单轮转向欠规约多轮，显式纳入风格、干预与状态的分布，并通过多次采样量化不可靠性，而非仅报告单次均值。</li>
+      <li><b>建模层面：</b>将「用户」建模为 <code>信息流策略 × 干预策略 × 语言风格 × 潜在状态</code> 的联合分布，而非提示词中的静态人设。</li>
+      <li><b>数据层面：</b>真实交互日志（如对话语料与人机协作轨迹）构成不可替代的锚点，保真度的下界由数据而非提示词决定。</li>
+    </ul>
+    <h4>开放问题</h4>
+    <ol class="num">
+      <li>能否在统一框架中联合四个维度，构建兼具保真度与可控性的真实用户生成器？（Zhu et al. 揭示二者存在张力。）</li>
+      <li>干预与状态的步级标注成本较高，如何低成本迁移至新领域？</li>
+      <li>Laban et al. 仅定性指出模拟为「低估」，真实交互相对模拟的退化上界仍有待量化。</li>
+    </ol>
+  </section>
+
+  <!-- REFERENCES -->
+  <section class="sec refs" id="refs">
+    <h2><span class="num">参考文献</span></h2>
+    <ol>
+      <li><b>LLMs Get Lost in Multi-Turn Conversation.</b> P. Laban, H. Hayashi, Y. Zhou, J. Neville. <a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a>, 2025.</li>
+      <li><b>Modeling Distinct Human Interaction in Web Agents.</b> F. Huq, Z. Z. Wang, Z. Guo, V. A. Arangajaran, T. Ou, F. Xu, S. Zhou, G. Neubig, J. P. Bigham. <a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a>, 2026.</li>
+      <li><b>RealUserSim: Bridging the Reality Gap in Agent Benchmarking via Grounded User Simulation.</b> M. Zhu, J. Tan, R. Murthy, J. Qiu, L. Yang, W. Zhao, S. Savarese, S. Heinecke, H. Wang. <a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a>, 2026.</li>
+      <li><b>HumanLM: Simulating Users with State Alignment Beats Response Imitation.</b> Wu et al. <a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a>, 2026.</li>
+    </ol>
+    <p class="note">本页为组会内部讨论材料，主题为「用户建模」。RQ1 之外的研究问题（RQ2、RQ3）将于后续组会以相同体例补充。文中图表引自对应论文，仅用于学术讨论并已标注来源。</p>
+  </section>
+
 </div>
 
 <footer>
-  <span>组会 · 用户建模 · 2026.06.24 · 李睿哲</span>
+  <span>组会综述 · 用户建模 · RQ1 · 2026.06.24 · 李睿哲</span>
   <span><a href="../../index.html">返回主页</a></span>
 </footer>
 
 <script>
-/* reading progress bar */
 const bar=document.getElementById('bar');
-addEventListener('scroll',()=>{
-  const h=document.documentElement;
-  const p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);
-  bar.style.width=(p*100)+'%';
-},{passive:true});
+addEventListener('scroll',()=>{const h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%';},{passive:true});
 </script>
 </body>
 </html>
