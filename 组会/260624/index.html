@@ -72,9 +72,6 @@ ul.b li b{color:var(--ink)}
 ol.n{list-style:none;counter-reset:c;margin:10px 0}
 ol.n>li{counter-increment:c;position:relative;padding-left:30px;margin:9px 0;color:var(--ink-2);font-size:1.01rem}
 ol.n>li::before{content:counter(c);position:absolute;left:0;top:-1px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.72rem;display:flex;align-items:center;justify-content:center}
-ol.n ol{list-style:none;counter-reset:d;margin:6px 0 6px 4px}
-ol.n ol li{counter-increment:d;position:relative;padding-left:26px;margin:5px 0;font-size:.97rem;color:var(--ink-3)}
-ol.n ol li::before{content:counter(c,lower-alpha)"."counter(d);position:absolute;left:0;font-family:var(--mono);font-size:.74rem;color:var(--accent-2)}
 
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
 .card{padding:13px 16px;border:1px solid var(--rule);border-radius:7px;background:var(--surface)}
@@ -141,6 +138,24 @@ pre.code .ex{color:#9fb8a0}
 
 .goal-note{margin-top:14px;padding:13px 16px;border-left:3px solid var(--accent);background:rgba(138,59,29,.05);border-radius:0 8px 8px 0;font-size:1rem;color:var(--ink)}
 .goal-note .muted{display:block;margin-top:8px}
+.qlabel{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin:7px 0 2px}
+ol.abc{list-style:none;counter-reset:abc;margin:4px 0 0 2px}
+ol.abc>li{counter-increment:abc;position:relative;padding-left:26px;margin:9px 0;font-size:1.01rem;color:var(--ink-2)}
+ol.abc>li::before{content:counter(abc,lower-alpha)".";position:absolute;left:0;top:0;font-family:var(--mono);color:var(--accent);font-weight:600}
+ul.sub{list-style:none;margin:5px 0}
+ul.sub li{position:relative;padding-left:18px;margin:4px 0;font-size:.95rem;color:var(--ink-3)}
+ul.sub li::before{content:"–";position:absolute;left:0;color:var(--ink-4)}
+.ans{margin:8px 0 2px;padding:10px 14px;border-left:3px solid var(--accent);background:rgba(138,59,29,.06);border-radius:0 7px 7px 0;font-size:.96rem;color:var(--ink)}
+.idx td.empty{text-align:center;font-family:var(--mono);font-size:.8rem;color:var(--ink-4);padding:18px}
+
+/* zoomable figures + lightbox */
+figure .frame{cursor:zoom-in}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(18,14,10,.92);display:none;align-items:center;justify-content:center;padding:22px;overflow:auto;cursor:zoom-out;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.lb.open{display:flex}
+.lb img{max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.5);background:#fff;cursor:zoom-in}
+.lb.zoom{align-items:flex-start;justify-content:flex-start}
+.lb.zoom img{max-width:none;max-height:none;cursor:zoom-out}
+.lb-hint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.72);z-index:201;pointer-events:none}
 
 .hint{margin-top:22px;font-family:var(--mono);font-size:.73rem;color:var(--ink-4)}
 .hint kbd{border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-size:.72rem;color:var(--ink-3);background:var(--surface)}
@@ -256,7 +271,15 @@ pre.code .ex{color:#9fb8a0}
     </div>
   </section>
 
-  <!-- P1 aptitude / unreliability -->
+  <!-- P1 results table (右图单独一页，放前面) -->
+  <section class="slide" data-rq="1" data-sec="P1 · 实验结果">
+    <div class="in">
+      <div class="kick">P1 <span class="dim">· Lost in Conversation 实验结果</span></div>
+      <figure class="tall"><div class="frame"><img src="assets/img/p1-fig2.png" alt="Full / Concat / Sharded 实验结果"></div></figure>
+    </div>
+  </section>
+
+  <!-- P1 aptitude / unreliability (左图 + 两个维度的解释) -->
   <section class="slide" data-rq="1" data-sec="P1 · Aptitude / Unreliability">
     <div class="in">
       <div class="kick">P1 <span class="dim">· 把性能下降拆成两个维度</span></div>
@@ -269,10 +292,7 @@ pre.code .ex{color:#9fb8a0}
           </ul>
           <p>论文发现，Sharded 场景下模型平均性能显著下降，但主要原因不是 aptitude 大幅下降，而是 <b>unreliability 暴涨</b>。也就是说，模型并不是完全不会做，而是多轮对话中很容易走偏；一旦早期轨迹错了，后面就很难纠正。论文报告：从 Full 到 Sharded，模型 aptitude 平均只下降约 <b>16%</b>，但 unreliability 平均增加 <b>112%</b>，几乎翻倍。</p>
         </div>
-        <div class="figrow two">
-          <figure><div class="frame"><img src="assets/img/p1-fig3.png" alt="Aptitude / Unreliability 可视化"></div></figure>
-          <figure><div class="frame"><img src="assets/img/p1-fig2.png" alt="Full / Concat / Sharded 实验结果"></div></figure>
-        </div>
+        <figure><div class="frame"><img src="assets/img/p1-fig3.png" alt="Aptitude / Unreliability 可视化"></div></figure>
       </div>
     </div>
   </section>
@@ -395,13 +415,8 @@ pre.code .ex{color:#9fb8a0}
   <section class="slide" data-rq="1" data-sec="P3 · 两个核心问题">
     <div class="in">
       <div class="kick">P3 <span class="dim">· 现有 user simulation 的两个核心问题</span></div>
-      <div class="cols">
-        <div>
-          <div class="card" style="margin-bottom:12px"><h4>第一个：Formalism Ceiling</h4><p>没有约束的 LLM simulator 默认会变成“礼貌、完整、语法正确、合作度很高”的用户。换句话说，它不像真实用户，更像另一个 assistant。论文发现，在没有真实 profile 的 baseline 下，style-related dimensions 的匹配率只有 <b>6%–8%</b>，因为 LLM 会把所有用户都“正规化”为工整表达。</p></div>
-          <div class="card"><h4>第二个：Directive Amplification</h4><p>如果 benchmark 手写行为指令，比如“你是一个非常愤怒的顾客”，不同 simulator model 会把这个指令放大成很夸张的表演：有的会写 <span class="en">sobbing</span>、<span class="en">choking back tears</span> 这种舞台动作，有的只是说“我很 upset”。同一个 directive 在不同 simulator 上产生不同强度的行为，导致 benchmark 难度不稳定、不同 simulator 结果不可比。</p></div>
-        </div>
-        <figure><div class="frame"><img src="assets/img/p3-problems.png" alt="Formalism Ceiling 与 Directive Amplification"></div></figure>
-      </div>
+      <div class="card" style="margin-bottom:14px"><h4>第一个：Formalism Ceiling</h4><p>没有约束的 LLM simulator 默认会变成“礼貌、完整、语法正确、合作度很高”的用户。换句话说，它不像真实用户，更像另一个 assistant。论文发现，在没有真实 profile 的 baseline 下，style-related dimensions 的匹配率只有 <b>6%–8%</b>，因为 LLM 会把所有用户都“正规化”为工整表达。</p></div>
+      <div class="card"><h4>第二个：Directive Amplification</h4><p>如果 benchmark 手写行为指令，比如“你是一个非常愤怒的顾客”，不同 simulator model 会把这个指令放大成很夸张的表演：有的会写 <span class="en">sobbing</span>、<span class="en">choking back tears</span> 这种舞台动作，有的只是说“我很 upset”。同一个 directive 在不同 simulator 上产生不同强度的行为，导致 benchmark 难度不稳定、不同 simulator 结果不可比。</p></div>
     </div>
   </section>
 
@@ -447,7 +462,8 @@ pre.code .ex{color:#9fb8a0}
     <div class="in">
       <div class="kick">P3 <span class="dim">· 行为 archetype</span></div>
       <p class="intro">论文对 7,273 个用户基于 48 个 binary linguistic traits 做 t-SNE + k-means，得到 8 个行为 archetype。</p>
-      <div class="tbl-wrap">
+      <div class="cols">
+        <div class="tbl-wrap" style="max-height:62vh">
         <table class="t-c0">
           <thead><tr><th>Cluster</th><th>典型特征</th><th>用户数</th></tr></thead>
           <tbody>
@@ -461,6 +477,8 @@ pre.code .ex{color:#9fb8a0}
             <tr><td>C7</td><td>first person + lowercase “i” + imperative sentences</td><td class="mono">1,399</td></tr>
           </tbody>
         </table>
+        </div>
+        <figure><div class="frame"><img src="assets/img/p3-problems.png" alt="48 维语言特征 t-SNE 聚类与人口构成"></div></figure>
       </div>
     </div>
   </section>
@@ -503,6 +521,14 @@ pre.code .ex{color:#9fb8a0}
     <div class="in">
       <div class="rqbig">RQ2</div>
       <h2>如何 Bridge the Gap</h2>
+      <div class="tbl-wrap">
+        <table class="idx">
+          <thead><tr><th>标题</th><th>会议 / 作者 / 机构</th><th>时间</th><th>研究视角</th></tr></thead>
+          <tbody>
+            <tr><td>FOUND IN CONVERSATION: LLMs Teach Themselves to Close the Multi-Turn Gap</td><td class="view">Stanford · Tianlang Chen, Shirley Wu, Jure Leskovec</td><td class="view">2026 May</td><td>弥合多轮 gap · 自蒸馏</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -521,14 +547,19 @@ pre.code .ex{color:#9fb8a0}
     </div>
   </section>
 
-  <!-- RQ2 figures -->
-  <section class="slide" data-rq="2" data-sec="Found in Conversation · 图">
+  <!-- RQ2 fig1 (左图单独一页) -->
+  <section class="slide" data-rq="2" data-sec="Found in Conversation · 图 1">
     <div class="in">
       <div class="kick">RQ2 <span class="dim">· FOUND IN CONVERSATION</span></div>
-      <div class="figrow two">
-        <figure><div class="frame"><img src="assets/img/r2-fig1.png" alt="Found in Conversation 图 1"></div></figure>
-        <figure><div class="frame"><img src="assets/img/r2-fig2.png" alt="Found in Conversation 图 2"></div></figure>
-      </div>
+      <figure class="tall"><div class="frame"><img src="assets/img/r2-fig1.png" alt="Found in Conversation 图 1"></div></figure>
+    </div>
+  </section>
+
+  <!-- RQ2 fig2 -->
+  <section class="slide" data-rq="2" data-sec="Found in Conversation · 图 2">
+    <div class="in">
+      <div class="kick">RQ2 <span class="dim">· FOUND IN CONVERSATION</span></div>
+      <figure class="tall"><div class="frame"><img src="assets/img/r2-fig2.png" alt="Found in Conversation 图 2"></div></figure>
     </div>
   </section>
 
@@ -537,6 +568,15 @@ pre.code .ex{color:#9fb8a0}
     <div class="in">
       <div class="rqbig">RQ3</div>
       <h2>下一步？</h2>
+      <div class="tbl-wrap">
+        <table class="idx">
+          <thead><tr><th>标题</th><th>会议 / 作者 / 机构</th><th>时间</th><th>研究视角</th></tr></thead>
+          <tbody>
+            <tr><td>SWE-chat: Coding Agent Interactions From Real Users in the Wild</td><td class="view">Stanford · Baumann, Padmakumar, Li, Yang, Yang, Koyejo</td><td class="view">2026 Apr</td><td>新的数据集</td></tr>
+            <tr><td>ISO 24617-2: A semantically-based standard for dialogue annotation</td><td class="view"><span class="v">LREC 2012</span> · Bunt, Alexandersson, Choe, Fang, Hasida, Petukhova, Popescu-Belis, Traum</td><td class="view">2012</td><td>可能的工具</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -620,23 +660,25 @@ pre.code .ex{color:#9fb8a0}
       <div class="kick">RQ3 <span class="dim">· 我们的目标</span></div>
       <ol class="n">
         <li>研究为何有些 benchmark 上的高分模型实际表现并不行——除去测试集泄漏，是否有 bench 本身的问题</li>
-        <li>benchmark 如何改造以指导方法研究 <span class="muted">（问题：）</span>
-          <ol>
+        <li>benchmark 如何改造以指导方法研究
+          <div class="qlabel">问题：</div>
+          <ol class="abc">
             <li>interactive 是否一定会造成性能下降——不是
-              <ol>
+              <ul class="sub">
                 <li>interactive bench 实际改造过程中，多轮交互的题目<b>反而性能提升</b></li>
                 <li>性能下降的核心不是 interactive，而是用户的<b>不合作</b>（例如 lost in the middle 的信息给予不全）；在 interactive bench 的改造中，有的改造太“合作”了，甚至可以说是在“指导”agent</li>
-              </ol>
+              </ul>
             </li>
             <li>是否要 100% 模拟现在用户的行为？
-              <ol>
+              <ul class="sub">
                 <li>Neubig 的文章研究了“用户接管”这一行为，这一行为是否有必要体现在 eval 中？</li>
-              </ol>
+              </ul>
+              <div class="ans">——个人人为不用，Human Agent Interactive 的<b>理想状态</b>应该是 vibe coding。除了权限与偏好澄清，agent 不应当主动要求与人类交互。Agent 也没有理由认为人类一定比自己强从而请求人类的指导。</div>
             </li>
+            <li>可能的切入点：multi-tasking / multi-thread？</li>
           </ol>
         </li>
       </ol>
-      <div class="goal-note">——个人人为不用，Human Agent Interactive 的<b>理想状态</b>应该是 vibe coding。除了权限与偏好澄清，agent 不应当主动要求与人类交互。Agent 也没有理由认为人类一定比自己强从而请求人类的指导。<span class="muted">c. 可能的切入点：multi-tasking / multi-thread？</span></div>
     </div>
   </section>
 
@@ -649,6 +691,8 @@ pre.code .ex{color:#9fb8a0}
   </section>
 
 </div>
+
+<div class="lb" id="lb"><img alt=""><div class="lb-hint">点击图片切换原始大小 · Esc / 点击空白处关闭</div></div>
 
 <div class="rail" id="rail"></div>
 
@@ -688,7 +732,15 @@ slides.forEach(s=>io.observe(s));
 prevB.onclick=()=>go(idx-1);
 nextB.onclick=()=>go(idx+1);
 rqLinks.forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.dataset.go);if(t)go(slides.indexOf(t));}));
+/* lightbox: click any figure to zoom; click image toggles actual size; backdrop/Esc closes */
+const lb=document.getElementById('lb'), lbImg=lb.querySelector('img');
+document.querySelectorAll('figure .frame').forEach(fr=>{
+  fr.addEventListener('click',()=>{const im=fr.querySelector('img');if(!im)return;lbImg.src=im.currentSrc||im.src;lb.classList.add('open');lb.classList.remove('zoom');lb.scrollTop=0;lb.scrollLeft=0;});
+});
+lb.addEventListener('click',e=>{ if(e.target===lbImg){lb.classList.toggle('zoom');} else {lb.classList.remove('open','zoom');} });
+
 addEventListener('keydown',e=>{
+  if(lb.classList.contains('open')){ if(e.key==='Escape'){lb.classList.remove('open','zoom');} return; }
   if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1);}
   else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(idx-1);}
   else if(e.key==='Home'){e.preventDefault();go(0);}
