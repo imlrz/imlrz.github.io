@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#faf8f3">
-<meta name="description" content="组会 2026.06.24 · User Modeling · RQ1：真实多轮用户交互与 benchmark / naive 模拟的差异">
-<title>User Modeling · RQ1｜组会 2026.06.24</title>
+<meta name="description" content="组会 0623 · 用户建模 · RQ1 真实 vs 模拟 / RQ2 Bridge the Gap / RQ3 下一步">
+<title>用户建模 · 组会 0623</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,14 +16,14 @@
   --bg:#faf8f3; --surface:#ffffff; --surface-2:#f4efe4;
   --ink:#1b1814; --ink-2:#433d34; --ink-3:#766e60; --ink-4:#a89e8b;
   --accent:#8a3b1d; --accent-2:#6a4a16; --rule:#e4ddcd; --rule-2:#efe9db;
-  --pos:#3a5a44; --neg:#7d3a2c;
+  --pos:#3a5a44; --neg:#7d3a2c; --blue:#2f5275;
   --display:"Spectral","Noto Serif SC",Georgia,serif;
   --body:"Newsreader","Noto Serif SC",Georgia,serif;
   --mono:"JetBrains Mono",monospace;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.68;-webkit-font-smoothing:antialiased;overflow:hidden}
 a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(138,59,29,.3)}
 a:hover{border-bottom-color:var(--accent)}
 ::selection{background:#e7d9c4}
@@ -31,128 +31,154 @@ b{font-weight:600}
 em{font-style:normal;color:var(--accent)}
 .en{font-family:var(--mono);font-size:.92em}
 
-/* progress */
 #bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:80;transition:width .35s ease}
 
-/* fixed chrome */
-.chrome{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;justify-content:space-between;align-items:center;padding:16px 30px;pointer-events:none}
-.chrome .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--ink-3);text-transform:uppercase}
+/* chrome */
+.chrome{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;justify-content:space-between;align-items:center;padding:14px 26px;pointer-events:none;gap:14px}
+.chrome .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
 .chrome .l b{color:var(--accent)}
-.chrome a{pointer-events:auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:none;border-bottom:1px solid var(--rule)}
-.chrome a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.rqnav{display:flex;gap:6px;pointer-events:auto}
+.rqnav a{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);border:1px solid var(--rule);border-radius:20px;padding:4px 12px;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:.2s}
+.rqnav a:hover{color:var(--accent);border-color:var(--accent)}
+.rqnav a.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.chrome .home{pointer-events:auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:none;border-bottom:1px solid var(--rule)}
+.chrome .home:hover{color:var(--accent);border-bottom-color:var(--accent)}
 
-/* DECK */
+/* deck */
 .deck{height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
 .deck::-webkit-scrollbar{display:none}
-.slide{min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:78px 32px 84px;position:relative}
-.in{max-width:900px;margin:0 auto;width:100%}
+.slide{min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:74px 34px 82px;position:relative}
+.in{max-width:980px;margin:0 auto;width:100%}
 
-/* slide kicker */
-.kick{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.kick::before{content:"";width:24px;height:1px;background:var(--accent)}
+.kick{font-family:var(--mono);font-size:.73rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.kick::before{content:"";width:22px;height:1px;background:var(--accent)}
 .kick .dim{color:var(--ink-3)}
 
-h1.title{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,3.1rem);line-height:1.18;letter-spacing:.005em;margin-bottom:18px}
-h2.head{font-family:var(--display);font-weight:600;font-size:clamp(1.5rem,3.2vw,2rem);line-height:1.28;margin-bottom:14px}
-.slide p{color:var(--ink-2);margin:11px 0;font-size:1.06rem}
+h1.title{font-family:var(--display);font-weight:600;font-size:clamp(2rem,5vw,3rem);line-height:1.16;margin-bottom:16px}
+h2.head{font-family:var(--display);font-weight:600;font-size:clamp(1.45rem,3vw,1.95rem);line-height:1.26;margin-bottom:12px}
+h3.sub{font-family:var(--display);font-weight:600;font-size:1.18rem;margin:6px 0 8px}
+.slide p{color:var(--ink-2);margin:10px 0;font-size:1.04rem}
 .slide p b{color:var(--ink)}
-.lead{font-size:1.16rem!important;color:var(--ink)!important}
+.lead{font-size:1.14rem!important;color:var(--ink)!important}
+.muted{color:var(--ink-3)!important;font-size:.96rem!important}
 
-/* paper id line */
-.work{display:flex;gap:12px;align-items:baseline;margin-bottom:6px}
-.work .pid{font-family:var(--mono);font-size:.68rem;font-weight:600;color:#fff;background:var(--accent-2);padding:3px 8px;border-radius:5px;letter-spacing:.04em}
-.work .arx{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
-.work .arx a{color:var(--accent);border:none;border-bottom:1px solid rgba(138,59,29,.3)}
-.byl{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);margin-bottom:4px}
+/* meta line for a paper */
+.pmeta{font-family:var(--mono);font-size:.76rem;color:var(--ink-3);margin-bottom:10px}
+.pmeta .v{color:var(--accent)}
 
 /* lists */
-ul.b{list-style:none;margin:12px 0}
-ul.b li{position:relative;padding-left:20px;margin:7px 0;color:var(--ink-2);font-size:1.02rem}
+ul.b{list-style:none;margin:10px 0}
+ul.b li{position:relative;padding-left:20px;margin:6px 0;color:var(--ink-2);font-size:1rem}
 ul.b li::before{content:"—";position:absolute;left:0;color:var(--ink-4)}
 ul.b li b{color:var(--ink)}
-ol.n{list-style:none;counter-reset:c;margin:12px 0}
-ol.n li{counter-increment:c;position:relative;padding-left:28px;margin:9px 0;color:var(--ink-2);font-size:1.02rem}
-ol.n li::before{content:"("counter(c)")";position:absolute;left:0;color:var(--accent);font-family:var(--mono);font-size:.82rem;top:1px}
+ol.n{list-style:none;counter-reset:c;margin:10px 0}
+ol.n>li{counter-increment:c;position:relative;padding-left:30px;margin:8px 0;color:var(--ink-2);font-size:1rem}
+ol.n>li::before{content:counter(c);position:absolute;left:0;top:-1px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.72rem;display:flex;align-items:center;justify-content:center}
+ol.n ol{list-style:none;counter-reset:d;margin:6px 0 6px 4px}
+ol.n ol li{counter-increment:d;position:relative;padding-left:24px;margin:5px 0;font-size:.96rem;color:var(--ink-3)}
+ol.n ol li::before{content:counter(c,lower-alpha)"."counter(d);position:absolute;left:0;font-family:var(--mono);font-size:.74rem;color:var(--accent-2)}
 
-/* metrics inline row */
-.kv{display:flex;flex-wrap:wrap;gap:0;margin:18px 0;border:1px solid var(--rule);border-radius:5px;overflow:hidden}
-.kv div{flex:1 1 0;min-width:120px;padding:13px 16px;border-right:1px solid var(--rule-2)}
-.kv div:last-child{border-right:none}
-.kv b{display:block;font-family:var(--display);font-weight:600;font-size:1.35rem;color:var(--accent);line-height:1.05}
-.kv span{font-size:.82rem;color:var(--ink-3)}
+/* mechanism cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.card{padding:14px 16px;border:1px solid var(--rule);border-radius:7px;background:var(--surface)}
+.card h4{font-family:var(--display);font-weight:600;font-size:1.04rem;margin-bottom:4px;color:var(--ink)}
+.card h4 .en{color:var(--accent);font-size:.8em}
+.card p{margin:0;font-size:.93rem;color:var(--ink-3);line-height:1.55}
 
-/* tiny real/naive contrast line */
-.rn{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:16px 0;border:1px solid var(--rule);border-radius:5px;overflow:hidden;font-size:.95rem}
-.rn>div{padding:12px 16px}
-.rn .r{background:rgba(58,90,68,.06);border-right:1px solid var(--rule)}
-.rn .n{background:rgba(125,58,44,.05)}
-.rn .t{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px;font-weight:600}
-.rn .r .t{color:var(--pos)} .rn .n .t{color:var(--neg)}
-.rn p{margin:0;color:var(--ink-2);font-size:.95rem}
+/* reason blocks */
+.reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.reason{padding:14px 16px;border:1px solid var(--rule);border-radius:7px;background:var(--surface)}
+.reason .t{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.reason p{margin:0;font-size:.92rem;color:var(--ink-3);line-height:1.5}
+
+/* example block (single vs multi turn) */
+.exg{display:grid;grid-template-columns:1fr 1.1fr;gap:16px;margin:14px 0;align-items:start}
+.ex{border:1px solid var(--rule);border-radius:9px;overflow:hidden;background:var(--surface)}
+.ex .h{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--rule);color:var(--ink-3);background:var(--surface-2)}
+.ex .body{padding:13px 15px}
+.ex.single .body{font-style:italic;color:var(--ink-2);font-size:.96rem}
+.bubble{display:block;background:var(--surface-2);border:1px solid var(--rule);border-radius:13px;padding:6px 12px;margin:6px 0;font-size:.92rem;color:var(--ink);width:fit-content;max-width:100%}
+.bubble.first{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* figure */
-figure{margin:16px 0 4px}
-figure .frame{border:1px solid var(--rule);border-radius:5px;overflow:hidden;background:#fff;display:flex;justify-content:center}
-figure img{display:block;max-width:100%;max-height:42vh;width:auto;height:auto}
-figcaption{margin-top:8px;font-size:.82rem;line-height:1.5;color:var(--ink-3)}
-figcaption b{color:var(--ink-2)}
-figcaption .src{font-family:var(--mono);font-size:.7rem;color:var(--ink-4)}
+figure{margin:14px 0 4px}
+figure .frame{border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:#fff;display:flex;justify-content:center;align-items:center}
+figure img{display:block;max-width:100%;max-height:46vh;width:auto;height:auto}
+figure.tall img{max-height:62vh}
+figcaption{margin-top:7px;font-size:.8rem;line-height:1.45;color:var(--ink-4);font-family:var(--mono)}
+.figrow{display:grid;gap:14px}
+.figrow.two{grid-template-columns:1fr 1fr}
+.figrow.three{grid-template-columns:1fr 1fr 1fr}
+.figrow figure{margin:0}
+.figrow.two img,.figrow.three img{max-height:40vh}
 
-/* two-column slide */
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
-.cols.text-fig figure{margin:0}
+/* two-col text+fig */
+.cols{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:center}
+.cols.narrow-fig{grid-template-columns:1.3fr .7fr}
+.cols figure{margin:0}
 
-/* taxonomy */
-.taxo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.taxo .c{padding:15px 17px;border:1px solid var(--rule);border-radius:6px;background:var(--surface)}
-.taxo .c .d{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--accent);text-transform:uppercase;margin-bottom:6px}
-.taxo .c h4{font-family:var(--display);font-weight:600;font-size:1.04rem;margin-bottom:4px}
-.taxo .c p{margin:0;font-size:.9rem;color:var(--ink-3)}
-.taxo .c .w{font-family:var(--mono);font-size:.68rem;color:var(--ink-4);margin-top:7px}
-
-/* table */
-.tbl-wrap{overflow-x:auto;margin-top:8px}
-table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:560px}
-caption{caption-side:top;text-align:left;font-size:.84rem;color:var(--ink-3);margin-bottom:8px}
-th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top}
-thead th{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);font-weight:600}
+/* tables */
+.tbl-wrap{overflow:auto;margin:12px 0;max-height:62vh}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+caption{caption-side:top;text-align:left;font-size:.82rem;color:var(--ink-3);margin-bottom:7px;font-family:var(--mono)}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
+thead th{position:sticky;top:0;background:var(--surface-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:.68rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2);font-weight:600;z-index:1}
 tbody tr:last-child td{border-bottom:1px solid var(--ink)}
 td .dn{font-weight:600;color:var(--ink)}
-td.pos{color:var(--pos)} td.neg{color:var(--neg)}
-td .ref{font-family:var(--mono);font-size:.7rem;color:var(--ink-4)}
+td .mono{font-family:var(--mono);font-size:.86em;color:var(--ink-3)}
+.t-c0 td:first-child,.t-c0 th:first-child{color:var(--accent);font-weight:600;white-space:nowrap}
 
-/* refs */
-.refs ol{list-style:none;counter-reset:r}
-.refs li{counter-increment:r;position:relative;padding:10px 0 10px 36px;border-bottom:1px solid var(--rule-2);font-size:.92rem;color:var(--ink-2)}
-.refs li:last-child{border-bottom:none}
-.refs li::before{content:"["counter(r)"]";position:absolute;left:0;top:10px;font-family:var(--mono);font-size:.76rem;color:var(--ink-3)}
-.refs li b{color:var(--ink)}
-.note{margin-top:18px;font-size:.84rem;color:var(--ink-3)}
+/* code block */
+pre.code{background:#241f1a;color:#e8dcc8;border-radius:8px;padding:16px 18px;overflow:auto;max-height:52vh;font-family:var(--mono);font-size:.82rem;line-height:1.65;margin:12px 0}
+pre.code .cmd{color:#e3b341}
+pre.code .ex{color:#9fb8a0;background:none;border:none}
 
-.hint{margin-top:26px;font-family:var(--mono);font-size:.74rem;color:var(--ink-4)}
-.hint kbd{border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-family:var(--mono);font-size:.72rem;color:var(--ink-3);background:var(--surface)}
+/* stat row */
+.kv{display:flex;flex-wrap:wrap;gap:0;margin:14px 0;border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.kv div{flex:1 1 0;min-width:110px;padding:12px 15px;border-right:1px solid var(--rule-2)}
+.kv div:last-child{border-right:none}
+.kv b{display:block;font-family:var(--display);font-weight:600;font-size:1.3rem;color:var(--accent);line-height:1.05}
+.kv span{font-size:.8rem;color:var(--ink-3)}
 
-/* HUD nav */
-.hud{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:14px;background:rgba(250,248,243,.9);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:50px;padding:7px 9px;box-shadow:0 6px 24px rgba(60,40,20,.1)}
-.hud button{width:34px;height:34px;border-radius:50%;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+/* divider slide */
+.divider{background:var(--surface-2)}
+.divider .rqbig{font-family:var(--mono);font-size:clamp(3rem,12vw,7rem);font-weight:600;color:var(--accent);line-height:1;letter-spacing:.02em}
+.divider h2{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);margin:10px 0 22px;max-width:20ch}
+
+/* paper index table on divider */
+.idx{font-size:.92rem}
+.idx td:first-child{font-family:var(--display);font-weight:600;color:var(--ink)}
+.idx .view{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}
+.idx .view .v{color:var(--accent)}
+
+.goal-note{margin-top:14px;padding:13px 16px;border-left:3px solid var(--accent);background:rgba(138,59,29,.05);border-radius:0 8px 8px 0;font-size:1rem;color:var(--ink)}
+
+.hint{margin-top:22px;font-family:var(--mono);font-size:.73rem;color:var(--ink-4)}
+.hint kbd{border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-size:.72rem;color:var(--ink-3);background:var(--surface)}
+
+/* HUD */
+.hud{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:12px;background:rgba(250,248,243,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:50px;padding:6px 8px;box-shadow:0 6px 22px rgba(60,40,20,.1)}
+.hud button{width:32px;height:32px;border-radius:50%;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:.2s}
 .hud button:hover{border-color:var(--accent);color:var(--accent)}
-.hud button:disabled{opacity:.3;cursor:default;border-color:var(--rule);color:var(--ink-4)}
-.hud .ctr{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);min-width:118px;text-align:center}
+.hud button:disabled{opacity:.3;cursor:default}
+.hud .ctr{font-family:var(--mono);font-size:.74rem;color:var(--ink-2);min-width:130px;text-align:center}
 .hud .ctr b{color:var(--accent)}
-.hud .ctr .sec{display:block;font-size:.64rem;color:var(--ink-4);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.hud .ctr .sec{display:block;font-size:.62rem;color:var(--ink-4);letter-spacing:.05em;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
 
 /* dot rail */
-.rail{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:75;display:flex;flex-direction:column;gap:9px}
-.rail i{width:8px;height:8px;border-radius:50%;background:var(--rule);cursor:pointer;transition:.2s;border:1px solid transparent}
+.rail{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:75;display:flex;flex-direction:column;gap:6px}
+.rail i{width:7px;height:7px;border-radius:50%;background:var(--rule);cursor:pointer;transition:.2s}
 .rail i:hover{background:var(--ink-4)}
-.rail i.on{background:var(--accent);transform:scale(1.25)}
+.rail i.on{background:var(--accent);transform:scale(1.3)}
+.rail i[data-d="1"]{border:1px solid var(--ink-4)}
 
-@media(max-width:760px){
+@media(max-width:820px){
   body{font-size:16px}
-  .cols,.taxo{grid-template-columns:1fr;gap:14px}
-  .slide{padding:72px 20px 84px}
-  figure img{max-height:34vh}
+  .cols,.cards,.reasons,.exg,.figrow.two,.figrow.three{grid-template-columns:1fr;gap:12px}
+  .slide{padding:70px 18px 82px}
   .rail{display:none}
+  figure img{max-height:38vh}
+  .rqnav a{padding:4px 9px}
 }
 @media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}}
 </style>
@@ -161,251 +187,482 @@ td .ref{font-family:var(--mono);font-size:.7rem;color:var(--ink-4)}
 <div id="bar"></div>
 
 <div class="chrome">
-  <div class="l">组会 · <b>User Modeling</b> · RQ1</div>
-  <a href="../../index.html">← 主页</a>
+  <div class="l">组会 0623 · <b>User Modeling</b></div>
+  <nav class="rqnav"><a data-go="rq1">RQ1</a><a data-go="rq2">RQ2</a><a data-go="rq3">RQ3</a></nav>
+  <a class="home" href="../../index.html">← 主页</a>
 </div>
 
 <div class="deck" id="deck">
 
-  <!-- 1 · TITLE -->
-  <section class="slide" data-sec="封面">
+  <!-- ===== COVER ===== -->
+  <section class="slide" data-rq="0" data-sec="封面">
     <div class="in">
-      <div class="kick">User Modeling <span class="dim">· 组会 2026.06.24</span></div>
-      <h1 class="title">真实的多轮用户交互，<br>跟 <em>benchmark / naive 模拟</em> 差在哪？</h1>
-      <p class="lead">这是本期「用户建模」的第一个研究问题 RQ1。我挑了 4 篇近期工作，按 survey 的方式串一下——但更像组会聊天，不是写论文。</p>
-      <p class="byl">李睿哲　·　2026.06.24　·　4 篇　·　总—分—总</p>
-      <div class="hint">用 <kbd>↓</kbd> / <kbd>→</kbd> / <kbd>空格</kbd> 翻页，<kbd>↑</kbd> / <kbd>←</kbd> 往回 · 一屏一个完整要点</div>
+      <div class="kick">User Modeling <span class="dim">· 组会 2026.06.23</span></div>
+      <h1 class="title">用户建模：真实用户 vs. 模拟，<br>以及怎么把 gap 补上</h1>
+      <p class="lead">分三个 RQ 聊：<b>RQ1</b> 真实用户和 bench / naive 模拟差在哪 → <b>RQ2</b> 如何 bridge the gap → <b>RQ3</b> 下一步做什么。</p>
+      <p class="pmeta">李睿哲　·　2026.06.23</p>
+      <div class="hint">用 <kbd>↓</kbd> / <kbd>→</kbd> / <kbd>空格</kbd> 翻页，<kbd>↑</kbd> / <kbd>←</kbd> 往回 · 顶部可点 RQ1/2/3 跳章</div>
     </div>
   </section>
 
-  <!-- 2 · MOTIVATION -->
-  <section class="slide" data-sec="出发点">
+  <!-- ===== RQ1 DIVIDER ===== -->
+  <section class="slide divider" id="rq1" data-rq="1" data-sec="RQ1 · 总览">
     <div class="in">
-      <div class="kick">出发点 <span class="dim">· 为什么问这个</span></div>
-      <h2 class="head">我们默认了「simulator 里的用户 ≈ 真实用户」</h2>
-      <p>平时评测 / 训练 agent，要么用单轮 <span class="en">benchmark</span>，要么用一个 <span class="en">naive</span> 的 user simulator。两者都悄悄假设了：模拟出来的用户约等于真实用户。RQ1 想搞清楚的就是——<b>这个假设到底靠不靠谱，差在哪、差多少、意味着什么</b>。</p>
-      <p class="lead" style="margin-top:18px">一句话结论：<b>naive 模拟把真实用户「理想化」了</b>——想象成一个 <em>需求说全、全程旁观、说话客气、表里如一</em> 的合作者；而真实用户基本上每条都反着来。</p>
-      <p>这会带来双重坑：在受控设定下<b>高估</b>能力，又因为模拟用户太配合而<b>盖住</b>了真实才会触发的失败。</p>
-    </div>
-  </section>
-
-  <!-- 3 · TAXONOMY -->
-  <section class="slide" data-sec="全文地图">
-    <div class="in">
-      <div class="kick">总 <span class="dim">· 把差距拆成四个维度</span></div>
-      <h2 class="head">四个互不重叠的维度，正好一篇管一个</h2>
-      <div class="taxo">
-        <div class="c"><div class="d">① 信息流 / underspecification</div><h4>需求是一点点挤出来的</h4><p>真实用户「最省力」，多轮里逐步、乱序给信息；benchmark 一次性说全。</p><div class="w">→ LLMs Get Lost (2505.06120)</div></div>
-        <div class="c"><div class="d">② intervention / 控制</div><h4>用户会主动接管</h4><p>不同时机、不同风格地介入；naive 自主 benchmark 当用户是沉默旁观者。</p><div class="w">→ Web Agents (2602.17588)</div></div>
-        <div class="c"><div class="d">③ 语言 / 风格</div><h4>真实用户说话很随意</h4><p>缩写、小写、没标点、口头语；无约束 simulator 收敛到「客气流畅」的完美人格。</p><div class="w">→ RealUserSim (2605.20204)</div></div>
-        <div class="c"><div class="d">④ latent state / 意图</div><h4>回复是潜在状态的投影</h4><p>由 belief / emotion / stance 等驱动且非确定；naive 模拟只学表层措辞。</p><div class="w">→ HumanLM (2603.03303)</div></div>
-      </div>
-      <p style="margin-top:14px;font-size:.96rem;color:var(--ink-3)">下面四屏「分」着看，每篇量化一个维度；最后两屏再「总」起来。</p>
-    </div>
-  </section>
-
-  <!-- 4 · P1 setup -->
-  <section class="slide" data-sec="① 信息流">
-    <div class="in">
-      <div class="kick">分 · 维度① <span class="dim">· 信息流 / underspecification</span></div>
-      <div class="work"><span class="pid">P1</span><span class="arx">LLMs Get Lost in Multi-Turn Conversation · <a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a></span></div>
-      <p class="byl">Laban, Hayashi, Zhou, Neville · Microsoft / Salesforce Research · 2025</p>
-      <p>做法很巧：<b>sharded simulation</b>——把一条「一次说全」的 benchmark 指令拆成若干 <span class="en">shards</span>（信息碎片），在多轮里一点点揭示，相当于人工把单轮任务改造成贴近真实的 <b>underspecified 多轮</b>。对比三种设定：<span class="en">Full</span>（单轮说全）/ <span class="en">Concat</span>（碎片拼一起、还是单轮）/ <span class="en">Sharded</span>（多轮逐步给），跑了 15 个 LLM × 6 类 task。</p>
-      <figure>
-        <div class="frame"><img src="assets/fig-lost-sharding.png" alt="sharding 构造流程" loading="lazy"></div>
-        <figcaption><b>图 1.</b> 把完整规约指令打碎成多轮 shards 再逐步喂给模型（覆盖 code / database / actions / math / data-to-text / summary 六类）。<span class="src">（arXiv:2505.06120, Fig.2）</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- 5 · P1 results -->
-  <section class="slide" data-sec="① 信息流">
-    <div class="in">
-      <div class="kick">分 · 维度① <span class="dim">· P1 结果</span></div>
-      <h2 class="head">掉的不是「能力」，是「可靠性」</h2>
-      <div class="kv">
-        <div><b>−39%</b><span>Full → Sharded 平均性能</span></div>
-        <div><b>−16%</b><span>aptitude（能力上限）</span></div>
-        <div><b>+112%</b><span>unreliability 翻倍</span></div>
-        <div><b>95%</b><span>Concat 仍保留</span></div>
-      </div>
-      <p>Concat 几乎不掉分 → 说明<b>不是信息丢了，是「多轮」这件事本身出问题</b>。机制上，模型爱在前几轮就乱猜、过早给完整答案、然后死抱着这个早期答案不放，一旦走偏就「迷路」回不来。</p>
-      <p class="lead">对 RQ1 最关键的一句：作者自己说这套模拟只是个 <em>benign testing ground</em>（良性试验场），真实交互还有术语误解、被系统气到放弃等等，所以 <b>39% 很可能是低估</b>。连「友好版模拟」都已经这样了，真实只会更糟。</p>
-    </div>
-  </section>
-
-  <!-- 6 · P2 setup -->
-  <section class="slide" data-sec="② intervention">
-    <div class="in">
-      <div class="kick">分 · 维度② <span class="dim">· intervention / 控制</span></div>
-      <div class="work"><span class="pid">P2</span><span class="arx">Modeling Distinct Human Interaction in Web Agents · <a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a></span></div>
-      <p class="byl">Huq, Wang, Guo, … , Neubig, Bigham · CMU / Duke · 2026</p>
-      <div class="cols text-fig">
-        <div>
-          <p>P1 假设用户只管「说话」，这篇戳的是另一个 naive 假设：<b>用户全程旁观</b>。作者做了 <b>CowCorpus</b>——400 条真实人机协作 web 轨迹（20 人 × 20 任务，2748 个 agent step + 1476 个 human step），逐步标注「人在<b>什么时候、为什么</b>介入」，并把「该不该请用户接管」建成一个预测问题。</p>
-        </div>
-        <figure>
-          <div class="frame"><img src="assets/fig-web-overview.png" alt="三步框架" loading="lazy"></div>
-          <figcaption><b>图 2.</b> 加上 intervention 预测后，agent 只在需要时才请确认。<span class="src">（arXiv:2602.17588, Fig.1）</span></figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7 · P2 styles -->
-  <section class="slide" data-sec="② intervention">
-    <div class="in">
-      <div class="kick">分 · 维度② <span class="dim">· 真实用户有四种风格</span></div>
-      <div class="cols">
-        <div>
-          <h2 class="head" style="font-size:1.5rem">用户不是一种，是四种</h2>
-          <ul class="b">
-            <li><b>Hands-off</b>：基本不插手</li>
-            <li><b>Takeover</b>：介入晚而少，接管后不太还控制权</li>
-            <li><b>Hands-on</b>：高频高强度介入，中等程度交还</li>
-            <li><b>Collaborative</b>：早期有选择介入，且高频交还</li>
-          </ul>
-          <p style="font-size:.98rem">动机三类：纠错 / 偏好不齐 / 协助接管。介入时机还随用户类型聚在不同阶段，<b>不是均匀分布</b>。</p>
-          <div class="kv" style="margin-top:14px">
-            <div><b>0.198</b><span>GPT-4o 介入预测 F1（非介入 0.846）</span></div>
-            <div><b>+36.8%</b><span>用户研究里「有用性」提升</span></div>
-          </div>
-        </div>
-        <figure>
-          <div class="frame"><img src="assets/fig-web-styles.png" alt="四种协作风格聚类" loading="lazy"></div>
-          <figcaption><b>图 3.</b> 在「介入频率 × 控制权交还率」空间里，真实用户自然分成四簇。<span class="src">（arXiv:2602.17588, Fig.3）</span></figcaption>
-        </figure>
-      </div>
-      <p style="font-size:.96rem;color:var(--ink-3);margin-top:8px">强模型在「非介入」上很准、在「介入」上几乎抓瞎（太保守）——说明真实用户的<b>介入点本身就是信号</b>，naive benchmark 把它抹掉了。</p>
-    </div>
-  </section>
-
-  <!-- 8 · P3 problems -->
-  <section class="slide" data-sec="③ 语言风格">
-    <div class="in">
-      <div class="kick">分 · 维度③ <span class="dim">· 语言 / 风格真实性</span></div>
-      <div class="work"><span class="pid">P3</span><span class="arx">RealUserSim · <a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a></span></div>
-      <p class="byl">Zhu, Tan, Murthy, … , Wang · Salesforce AI Research · 2026</p>
-      <div class="cols text-fig">
-        <div>
-          <p>这篇直接查 simulator 自己的两个病：</p>
-          <ul class="b">
-            <li><b>Formalism Ceiling</b>：无约束 LLM 默认演「客气、流畅、合作」的人格，对真实风格（缩写 / 小写 / 没标点 / "hmm"）匹配率只有 <b>6–8%</b>。</li>
-            <li><b>Directive Amplification</b>：手写指令（「你很崩溃」）被模型演过头成舞台腔，且各模型演法不一 → <b>跨 simulator 分数不可比</b>。</li>
-          </ul>
-          <p style="font-size:.98rem">解法是 grounding：从 <b>WildChat</b> 14k+ 真实对话里抽 <b>7,275 个</b> 可执行 persona（风格 + 人口属性）。</p>
-        </div>
-        <figure>
-          <div class="frame"><img src="assets/fig-rus-archetypes.png" alt="用户 t-SNE 与 8 类原型" loading="lazy"></div>
-          <figcaption><b>图 4.</b> 7000+ 真实用户按 48 维语言特征 t-SNE，分出 8 类原型，人口属性随之变化。<span class="src">（arXiv:2605.20204, Fig.1）</span></figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 9 · P3 result -->
-  <section class="slide" data-sec="③ 语言风格">
-    <div class="in">
-      <div class="kick">分 · 维度③ <span class="dim">· P3 最反直觉的一点</span></div>
-      <h2 class="head">注入真实 persona 后，task success 反而降了</h2>
-      <div class="kv">
-        <div><b>6–8% → 45.3%</b><span>风格匹配率（grounding 前后）</span></div>
-        <div><b>−3.2 / −3.5%</b><span>τ-bench(Airline/Retail) 成功率变化</span></div>
-      </div>
-      <p>为什么降？因为真实用户会<b>信息给不全、用 ALL-CAPS 触发误操作、对抗场景里不配合</b>——这些失败以前一直被「完美用户」盖着。所以 grounding 的价值不只是「更像」，而是<b>让此前隐形的 agent bug 现形</b>。</p>
-      <figure>
-        <div class="frame"><img src="assets/fig-rus-perfect.png" alt="不同模拟条件下任务成功率" loading="lazy"></div>
-        <figcaption><b>图 5.</b> 同一批 agent，在 Original（带指令）/ NP（去指令）/ Real-Persona 三种条件下成功率明显漂移——换个 simulator，结论就变了。<span class="src">（arXiv:2605.20204）</span></figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- 10 · P4 -->
-  <section class="slide" data-sec="④ latent state">
-    <div class="in">
-      <div class="kick">分 · 维度④ <span class="dim">· latent state / 意图</span></div>
-      <div class="work"><span class="pid">P4</span><span class="arx">HumanLM · <a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a></span></div>
-      <p class="byl">Wu et al. · 2026</p>
-      <div class="cols text-fig">
-        <div>
-          <p>前三篇讲「真实用户长啥样」，这篇追问更深一层：<b>为什么这么说</b>。核心观点——<b>response imitation（学表层措辞）学不到</b>：人是非确定的，同一个 stance 能用完全不同的话说出来。要先对齐 <b>latent state</b> 再生成。</p>
-          <p style="font-size:.98rem">做法：定 6 个心理状态维度（belief / goal / emotion / value / stance / communication），用 <span class="en">GRPO</span> + LLM judge 先对齐 state、再合成回复。基准 Humanual：26k 用户、216k 回复、6 个数据集。</p>
-          <div class="kv" style="margin-top:6px">
-            <div><b>+16.3%</b><span>相对最优 baseline</span></div>
-            <div><b>76.6%</b><span>人评「相当自然」</span></div>
-          </div>
-        </div>
-        <figure>
-          <div class="frame"><img src="assets/fig-humanlm-method.png" alt="SFT 表层模仿 vs HumanLM 状态对齐" loading="lazy"></div>
-          <figcaption><b>图 6.</b> 上路 SFT 只做表层模仿；下路 HumanLM 先把回复拆到各 state 维度、对齐后再生成。<span class="src">（arXiv:2603.03303）</span></figcaption>
-        </figure>
-      </div>
-    </div>
-  </section>
-
-  <!-- 11 · synthesis table -->
-  <section class="slide" data-sec="总 · 收束">
-    <div class="in">
-      <div class="kick">总 <span class="dim">· 四条线收一张表</span></div>
-      <h2 class="head">差距是系统性的，而且方向一致</h2>
+      <div class="rqbig">RQ1</div>
+      <h2>真实用户和 bench / naive 模拟有什么区别？</h2>
       <div class="tbl-wrap">
-        <table>
-          <caption><b>表 1.</b> 真实用户 vs. naive / benchmark 模拟，四个维度的对照。</caption>
-          <thead><tr><th>维度</th><th>真实用户</th><th>naive / 模拟</th><th>代表证据</th></tr></thead>
+        <table class="idx">
+          <thead><tr><th>标题</th><th>会议 / 作者 / 机构</th><th>时间</th><th>研究视角</th></tr></thead>
           <tbody>
-            <tr><td><span class="dn">① 信息流</span></td><td class="pos">underspecified，逐步乱序给</td><td class="neg">一次性说全</td><td>性能 −39%，unreliability +112% <span class="ref">P1</span></td></tr>
-            <tr><td><span class="dn">② intervention</span></td><td class="pos">四种风格，主动接管</td><td class="neg">全程沉默旁观</td><td>介入 F1 仅 0.198 <span class="ref">P2</span></td></tr>
-            <tr><td><span class="dn">③ 语言风格</span></td><td class="pos">缩写 / 小写 / 口头语</td><td class="neg">客气、流畅、合作</td><td>风格匹配 6–8% → 45% <span class="ref">P3</span></td></tr>
-            <tr><td><span class="dn">④ latent state</span></td><td class="pos">由潜在状态驱动、非确定</td><td class="neg">表层措辞模仿</td><td>状态对齐 +16.3% <span class="ref">P4</span></td></tr>
+            <tr><td>LLMs Get Lost in Multi-Turn Conversation</td><td class="view"><span class="v">ICLR 25</span> best paper</td><td class="view">2025 May</td><td>信息多轮释放</td></tr>
+            <tr><td>Modeling Distinct Human Interaction in Web Agents</td><td class="view">CMU · Graham Neubig</td><td class="view">2026 May</td><td>用户介入</td></tr>
+            <tr><td>RealUserSim: Bridging the Reality Gap via Grounded User Simulation</td><td class="view">Salesforce AI Research</td><td class="view">2026 Apr</td><td>用户不合作</td></tr>
+            <tr><td>HumanLM: Simulating Users with State Alignment Beats Response Imitation</td><td class="view">Stanford · Shirley Wu</td><td class="view">2026 Feb</td><td>用户有深层意图</td></tr>
           </tbody>
         </table>
       </div>
-      <p style="margin-top:12px;font-size:.98rem">naive 模拟的偏置永远朝「理想化」走——更完整、更配合、更流畅、更表里如一；于是<b>既高估能力，又盖住失败</b>。</p>
     </div>
   </section>
 
-  <!-- 12 · takeaways -->
-  <section class="slide" data-sec="总 · 启示">
+  <!-- P1 · LLMs Get Lost · motivation -->
+  <section class="slide" data-rq="1" data-sec="P1 · LLMs Get Lost">
     <div class="in">
-      <div class="kick">总 <span class="dim">· 对 user modeling 的启示 + 开放问题</span></div>
-      <h2 class="head">怎么把真实用户搬回评测 / 训练回路</h2>
+      <div class="kick">RQ1 · 信息多轮释放 <span class="dim">· LLMs Get Lost in Multi-Turn Conversation</span></div>
+      <div class="cols narrow-fig">
+        <div>
+          <div class="pmeta"><span class="v">ICLR 25 best paper</span> · 2025 May</div>
+          <h3 class="sub">Motivation</h3>
+          <p>现在的 LLM 在<b>单轮、完整指令</b>下表现很好，但一旦用户把需求<b>拆散到多轮对话</b>里逐步补充，模型性能和稳定性会显著下降。</p>
+        </div>
+        <figure><div class="frame"><img src="assets/img/p1-header.png" alt="LLMs Get Lost in Multi-Turn Conversation" loading="lazy"></div></figure>
+      </div>
+      <div class="exg">
+        <div class="ex single"><div class="h">原始单轮任务</div><div class="body">写一个 Python 函数，实现某个功能，要求处理空输入、返回特定格式、复杂度 O(n)、不要使用某个库。</div></div>
+        <div class="ex"><div class="h">现实里 → 多轮逐步补充</div><div class="body">
+          <span class="bubble first">帮我写一个函数。</span>
+          <span class="bubble">输入是一个列表。</span>
+          <span class="bubble">需要处理空列表。</span>
+          <span class="bubble">返回值要是字典。</span>
+          <span class="bubble">复杂度最好是 O(n)。</span>
+          <span class="bubble">不要用 pandas。</span>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P1 · sharding -->
+  <section class="slide" data-rq="1" data-sec="P1 · Instruction Sharding">
+    <div class="in">
+      <div class="kick">P1 <span class="dim">· 怎么模拟「多轮逐步释放信息」</span></div>
+      <h2 class="head">Instruction Sharding：把完整指令打碎成多轮</h2>
+      <figure><div class="frame"><img src="assets/img/p1-fig1.png" alt="Instruction Sharding 与 Full / Sharded / Concat / Recap / Snowball 仿真类型" loading="lazy"></div>
+        <figcaption>把 fully-specified single-turn 拆成 sharded multi-turn；对比 Full / Sharded / Concat 等仿真设定。</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- P1 · results -->
+  <section class="slide" data-rq="1" data-sec="P1 · Aptitude vs Unreliability">
+    <div class="in">
+      <div class="kick">P1 <span class="dim">· 掉的是可靠性，不是能力</span></div>
+      <div class="cols">
+        <div>
+          <p>论文把性能下降拆成两个维度：</p>
+          <ul class="b">
+            <li><b>Aptitude</b>：近似「最好情况下模型能做到多好」，用 90th percentile 表示。</li>
+            <li><b>Unreliability</b>：近似「同一任务不同模拟轨迹之间波动多大」，用 90th − 10th percentile 表示。</li>
+          </ul>
+          <p>Sharded 下平均性能显著下降，但主因不是 aptitude 大降，而是 <b>unreliability 暴涨</b>——模型不是不会做，而是多轮里容易走偏，早期错了后面很难纠正。</p>
+          <div class="kv">
+            <div><b>−16%</b><span>aptitude 平均下降</span></div>
+            <div><b>+112%</b><span>unreliability 暴涨（几乎翻倍）</span></div>
+          </div>
+        </div>
+        <div class="figrow">
+          <figure><div class="frame"><img src="assets/img/p1-fig3.png" alt="Aptitude / Unreliability 可视化与模型退化" loading="lazy"></div></figure>
+          <figure><div class="frame"><img src="assets/img/p1-fig2.png" alt="Full / Concat / Sharded 实验结果表" loading="lazy"></div></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P1 · why get lost -->
+  <section class="slide" data-rq="1" data-sec="P1 · 为什么 get lost">
+    <div class="in">
+      <div class="kick">P1 <span class="dim">· 为什么模型会 “get lost”</span></div>
+      <h2 class="head">四个机制，挺有启发</h2>
+      <div class="cards">
+        <div class="card"><h4>过早给最终答案</h4><p>信息还不完整就急着生成完整解法（假设输入输出、边界、复杂度）。这些假设一旦写进对话历史，就变成「自我污染」的上下文。</p></div>
+        <div class="card"><h4>过度依赖自己之前的错误答案 <span class="en">answer bloat</span></h4><p>用户补约束时，模型不重新建模任务状态，而是在旧答案上修修补补，越修越乱。多轮最终答案常比 Full/Concat 长 <b>20%–300%</b>，长 ≠ 好。</p></div>
+        <div class="card"><h4>中间轮信息丢失 <span class="en">loss-in-middle-turns</span></h4><p>更关注开头和最后几轮，忽略中间补充的信息。和 long-context 的 lost-in-the-middle 很像，只是发生在 multi-turn 里。</p></div>
+        <div class="card"><h4>回复太啰嗦</h4><p>每轮输出很长，把假设、解释、半成品不断塞进上下文，稀释了后续轮的有效用户信息。越早「自信展开」，后面越难拉回来。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · Web Agents · motivation -->
+  <section class="slide" data-rq="1" data-sec="P2 · Web Agents 用户介入">
+    <div class="in">
+      <div class="kick">RQ1 · 用户介入 <span class="dim">· Modeling Distinct Human Interaction in Web Agents</span></div>
+      <div class="cols narrow-fig">
+        <div>
+          <div class="pmeta">CMU · <span class="v">Graham Neubig</span> · 2026 May</div>
+          <h3 class="sub">Motivation</h3>
+          <p>不要只把 Web Agent 当成全自动执行器，而要显式建模<b>用户什么时候会介入、为什么介入、介入后是否还会把控制权交还给 agent</b>。</p>
+          <p class="muted">传统范式：用户给任务 → agent 自动规划 → 自动执行 → 返回结果。但真实使用中用户经常中途介入。</p>
+        </div>
+        <figure><div class="frame"><img src="assets/img/p2-header.png" alt="Modeling Distinct Human Interaction in Web Agents" loading="lazy"></div></figure>
+      </div>
       <ul class="b">
-        <li><b>评测：</b>单轮 → underspecified 多轮；显式引入 风格 / intervention / state 的分布；<b>多次采样</b>看 unreliability，别只报一次均值。</li>
-        <li><b>建模：</b>把用户建成 <span class="en">信息流策略 × intervention 策略 × 语言风格 × latent state</span> 的联合分布，而不是 prompt 里一句人设。</li>
-        <li><b>数据：</b>真实日志（WildChat、协作轨迹）是不可替代的 anchor——保真度的下界由数据、不是 prompt 决定。</li>
+        <li>agent 点错了；</li>
+        <li>agent 忽略了用户隐含偏好；</li>
+        <li>agent 面对复杂网页组件卡住了；</li>
+        <li>用户突然发现自己没把需求说清楚；</li>
+        <li>当前操作风险太高，用户想自己接管。</li>
       </ul>
-      <h2 class="head" style="font-size:1.3rem;margin-top:22px">还没解决的</h2>
-      <ol class="n">
-        <li>能不能把四个维度<b>统一</b>进一个真实用户生成器？保真和可控怎么兼顾（P3 揭示了这俩有张力）。</li>
-        <li>intervention / state 的步级标注太贵，怎么低成本迁到新领域。</li>
-        <li>P1 只说「低估」，真实相对模拟到底退化多少，<b>还没人量化上界</b>。</li>
-      </ol>
+      <p class="muted">问题不是「不够自动化」，而是 <b>不知道什么时候该自动、什么时候该停下来让用户介入</b>：太自主会越过关键决策点，太频繁确认又打断用户。</p>
     </div>
   </section>
 
-  <!-- 13 · refs -->
-  <section class="slide refs" data-sec="参考文献">
+  <!-- P2 · task + dataset -->
+  <section class="slide" data-rq="1" data-sec="P2 · 任务 & 数据集">
     <div class="in">
-      <div class="kick">参考文献 <span class="dim">· 本期 4 篇</span></div>
-      <ol>
-        <li><b>LLMs Get Lost in Multi-Turn Conversation.</b> Laban, Hayashi, Zhou, Neville. <a href="https://arxiv.org/abs/2505.06120" target="_blank" rel="noopener">arXiv:2505.06120</a>, 2025.</li>
-        <li><b>Modeling Distinct Human Interaction in Web Agents.</b> Huq, Wang, Guo, Arangajaran, Ou, Xu, Zhou, Neubig, Bigham. <a href="https://arxiv.org/abs/2602.17588" target="_blank" rel="noopener">arXiv:2602.17588</a>, 2026.</li>
-        <li><b>RealUserSim: Bridging the Reality Gap in Agent Benchmarking via Grounded User Simulation.</b> Zhu, Tan, Murthy, Qiu, Yang, Zhao, Savarese, Heinecke, Wang. <a href="https://arxiv.org/abs/2605.20204" target="_blank" rel="noopener">arXiv:2605.20204</a>, 2026.</li>
-        <li><b>HumanLM: Simulating Users with State Alignment Beats Response Imitation.</b> Wu et al. <a href="https://arxiv.org/abs/2603.03303" target="_blank" rel="noopener">arXiv:2603.03303</a>, 2026.</li>
+      <div class="kick">P2 <span class="dim">· 任务定义 & 数据集</span></div>
+      <h2 class="head">预测每一步用户会不会介入</h2>
+      <div class="cols">
+        <div>
+          <h3 class="sub">任务定义</h3>
+          <p>预测每一个时间步，用户是否会中途介入。</p>
+          <h3 class="sub">数据集 · CowCorpus</h3>
+          <p>一个真实人类 × Web Agent 协作的数据集，<b>400 条</b>真实用户 Web 导航轨迹，总计 <b>4200+</b> 个交错的人类 / agent action。</p>
+        </div>
+        <div>
+          <div class="kv" style="flex-direction:column">
+            <div><b>20 × 20</b><span>20 个用户，每人 20 个任务</span></div>
+            <div><b>10 + 10</b><span>10 个 Mind2Web 标准任务 + 10 个 free-form 任务</span></div>
+            <div><b>400</b><span>human-agent collaborative web trajectories</span></div>
+          </div>
+          <p class="muted">每步都记录：是 agent 还是 human 做的、时间戳、网页快照。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · reasons -->
+  <section class="slide" data-rq="1" data-sec="P2 · 用户介入原因">
+    <div class="in">
+      <div class="kick">P2 <span class="dim">· 用户介入原因（三类）</span></div>
+      <div class="reasons">
+        <div class="reason"><div class="t">Error Correction & Recovery</div><p>纠错。agent 点错元素、提前执行不该执行的操作、陷入重复无效动作。例：产品搜索没完成就过早选了 location filter，用户只好接管几步拉回正轨。</p></div>
+        <div class="reason"><div class="t">Preference Misalignment</div><p>修正偏好不匹配。用户一开始没把价格/地点/品牌等偏好写完整，看到 agent 中途行为不符合真实偏好才补充。例：买牙膏没提前指定品牌，看到中间动作才补。</p></div>
+        <div class="reason"><div class="t">Assistive Intervention</div><p>不是逻辑错，而是网页环境太复杂：dropdown、captcha、dynamic layout、复杂 DOM、资源没加载。用户也可能为避免不可恢复错误而主动接管。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · styles -->
+  <section class="slide" data-rq="1" data-sec="P2 · 用户协作风格">
+    <div class="in">
+      <div class="kick">P2 <span class="dim">· 用户协作风格（聚类四类）</span></div>
+      <div class="cols">
+        <figure><div class="frame"><img src="assets/img/p2-styles.png" alt="四类协作风格在主成分空间的聚类" loading="lazy"></div></figure>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>类型</th><th>特征</th><th>我的理解</th></tr></thead>
+            <tbody>
+              <tr><td class="dn">Hands-off</td><td>很少介入，让 agent 基本端到端执行</td><td>信任 agent，低监督</td></tr>
+              <tr><td class="dn">Hands-on</td><td>频繁介入，和 agent 来回交替控制</td><td>高监督，共同执行</td></tr>
+              <tr><td class="dn">Collaborative</td><td>选择性介入，介入后通常交还控制权</td><td>理想协作型用户</td></tr>
+              <tr><td class="dn">Takeover</td><td>介入较晚，一旦介入就不太交还控制权</td><td>agent 失控后用户接管</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P2 · predict -->
+  <section class="slide" data-rq="1" data-sec="P2 · 能否预测介入">
+    <div class="in">
+      <div class="kick">P2 <span class="dim">· 能否预测用户何时介入</span></div>
+      <figure><div class="frame"><img src="assets/img/p2-predict.png" alt="预测用户何时介入的结果" loading="lazy"></div></figure>
+    </div>
+  </section>
+
+  <!-- P3 · RealUserSim · motivation -->
+  <section class="slide" data-rq="1" data-sec="P3 · RealUserSim 用户不合作">
+    <div class="in">
+      <div class="kick">RQ1 · 用户不合作 <span class="dim">· RealUserSim</span></div>
+      <div class="cols narrow-fig">
+        <div>
+          <div class="pmeta"><span class="v">Salesforce AI Research</span> · 2026 Apr</div>
+          <h3 class="sub">Motivation</h3>
+          <p>很多 agent benchmark（如 <span class="en">τ-bench</span>）用 LLM 扮演用户，让 agent 和这个 simulated user 多轮交互。问题是：<b>这个 simulated user 往往不像真实人类</b>，更像另一个 assistant。</p>
+        </div>
+        <figure><div class="frame"><img src="assets/img/p3-header.png" alt="RealUserSim" loading="lazy"></div></figure>
+      </div>
+      <p class="muted">论文指出现有 user simulation 有两个核心问题 → 见下一页。</p>
+    </div>
+  </section>
+
+  <!-- P3 · two problems -->
+  <section class="slide" data-rq="1" data-sec="P3 · 两个核心问题">
+    <div class="in">
+      <div class="kick">P3 <span class="dim">· 现有 user simulation 的两个病</span></div>
+      <div class="cols">
+        <div>
+          <div class="card" style="margin-bottom:12px"><h4>Formalism Ceiling</h4><p>没约束的 LLM simulator 默认变成「礼貌、完整、语法正确、合作度高」的用户——不像真实用户，更像 assistant。没有真实 profile 时，style-related dimensions 匹配率只有 <b>6%–8%</b>。</p></div>
+          <div class="card"><h4>Directive Amplification</h4><p>手写指令（「你是一个非常愤怒的顾客」）会被不同 simulator 放大成不同强度：有的写 <span class="en">sobbing</span>、<span class="en">choking back tears</span> 这种舞台动作，有的只说「我很 upset」。→ benchmark 难度不稳定、不同 simulator 不可比。</p></div>
+        </div>
+        <figure><div class="frame"><img src="assets/img/p3-problems.png" alt="Formalism Ceiling 与 Directive Amplification 示例" loading="lazy"></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- P3 · method -->
+  <section class="slide" data-rq="1" data-sec="P3 · 方法">
+    <div class="in">
+      <div class="kick">P3 <span class="dim">· 方法</span></div>
+      <h2 class="head">从真实对话抽 profile，注入 simulator 的 prompt</h2>
+      <div class="cols">
+        <div>
+          <p>用 <span class="en">WildChat-4.8M</span> 作真实对话来源：从 3.2M conversations 里筛出 <b>21,637 条</b>英文、多轮、GPT-4o 轨迹，覆盖 <b>7,311 个</b> unique users，最后构造 <b>7,275 个</b> executable behavioral profiles。</p>
+          <div class="tbl-wrap" style="max-height:30vh">
+            <table>
+              <thead><tr><th>部分</th><th>内容</th><th>作用</th></tr></thead>
+              <tbody>
+                <tr><td class="dn">Demographics</td><td>年龄、教育、性别、职业、地点等（部分显式披露、部分推断）</td><td>提供用户背景</td></tr>
+                <tr><td class="dn">Additional background</td><td>从历史对话总结的额外背景</td><td>增强上下文</td></tr>
+                <tr><td class="dn">Communication style</td><td>Command + Example 的风格手册</td><td>约束语言风格与交互方式</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <p class="muted">不是泛泛 persona（「informal user」），而是 <b>Executable Persona Manual</b>：</p>
+          <pre class="code"><span class="cmd">Command:</span> 经常重复词语来强调
+<span class="ex">Examples: "the most the most famous food";
+          "there are there are huge differences"</span>
+
+<span class="cmd">Command:</span> 用 hmm / ahh 表示犹豫
+<span class="ex">Examples: "hmm i think the older people";
+          "hmmm if we eat veegtables"</span>
+
+<span class="cmd">Command:</span> 不满意时要求更多例子或选项
+<span class="ex">Examples: "share a more short caption.";
+          "share 10 more"</span></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P3 · archetypes -->
+  <section class="slide" data-rq="1" data-sec="P3 · 8 个行为 archetype">
+    <div class="in">
+      <div class="kick">P3 <span class="dim">· 8 个行为 archetype</span></div>
+      <p class="muted">对 7,273 个用户基于 48 个 binary linguistic traits 做 t-SNE + k-means，得到 8 个 archetype。</p>
+      <div class="tbl-wrap">
+        <table class="t-c0">
+          <thead><tr><th>Cluster</th><th>典型特征</th><th>用户数</th></tr></thead>
+          <tbody>
+            <tr><td>C0</td><td>complete sentences + structured lists + exclamation marks</td><td class="mono">1,007</td></tr>
+            <tr><td>C1</td><td>rhetorical questions + informal language + formal language</td><td class="mono">592</td></tr>
+            <tr><td>C2</td><td>emoji + slang + exclamation marks</td><td class="mono">541</td></tr>
+            <tr><td>C3</td><td>direct requests + greetings/sign-offs + lowercase</td><td class="mono">853</td></tr>
+            <tr><td>C4</td><td>domain-specific vocabulary + multi-sentence + polite language</td><td class="mono">1,157</td></tr>
+            <tr><td>C5</td><td>missing articles + run-on sentences + first person</td><td class="mono">659</td></tr>
+            <tr><td>C6</td><td>informal language + misspellings + lowercase “i”</td><td class="mono">1,065</td></tr>
+            <tr><td>C7</td><td>first person + lowercase “i” + imperative sentences</td><td class="mono">1,399</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- P3 · results -->
+  <section class="slide" data-rq="1" data-sec="P3 · 结果 & 失败机制">
+    <div class="in">
+      <div class="kick">P3 <span class="dim">· 结果：NP 成功但 Real Persona 失败的三类机制</span></div>
+      <div class="cols">
+        <div class="figrow two">
+          <figure><div class="frame"><img src="assets/img/p3-result1.png" alt="RealUserSim 结果 1" loading="lazy"></div></figure>
+          <figure><div class="frame"><img src="assets/img/p3-result2.png" alt="RealUserSim 结果 2" loading="lazy"></div></figure>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>失败机制</th><th>含义</th><th>例子</th></tr></thead>
+            <tbody>
+              <tr><td class="dn">Information loss</td><td>简短风格省略关键任务细节</td><td>用户只说 “cancel the reservations as listed”，agent 多取消了不该取消的人</td></tr>
+              <tr><td class="dn">Agent misinterpretation</td><td>激进/异常表达让 agent 误解意图</td><td>用户说 “GIMME A REFUND PLS”，agent 误以为要取消订单</td></tr>
+              <tr><td class="dn">Compliance failure</td><td>persona 和 benchmark 设定冲突</td><td>任务要坚持退款 5 次再放弃，但 hesitant persona 第一次就同意取消</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P4 · HumanLM -->
+  <section class="slide" data-rq="1" data-sec="P4 · HumanLM">
+    <div class="in">
+      <div class="kick">RQ1 · 用户有深层意图 <span class="dim">· HumanLM</span></div>
+      <div class="pmeta">Stanford · <span class="v">Shirley Wu</span> · 2026 Feb　·　State Alignment Beats Response Imitation</div>
+      <figure class="tall"><div class="frame"><img src="assets/img/p4-header.png" alt="HumanLM: Simulating Users with State Alignment Beats Response Imitation" loading="lazy"></div></figure>
+    </div>
+  </section>
+
+  <!-- ===== RQ2 DIVIDER ===== -->
+  <section class="slide divider" id="rq2" data-rq="2" data-sec="RQ2 · 总览">
+    <div class="in">
+      <div class="rqbig">RQ2</div>
+      <h2>如何 Bridge the Gap？</h2>
+      <p class="lead" style="max-width:34ch">既然 single-turn 会做，能不能把这个能力迁移到 multi-turn 行为里。</p>
+    </div>
+  </section>
+
+  <!-- RQ2 · Found in Conversation -->
+  <section class="slide" data-rq="2" data-sec="Found in Conversation">
+    <div class="in">
+      <div class="kick">RQ2 <span class="dim">· FOUND IN CONVERSATION: LLMs Teach Themselves to Close the Multi-Turn Gap</span></div>
+      <div class="cols narrow-fig">
+        <div>
+          <h3 class="sub">Motivation</h3>
+          <p>既然模型在 single-turn 下会做，为什么 multi-turn 下不会做？能不能把 single-turn 能力迁移到 multi-turn 行为里？</p>
+          <p>作者判断：这个 gap 很大程度上是 <b>behavioral gap，不是 capability gap</b>。同一个模型、同样信息，只是呈现形式不同，single-turn 能做而 multi-turn 不能做，说明<b>能力已经在模型里，只是多轮交互中没稳定调用出来</b>。</p>
+        </div>
+        <figure><div class="frame"><img src="assets/img/r2-header.png" alt="Found in Conversation" loading="lazy"></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- RQ2 · figures -->
+  <section class="slide" data-rq="2" data-sec="Found in Conversation · 方法">
+    <div class="in">
+      <div class="kick">RQ2 <span class="dim">· 方法 & 结果</span></div>
+      <div class="figrow two">
+        <figure><div class="frame"><img src="assets/img/r2-fig1.png" alt="Found in Conversation 方法" loading="lazy"></div></figure>
+        <figure><div class="frame"><img src="assets/img/r2-fig2.png" alt="Found in Conversation 结果" loading="lazy"></div></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RQ3 DIVIDER ===== -->
+  <section class="slide divider" id="rq3" data-rq="3" data-sec="RQ3 · 总览">
+    <div class="in">
+      <div class="rqbig">RQ3</div>
+      <h2>下一步？</h2>
+      <p class="lead" style="max-width:36ch">新数据集 SWE-chat · 可能的工具 ISO-24617-2 · 我们的目标。</p>
+    </div>
+  </section>
+
+  <!-- RQ3 · SWE-chat -->
+  <section class="slide" data-rq="3" data-sec="SWE-chat">
+    <div class="in">
+      <div class="kick">RQ3 <span class="dim">· 新的数据集 — SWE-chat</span></div>
+      <div class="figrow two">
+        <figure><div class="frame"><img src="assets/img/swe1.png" alt="SWE-chat 1" loading="lazy"></div></figure>
+        <figure><div class="frame"><img src="assets/img/swe2.png" alt="SWE-chat 2" loading="lazy"></div></figure>
+      </div>
+    </div>
+  </section>
+  <section class="slide" data-rq="3" data-sec="SWE-chat">
+    <div class="in">
+      <div class="kick">RQ3 <span class="dim">· SWE-chat（续）</span></div>
+      <figure><div class="frame"><img src="assets/img/swe3.png" alt="SWE-chat 3" loading="lazy"></div></figure>
+    </div>
+  </section>
+
+  <!-- RQ3 · ISO intro -->
+  <section class="slide" data-rq="3" data-sec="ISO-24617-2">
+    <div class="in">
+      <div class="kick">RQ3 <span class="dim">· 可能的工具 — ISO-24617-2</span></div>
+      <figure class="tall"><div class="frame"><img src="assets/img/iso1.png" alt="ISO-24617-2 工具" loading="lazy"></div></figure>
+    </div>
+  </section>
+
+  <!-- RQ3 · ISO dimensions -->
+  <section class="slide" data-rq="3" data-sec="ISO · 维度">
+    <div class="in">
+      <div class="kick">ISO-24617-2 <span class="dim">· 维度</span></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>维度</th><th>标什么</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td class="dn">Task</td><td>推进任务本身</td><td>请求、回答、建议、承诺、告知</td></tr>
+            <tr><td class="dn">Auto-Feedback</td><td>说话者表达自己是否理解 / 感知到对方信息</td><td class="mono">“I see”, “I don’t understand”</td></tr>
+            <tr><td class="dn">Allo-Feedback</td><td>说话者检查或回应对方是否理解</td><td class="mono">“Do you follow?”, “right?”</td></tr>
+            <tr><td class="dn">Turn Management</td><td>管理谁说话、是否继续说</td><td class="mono">“uh”, “go ahead”, “let me finish”</td></tr>
+            <tr><td class="dn">Time Management</td><td>管理时间、暂停、延后</td><td class="mono">“wait a second”, “hold on”</td></tr>
+            <tr><td class="dn">Discourse Structuring</td><td>组织话语结构</td><td class="mono">“first”, “by the way”, “to summarize”</td></tr>
+            <tr><td class="dn">Own Communication Mgmt</td><td>修正自己的表达</td><td class="mono">“I mean…”, “let me rephrase”</td></tr>
+            <tr><td class="dn">Partner Communication Mgmt</td><td>处理对方表达问题</td><td class="mono">“Did you say X?”, “could you repeat?”</td></tr>
+            <tr><td class="dn">Social Obligations Mgmt</td><td>礼貌、问候、道歉、感谢、告别</td><td class="mono">“thanks”, “sorry”, “hello”</td></tr>
+            <tr><td class="dn">Contact Management</td><td>建立/保持/检查接触通道</td><td class="mono">“hello?”, “are you there?”</td></tr>
+            <tr><td class="dn">Task Management</td><td>管理任务流程、阶段、规划</td><td class="mono">“let’s move to the next step”</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RQ3 · ISO functions + DAG -->
+  <section class="slide" data-rq="3" data-sec="ISO · Function & DAG">
+    <div class="in">
+      <div class="kick">ISO-24617-2 <span class="dim">· Function 例 & SWE-chat 依赖 DAG</span></div>
+      <div class="cols">
+        <div class="tbl-wrap" style="max-height:64vh">
+          <table>
+            <thead><tr><th>Function</th><th>例子</th></tr></thead>
+            <tbody>
+              <tr><td class="dn">Inform</td><td class="mono">“We prefer zip.”</td></tr>
+              <tr><td class="dn">Answer</td><td class="mono">“Yes, 50 is the default chunk size.”</td></tr>
+              <tr><td class="dn">Confirm</td><td class="mono">“That’s correct.”</td></tr>
+              <tr><td class="dn">Disconfirm</td><td class="mono">“No, that’s not what I mean.”</td></tr>
+              <tr><td class="dn">Correction</td><td class="mono">“Actually, I meant DRB-II, not DRB1.”</td></tr>
+              <tr><td class="dn">……</td><td class="mono">……</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <figure class="tall"><div class="frame"><img src="assets/img/iso2.svg" alt="SWE-chat Turn Dependency DAGs" loading="lazy"></div>
+          <figcaption>SWE-chat Turn Dependency DAGs · 按 ISO 维度给每个 user-turn 上色、画出轮次依赖。</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- RQ3 · our goals -->
+  <section class="slide" data-rq="3" data-sec="我们的目标">
+    <div class="in">
+      <div class="kick">RQ3 <span class="dim">· 我们的目标</span></div>
+      <ol class="n">
+        <li>研究<b>为何有些 benchmark 上的高分模型实际表现并不行</b>——除去测试集泄漏，是否有 bench 本身的问题。</li>
+        <li>benchmark 如何改造以指导方法研究：
+          <ol>
+            <li>interactive 是否一定会造成性能下降——<b>不是</b>。interactive bench 改造中，有些多轮题目<b>反而性能提升</b>；性能下降的核心不是 interactive，而是用户的<b>不合作</b>（如 lost-in-the-middle 的信息给予不全）。有的改造太「合作」了，甚至在「指导」agent。</li>
+            <li>是否要 100% 模拟现在用户的行为？Neubig 那篇研究了「用户接管」，这一行为是否必须体现在 eval 中？</li>
+          </ol>
+        </li>
       </ol>
-      <p class="note">组会内部材料，主题「用户建模」。RQ2 / RQ3 之后按同一体例补。图都引自对应论文、已标来源，仅供讨论。</p>
+      <div class="goal-note">个人认为不用。Human-Agent Interactive 的<b>理想状态</b>应该是 vibe coding：除了权限与偏好澄清，agent 不应主动要求与人类交互；agent 也没有理由认为人类一定比自己强、从而请求人类指导。　<span class="muted">c. 可能的切入点：multi-tasking / multi-thread？</span></div>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section class="slide divider" data-rq="3" data-sec="结束">
+    <div class="in" style="text-align:center">
+      <div class="kick" style="justify-content:center">谢谢 <span class="dim">· 用户建模 · 组会 0623</span></div>
+      <h2 class="head" style="max-width:none">讨论：interactive ≠ 性能下降，<br>真正的 gap 在「用户不合作」</h2>
+      <p class="muted"><a href="../../index.html">← 返回主页</a></p>
     </div>
   </section>
 
 </div>
 
-<!-- dot rail -->
 <div class="rail" id="rail"></div>
 
-<!-- HUD -->
 <div class="hud">
   <button id="prev" aria-label="上一页">↑</button>
-  <div class="ctr"><span><b id="cur">1</b> / <span id="tot">13</span></span><span class="sec" id="secname">封面</span></div>
+  <div class="ctr"><span><b id="cur">1</b> / <span id="tot">0</span></span><span class="sec" id="secname">封面</span></div>
   <button id="next" aria-label="下一页">↓</button>
 </div>
 
@@ -415,29 +672,30 @@ const slides=[...deck.querySelectorAll('.slide')];
 const rail=document.getElementById('rail');
 const curEl=document.getElementById('cur'), totEl=document.getElementById('tot'), secEl=document.getElementById('secname');
 const prevB=document.getElementById('prev'), nextB=document.getElementById('next'), bar=document.getElementById('bar');
+const rqLinks=[...document.querySelectorAll('.rqnav a')];
 let idx=0;
 totEl.textContent=slides.length;
 
-slides.forEach((s,i)=>{const d=document.createElement('i');d.title=s.dataset.sec||'';d.addEventListener('click',()=>go(i));rail.appendChild(d);});
+slides.forEach((s,i)=>{const d=document.createElement('i');d.title=s.dataset.sec||'';if(s.classList.contains('divider'))d.dataset.d='1';d.addEventListener('click',()=>go(i));rail.appendChild(d);});
 const dots=[...rail.children];
 
 function paint(){
   curEl.textContent=idx+1;
   secEl.textContent=slides[idx].dataset.sec||'';
-  bar.style.width=((idx)/(slides.length-1)*100)+'%';
+  bar.style.width=(idx/(slides.length-1)*100)+'%';
   dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
   prevB.disabled=idx===0; nextB.disabled=idx===slides.length-1;
+  const rq=slides[idx].dataset.rq;
+  rqLinks.forEach(a=>a.classList.toggle('on',a.dataset.go==='rq'+rq));
 }
 function go(i){idx=Math.max(0,Math.min(slides.length-1,i));slides[idx].scrollIntoView({behavior:'smooth'});paint();}
 
-// keep idx synced when user free-scrolls / snaps
-const io=new IntersectionObserver((es)=>{
-  es.forEach(e=>{if(e.isIntersecting){idx=slides.indexOf(e.target);paint();}});
-},{root:deck,threshold:.55});
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){idx=slides.indexOf(e.target);paint();}});},{root:deck,threshold:.55});
 slides.forEach(s=>io.observe(s));
 
 prevB.onclick=()=>go(idx-1);
 nextB.onclick=()=>go(idx+1);
+rqLinks.forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.dataset.go);if(t)go(slides.indexOf(t));}));
 addEventListener('keydown',e=>{
   if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1);}
   else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(idx-1);}
