@@ -481,6 +481,8 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
         <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>Email</a>
       <a class="link" href="https://github.com/imlrz" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 20 4.8a4.9 4.9 0 0 0-.1-3.6s-1.1-.4-3.7 1.4a12.6 12.6 0 0 0-6.6 0C7 .8 5.9 1.2 5.9 1.2A4.9 4.9 0 0 0 5.8 4.8 5.2 5.2 0 0 0 4.4 8.4c0 5.2 3.2 6.4 6.2 6.7a3.4 3.4 0 0 0-.9 2.6V22"/></svg>GitHub</a>
+      <a class="link" href="https://scholar.google.com/citations?user=DbNRB9IAAAAJ&hl=en" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17"/><path d="M5 11.4V16c0 1.7 3.1 3 7 3s7-1.3 7-3v-4.6"/></svg>Scholar</a>
       <a class="link" href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>Lab</a>
     </div>
@@ -504,7 +506,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       <ul class="news">
         <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv; the public leaderboard is live at agentresearchlab.com.</span></li>
         <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
-        <li><span class="date">2025.05</span><span data-i18n="n3">Released <a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener">Eat-at-USTC</a>, a campus dining recommender (Yuqing Cup project).</span></li>
+        <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> is accepted to EMNLP 2025.</span></li>
       </ul>
     </section>
 
@@ -522,6 +524,27 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener">Code</a>
           <a href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">Website</a>
           <a href="https://huggingface.co/datasets/muset-ai/DeepResearch-Bench-II-Dataset" target="_blank" rel="noopener">Dataset</a>
+        </div>
+      </article>
+      <article class="pub">
+        <span class="pub-badge">EMNLP 2025</span>
+        <h3 class="pub-title">Automated Creativity Evaluation for Large Language Models: A Reference-Based Approach</h3>
+        <p class="pub-authors"><span class="me">Ruizhe Li</span>, Chiwei Zhu, Benfeng Xu, Xiaorui Wang, Zhendong Mao</p>
+        <p class="pub-venue">EMNLP 2025 · arXiv:2504.15784</p>
+        <p class="pub-tldr" data-i18n="p2tldr">A reference-based method that scores the creativity of large-language-model outputs against human references, offering a more reliable and automatic alternative to costly human creativity ratings.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">arXiv</a>
+        </div>
+      </article>
+      <article class="pub">
+        <span class="pub-badge">CIKM 2024</span>
+        <h3 class="pub-title">Reformulating Conversational Recommender Systems as Tri-Phase Offline Policy Learning</h3>
+        <p class="pub-authors">Gangyi Zhang, Chongming Gao, Hang Pan, Runzhe Teng, <span class="me">Ruizhe Li</span></p>
+        <p class="pub-venue">CIKM 2024 · arXiv:2408.06809</p>
+        <p class="pub-tldr" data-i18n="p3tldr">Recasts conversational recommendation as a three-phase offline policy-learning problem, decoupling interaction-policy learning from costly online exploration.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2408.06809" target="_blank" rel="noopener">arXiv</a>
+          <a href="https://doi.org/10.1145/3627673.3679792" target="_blank" rel="noopener">DOI</a>
         </div>
       </article>
     </section>
@@ -585,12 +608,14 @@ const T={
     newsT:'近况',
     n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv，公开榜单上线 agentresearchlab.com。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
-    n3:'发布 <a href="https://github.com/imlrz/Eat-at-USTC" target="_blank" rel="noopener">Eat-at-USTC</a> 校园餐饮推荐系统（羽青杯项目）。',
+    n3:'我们的论文 <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> 被 EMNLP 2025 接收。',
     pubT:'论文',
     pubBadge:'预印本 · 2026',
     p1title:'DeepResearch Bench II：以专家报告衍生的细粒度评分标准诊断深度研究智能体',
     eqNote:' · *共同一作',
     p1tldr:'一个涵盖 22 个领域、132 个以专家报告为依据的任务、共 9,430 条完全可验证二元评分标准的基准，从信息召回、分析、表达三个维度评测深度研究报告。采用四阶段「大模型+人工」流程、超过 400 专家工时构建——即便最强系统也只满足不到 50% 的评分项。',
+    p2tldr:'一种基于参考的创造力自动评测方法，将大模型输出的创造力与人类参考对照打分，为昂贵的人工创造力评分提供更可靠、可自动化的替代。',
+    p3tldr:'将对话式推荐重新表述为三阶段离线策略学习问题，把交互策略学习与昂贵的在线探索解耦。',
     projT:'项目',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
     repo:'仓库 ↗',
