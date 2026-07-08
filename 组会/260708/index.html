@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#faf8f3">
+<meta name="description" content="组会 0708 · 论文进度 · 题目生产 / 实验 / Findings / Discussion">
+<title>论文进度 · 组会 0708</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#faf8f3; --surface:#ffffff; --surface-2:#f4efe4;
+  --ink:#1b1814; --ink-2:#433d34; --ink-3:#766e60; --ink-4:#a89e8b;
+  --accent:#8a3b1d; --accent-2:#6a4a16; --rule:#e4ddcd; --rule-2:#efe9db;
+  --pos:#3a5a44; --neg:#b1462c; --blue:#2f5275;
+  --display:"Spectral","Noto Serif SC",Georgia,serif;
+  --body:"Newsreader","Noto Serif SC",Georgia,serif;
+  --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.68;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(138,59,29,.3)}
+a:hover{border-bottom-color:var(--accent)}
+::selection{background:#e7d9c4}
+b{font-weight:600}
+em{font-style:normal;color:var(--accent)}
+.en{font-family:var(--mono);font-size:.92em}
+
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:80;transition:width .35s ease}
+
+.chrome{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;justify-content:space-between;align-items:center;padding:14px 26px;pointer-events:none;gap:14px}
+.chrome .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+.chrome .l b{color:var(--accent)}
+.chnav{display:flex;gap:6px;pointer-events:auto;flex-wrap:wrap;justify-content:center}
+.chnav a{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);border:1px solid var(--rule);border-radius:20px;padding:4px 11px;background:rgba(255,255,255,.6);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);transition:.2s}
+.chnav a:hover{color:var(--accent);border-color:var(--accent)}
+.chnav a.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.chrome .home{pointer-events:auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:none;border-bottom:1px solid var(--rule)}
+.chrome .home:hover{color:var(--accent);border-bottom-color:var(--accent)}
+
+.deck{height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.deck::-webkit-scrollbar{display:none}
+.slide{min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:78px 34px 82px;position:relative}
+.in{max-width:1000px;margin:0 auto;width:100%}
+
+.kick{font-family:var(--mono);font-size:.73rem;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.kick::before{content:"";width:22px;height:1px;background:var(--accent)}
+.kick .dim{color:var(--ink-3)}
+
+h1.title{font-family:var(--display);font-weight:600;font-size:clamp(2.1rem,5vw,3rem);line-height:1.14;margin-bottom:16px}
+h2.head{font-family:var(--display);font-weight:600;font-size:clamp(1.45rem,3vw,1.9rem);line-height:1.28;margin-bottom:12px}
+.slide p{color:var(--ink-2);margin:10px 0;font-size:1.04rem}
+.slide p b{color:var(--ink)}
+.lead{font-size:1.14rem!important;color:var(--ink)!important}
+.muted{color:var(--ink-3)!important;font-size:.95rem!important}
+
+.agenda{list-style:none;margin:18px 0}
+.agenda li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:1.1rem;color:var(--ink);display:flex;gap:14px;align-items:baseline}
+.agenda li:last-child{border-bottom:none}
+.agenda li b{font-family:var(--mono);font-size:.72rem;color:var(--accent);letter-spacing:.05em;min-width:26px}
+.pmeta{font-family:var(--mono);font-size:.78rem;color:var(--ink-3);margin-top:6px}
+.hint{margin-top:22px;font-family:var(--mono);font-size:.73rem;color:var(--ink-4)}
+.hint kbd{border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-size:.72rem;color:var(--ink-3);background:var(--surface)}
+
+/* figure + lightbox */
+figure{margin:8px 0 4px}
+figure .frame{border:1px solid var(--rule);border-radius:7px;overflow:hidden;background:#fff;display:flex;justify-content:center;align-items:center;cursor:zoom-in}
+figure img{display:block;max-width:100%;max-height:66vh;width:auto;height:auto}
+figcaption{margin-top:8px;font-size:.8rem;line-height:1.5;color:var(--ink-4);font-family:var(--mono)}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(18,14,10,.92);display:none;align-items:center;justify-content:center;padding:22px;overflow:auto;cursor:zoom-out;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.lb.open{display:flex}
+.lb img{max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:6px;box-shadow:0 20px 60px rgba(0,0,0,.5);background:#fff;cursor:zoom-in}
+.lb.zoom{align-items:flex-start;justify-content:flex-start}
+.lb.zoom img{max-width:none;max-height:none;cursor:zoom-out}
+.lb-hint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.7rem;color:rgba(255,255,255,.72);z-index:201;pointer-events:none}
+
+/* cols */
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center}
+.cols.tab-note{grid-template-columns:1.3fr .7fr}
+
+/* tables */
+.tbl-wrap{overflow:auto;margin:10px 0;max-height:70vh;border:1px solid var(--rule);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:.88rem}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.45}
+thead th{position:sticky;top:0;background:var(--surface-2);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:.68rem;letter-spacing:.02em;text-transform:uppercase;color:var(--ink-2);font-weight:600;z-index:1}
+tbody tr:last-child td{border-bottom:none}
+td .dn{font-weight:600;color:var(--ink)}
+td .mono,.mono{font-family:var(--mono);font-size:.92em}
+.num{text-align:right;font-family:var(--mono);color:var(--ink-2)}
+
+/* experiment table */
+.exp table{font-size:.82rem;min-width:820px}
+.exp thead th{text-align:center}
+.exp thead tr:first-child th{border-bottom:1px solid var(--rule);background:var(--surface-2)}
+.exp th.grp{color:var(--accent)}
+.exp td:first-child{font-weight:600;color:var(--ink);white-space:nowrap;position:sticky;left:0;background:var(--bg)}
+.exp td{text-align:center;font-family:var(--mono);font-size:.78rem;color:var(--ink-2);white-space:nowrap}
+.exp td.delta{font-weight:600;color:var(--neg)}
+.exp td.dash{color:var(--ink-4)}
+.exp .cap{font-family:var(--mono);font-size:.72rem;color:var(--ink-4);margin-top:8px}
+
+/* subject table */
+.subj td:first-child{font-weight:600;color:var(--ink);font-family:var(--mono);font-size:.82rem;white-space:nowrap}
+.subj td:last-child{color:var(--ink-3);font-size:.86rem}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:10px;margin:14px 0;max-width:760px}
+.step{display:flex;align-items:center;gap:18px;padding:14px 20px;border:1px solid var(--rule);border-radius:9px;background:var(--surface)}
+.step .n{font-family:var(--display);font-weight:600;font-size:1.7rem;color:var(--accent);min-width:96px;line-height:1}
+.step .n small{font-size:.9rem;color:var(--ink-3);font-family:var(--mono)}
+.step .d{font-size:.98rem;color:var(--ink-2)}
+.step .d b{color:var(--ink)}
+.step.add{border-style:dashed;border-color:var(--accent)}
+.arrow{text-align:center;color:var(--ink-4);font-size:.9rem;margin:-4px 0}
+
+/* findings */
+.finds{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.find{padding:20px 22px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);display:flex;gap:16px;align-items:flex-start}
+.find .fn{font-family:var(--mono);font-size:.72rem;font-weight:600;color:#fff;background:var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+.find h3{font-family:var(--display);font-weight:600;font-size:1.16rem;line-height:1.32;color:var(--ink)}
+
+/* discussion */
+.rqs{display:flex;flex-direction:column;gap:14px;margin-top:12px}
+.rq{padding:18px 22px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);border-left:3px solid var(--accent)}
+.rq .t{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;color:var(--accent);font-weight:600;margin-bottom:6px}
+.rq p{margin:0;font-size:1.04rem;color:var(--ink)}
+.rq p .note{color:var(--ink-3)}
+
+/* HUD */
+.hud{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:12px;background:rgba(250,248,243,.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:50px;padding:6px 8px;box-shadow:0 6px 22px rgba(60,40,20,.1)}
+.hud button{width:32px;height:32px;border-radius:50%;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.hud button:hover{border-color:var(--accent);color:var(--accent)}
+.hud button:disabled{opacity:.3;cursor:default}
+.hud .ctr{font-family:var(--mono);font-size:.74rem;color:var(--ink-2);min-width:132px;text-align:center}
+.hud .ctr b{color:var(--accent)}
+.hud .ctr .sec{display:block;font-size:.62rem;color:var(--ink-4);letter-spacing:.05em;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:132px}
+
+.rail{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:75;display:flex;flex-direction:column;gap:7px}
+.rail i{width:7px;height:7px;border-radius:50%;background:var(--rule);cursor:pointer;transition:.2s}
+.rail i:hover{background:var(--ink-4)}
+.rail i.on{background:var(--accent);transform:scale(1.3)}
+
+@media(max-width:840px){
+  body{font-size:16px}
+  .cols,.finds{grid-template-columns:1fr;gap:12px}
+  .slide{padding:74px 18px 82px}
+  .rail{display:none}
+  figure img{max-height:52vh}
+}
+@media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<div class="chrome">
+  <div class="l">组会 0708 · <b>论文进度</b></div>
+  <nav class="chnav">
+    <a data-go="s-dist">分布</a><a data-go="s-prod">题目生产</a><a data-go="s-exp">实验</a><a data-go="s-find">Findings</a><a data-go="s-disc">Discussion</a>
+  </nav>
+  <a class="home" href="../../index.html">← 主页</a>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- COVER -->
+  <section class="slide" data-ch="cover" data-sec="封面">
+    <div class="in">
+      <div class="kick">Paper Progress <span class="dim">· imb-0708 · 组会 2026.07.08</span></div>
+      <h1 class="title">论文进度</h1>
+      <ul class="agenda">
+        <li><b>01</b>分布</li>
+        <li><b>02</b>题目生产 · 10 主题 / 32 数据库 / 225 题</li>
+        <li><b>03</b>实验 · 记忆系统的 Naive vs Query</li>
+        <li><b>04</b>Findings</li>
+        <li><b>05</b>Discussion · RQ1 / RQ2 / RQ3</li>
+      </ul>
+      <p class="pmeta">李睿哲　·　2026.07.08</p>
+      <div class="hint">用 <kbd>↓</kbd> / <kbd>→</kbd> / <kbd>空格</kbd> 翻页 · 图片可点击放大 · 顶部可跳章</div>
+    </div>
+  </section>
+
+  <!-- 分布 -->
+  <section class="slide" id="s-dist" data-ch="s-dist" data-sec="分布">
+    <div class="in">
+      <div class="kick">分布 <span class="dim">· Guidance conversations by domain</span></div>
+      <figure><div class="frame"><img src="assets/img/dist.png" alt="Guidance conversations by domain — 10 clusters, 37,657 conversations"></div></figure>
+    </div>
+  </section>
+
+  <!-- 题目生产 ① 主题/知识库 -->
+  <section class="slide" id="s-prod" data-ch="s-prod" data-sec="题目生产 · 主题">
+    <div class="in">
+      <div class="kick">题目生产 <span class="dim">· 10 主题，32 数据库</span></div>
+      <div class="tbl-wrap">
+        <table class="subj">
+          <thead><tr><th>主题</th><th>知识库</th></tr></thead>
+          <tbody>
+            <tr><td>health_and_wellness</td><td>FDA Food Allergies, DailyMed Drug Labels, CDC Food Safety for Pregnant Women, MedlinePlus Health Topics</td></tr>
+            <tr><td>professional_and_career</td><td>O*NET Database, FAA Medications and Flying, OSHA Respirator Facial Hair, OSHA Heat Exposure, OSHA Occupational Noise Exposure, OSHA Respiratory Protection</td></tr>
+            <tr><td>relationships</td><td>The Hotline Identify Abuse, The Hotline Internet Safety, The Hotline Technology-Facilitated Abuse, SAMHSA Recovery Support, CDC Intimate Partner Violence, Love is Respect Digital Boundaries, Love is Respect Password Sharing</td></tr>
+            <tr><td>financial</td><td>CFPB Ask, IRS Early Distribution Exceptions, FTC Gift Card Scams</td></tr>
+            <tr><td>personal_development</td><td>HHS Physical Activity Guidelines, W3C WCAG Use of Color</td></tr>
+            <tr><td>spirituality</td><td>Open Food Facts, Wikipedia Gelatin, Wikipedia Islamic Dietary Laws</td></tr>
+            <tr><td>legal</td><td>DOL FMLA FAQ, USCIS Travel Documents</td></tr>
+            <tr><td>consumer</td><td>Open Food Facts, CPSC Recalls</td></tr>
+            <tr><td>parenting</td><td>CPSC Small Parts FAQ, CDC Choking Hazards</td></tr>
+            <tr><td>other</td><td>W3C WCAG Use of Color</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 题目生产 ② chunk 抽样 -->
+  <section class="slide" data-ch="s-prod" data-sec="题目生产 · chunk">
+    <div class="in">
+      <div class="kick">题目生产 <span class="dim">· chunk 抽样</span></div>
+      <div class="cols tab-note">
+        <div class="tbl-wrap" style="max-height:72vh">
+          <table>
+            <thead><tr><th>source_id</th><th class="num">chunk 数</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">onet-database</td><td class="num">759</td></tr>
+              <tr><td class="mono">medlineplus-health-topics</td><td class="num">630</td></tr>
+              <tr><td class="mono">osha-respiratory-protection</td><td class="num">259</td></tr>
+              <tr><td class="mono">open-food-facts</td><td class="num">224</td></tr>
+              <tr><td class="mono">uscis-travel-documents</td><td class="num">219</td></tr>
+              <tr><td class="mono">cpsc-small-parts</td><td class="num">200</td></tr>
+              <tr><td class="mono">ftc-gift-card-scams</td><td class="num">177</td></tr>
+              <tr><td class="mono">hhs-physical-activity-guidelines</td><td class="num">126</td></tr>
+              <tr><td class="mono">w3c-wcag-use-of-color</td><td class="num">107</td></tr>
+              <tr><td class="mono">cdc-choking-hazards</td><td class="num">100</td></tr>
+              <tr><td class="mono">osha-heat-exposure</td><td class="num">90</td></tr>
+              <tr><td class="mono">daily-med</td><td class="num">70</td></tr>
+              <tr><td class="mono">cpsc-recalls</td><td class="num">60</td></tr>
+              <tr><td class="mono">loveisrespect-share-passwords</td><td class="num">59</td></tr>
+              <tr><td class="mono">samhsa-recovery-support</td><td class="num">59</td></tr>
+              <tr><td class="mono">the-hotline-identify-abuse</td><td class="num">58</td></tr>
+              <tr><td class="mono">the-hotline-internet-safety</td><td class="num">58</td></tr>
+              <tr><td class="mono">loveisrespect-digital-boundaries</td><td class="num">56</td></tr>
+              <tr><td class="mono">the-hotline-technology-facilitated-abuse</td><td class="num">51</td></tr>
+              <tr><td class="mono">cfpb-ask</td><td class="num">48</td></tr>
+              <tr><td class="mono">dol-fmla-faq</td><td class="num">39</td></tr>
+              <tr><td class="mono">irs-early-distribution-exceptions</td><td class="num">16</td></tr>
+              <tr><td class="mono">wikipedia-gelatin</td><td class="num">12</td></tr>
+              <tr><td class="mono">cdc-intimate-partner-violence</td><td class="num">9</td></tr>
+              <tr><td class="mono">wikipedia-islamic-dietary-laws</td><td class="num">9</td></tr>
+              <tr><td class="mono">osha-respirator-facial-hair</td><td class="num">8</td></tr>
+              <tr><td class="mono">fda-food-allergies</td><td class="num">7</td></tr>
+              <tr><td class="mono">osha-noise</td><td class="num">7</td></tr>
+              <tr><td class="mono">cdc-pregnancy-food-safety</td><td class="num">3</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p class="lead">按比例随机选取数据库中的共计 <b>3380</b> chunk。</p>
+          <p class="muted">按各 source 的 chunk 数成比例抽样，覆盖 29 个知识库来源。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 题目生产 ③ 漏斗 -->
+  <section class="slide" data-ch="s-prod" data-sec="题目生产 · 流程">
+    <div class="in">
+      <div class="kick">题目生产 <span class="dim">· 从抽取到最终 225 题</span></div>
+      <div class="funnel">
+        <div class="step"><div class="n">1000<small> 题</small></div><div class="d">使用 <b>gemini-2.5-flash</b>（主力）、<b>sonnet-4.6</b>、<b>opus-4.8</b>、<b>deepseek-v4-pro</b> 抽取共计 1000 题</div></div>
+        <div class="arrow">↓</div>
+        <div class="step"><div class="n">300<small> 题</small></div><div class="d">相似度过滤（query-target 相似度过高的过滤掉），保留 300 题</div></div>
+        <div class="arrow">↓</div>
+        <div class="step"><div class="n">135<small> 题</small></div><div class="d">人工过滤剩余 135 题</div></div>
+        <div class="arrow">↓ ＋ 毕业论文题目（半人工）</div>
+        <div class="step add"><div class="n">225<small> 题</small></div><div class="d">加上毕业论文时生产的题目（半人工），剩余 <b>225 题</b></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 题目生产 ④ 相似度图 -->
+  <section class="slide" data-ch="s-prod" data-sec="题目生产 · 相似度">
+    <div class="in">
+      <div class="kick">题目生产 <span class="dim">· Query-Target vs Query-Noise Similarity</span></div>
+      <figure><div class="frame"><img src="assets/img/questions.png" alt="Query-Target vs Query-Noise Similarity — BM25 与 Embedding cosine"></div></figure>
+    </div>
+  </section>
+
+  <!-- 实验 -->
+  <section class="slide" id="s-exp" data-ch="s-exp" data-sec="实验">
+    <div class="in">
+      <div class="kick">实验 <span class="dim">· 记忆系统的 Naive vs Query（n = 233）</span></div>
+      <div class="exp">
+        <div class="tbl-wrap" style="max-height:70vh">
+          <table>
+            <thead>
+              <tr>
+                <th rowspan="2">System</th>
+                <th class="grp" colspan="3">emb3large</th>
+                <th class="grp" colspan="3">MiniLM</th>
+                <th class="grp" colspan="2">No-emb / Other</th>
+              </tr>
+              <tr>
+                <th>Naive</th><th>Query</th><th>Delta</th>
+                <th>Naive</th><th>Query</th><th>Delta</th>
+                <th>Naive</th><th>Query</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Backbone Control</td><td class="dash">--</td><td class="dash">--</td><td class="dash delta">--</td><td class="dash">--</td><td class="dash">--</td><td class="dash delta">--</td><td class="dash">--</td><td>208/233 = 89.27%</td></tr>
+              <tr><td>A-RAG Full</td><td>188/233 = 80.69%</td><td>19/233 = 8.15%</td><td class="delta">-72.53 pp</td><td>217/233 = 93.13%</td><td>29/233 = 12.45%</td><td class="delta">-80.69 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>xMemory</td><td>204/233 = 87.55%</td><td>46/233 = 19.74%</td><td class="delta">-67.81 pp</td><td>194/233 = 83.26%</td><td>39/233 = 16.74%</td><td class="delta">-66.52 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>Mem0</td><td>231/233 = 99.14%</td><td>158/233 = 67.81%</td><td class="delta">-31.33 pp</td><td>225/233 = 96.57%</td><td>81/233 = 34.76%</td><td class="delta">-61.80 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>A-MEM</td><td>232/233 = 99.57%</td><td>69/233 = 29.61%</td><td class="delta">-69.96 pp</td><td>227/233 = 97.42%</td><td>46/233 = 19.74%</td><td class="delta">-77.68 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>HippoRAG2</td><td>223/233 = 95.71%</td><td>54/233 = 23.18%</td><td class="delta">-72.53 pp</td><td>209/233 = 89.70%</td><td>51/233 = 21.89%</td><td class="delta">-67.81 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>MemoryOS</td><td class="dash">--</td><td class="dash">--</td><td class="dash delta">--</td><td>202/233 = 86.70%</td><td>58/233 = 24.89%</td><td class="delta">-61.80 pp</td><td class="dash">--</td><td class="dash">--</td></tr>
+              <tr><td>Naive Always-On</td><td class="dash">--</td><td class="dash">--</td><td class="dash delta">--</td><td class="dash">--</td><td class="dash">--</td><td class="dash delta">--</td><td class="dash">&nbsp;</td><td>188/233 = 80.69%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="cap">Delta = Query − Naive（pp = 百分点）· 表格可横向滚动，点击放大不适用于表格</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Findings -->
+  <section class="slide" id="s-find" data-ch="s-find" data-sec="Findings">
+    <div class="in">
+      <div class="kick">Findings</div>
+      <div class="finds">
+        <div class="find"><span class="fn">1</span><h3>Explicit Recall Does Not Imply Implicit Use</h3></div>
+        <div class="find"><span class="fn">2</span><h3>The Bottleneck Is Retrieval, Not World Knowledge</h3></div>
+        <div class="find"><span class="fn">3</span><h3>Better Embeddings Help but Do Not Close the Gap</h3></div>
+        <div class="find"><span class="fn">4</span><h3>Focused Memory Extraction Helps Retrieval</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Discussion -->
+  <section class="slide" id="s-disc" data-ch="s-disc" data-sec="Discussion">
+    <div class="in">
+      <div class="kick">Discussion</div>
+      <div class="rqs">
+        <div class="rq"><div class="t">RQ1</div><p>原文检索式的记忆是否是完备的<span class="note">（diss 一下 GAM）</span></p></div>
+        <div class="rq"><div class="t">RQ2</div><p>是否有解决方案——Always-on may helps</p></div>
+        <div class="rq"><div class="t">RQ3</div><p>always-on 的缺点——长度有限，只能保留“重要的信息”。是否有更 general 的方案？可能需要设计一种新的，脱离 similarity 的 retriever</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- END -->
+  <section class="slide" data-ch="s-disc" data-sec="结束">
+    <div class="in" style="text-align:center">
+      <div class="kick" style="justify-content:center">谢谢 <span class="dim">· 论文进度 · 组会 0708</span></div>
+      <p class="muted"><a href="../../index.html">← 返回主页</a></p>
+    </div>
+  </section>
+
+</div>
+
+<div class="lb" id="lb"><img alt=""><div class="lb-hint">点击图片切换原始大小 · Esc / 点击空白处关闭</div></div>
+<div class="rail" id="rail"></div>
+
+<div class="hud">
+  <button id="prev" aria-label="上一页">↑</button>
+  <div class="ctr"><span><b id="cur">1</b> / <span id="tot">0</span></span><span class="sec" id="secname">封面</span></div>
+  <button id="next" aria-label="下一页">↓</button>
+</div>
+
+<script>
+const deck=document.getElementById('deck');
+const slides=[...deck.querySelectorAll('.slide')];
+const rail=document.getElementById('rail');
+const curEl=document.getElementById('cur'), totEl=document.getElementById('tot'), secEl=document.getElementById('secname');
+const prevB=document.getElementById('prev'), nextB=document.getElementById('next'), bar=document.getElementById('bar');
+const chLinks=[...document.querySelectorAll('.chnav a')];
+let idx=0;
+totEl.textContent=slides.length;
+
+slides.forEach((s,i)=>{const d=document.createElement('i');d.title=s.dataset.sec||'';d.addEventListener('click',()=>go(i));rail.appendChild(d);});
+const dots=[...rail.children];
+
+function paint(){
+  curEl.textContent=idx+1;
+  secEl.textContent=slides[idx].dataset.sec||'';
+  bar.style.width=(idx/(slides.length-1)*100)+'%';
+  dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+  prevB.disabled=idx===0; nextB.disabled=idx===slides.length-1;
+  const ch=slides[idx].dataset.ch;
+  chLinks.forEach(a=>a.classList.toggle('on',a.dataset.go===ch));
+}
+function go(i){idx=Math.max(0,Math.min(slides.length-1,i));slides[idx].scrollIntoView({behavior:'smooth'});paint();}
+
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){idx=slides.indexOf(e.target);paint();}});},{root:deck,threshold:.55});
+slides.forEach(s=>io.observe(s));
+
+prevB.onclick=()=>go(idx-1);
+nextB.onclick=()=>go(idx+1);
+chLinks.forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.dataset.go);if(t)go(slides.indexOf(t));}));
+
+/* lightbox */
+const lb=document.getElementById('lb'), lbImg=lb.querySelector('img');
+document.querySelectorAll('figure .frame').forEach(fr=>{
+  fr.addEventListener('click',()=>{const im=fr.querySelector('img');if(!im)return;lbImg.src=im.currentSrc||im.src;lb.classList.add('open');lb.classList.remove('zoom');lb.scrollTop=0;lb.scrollLeft=0;});
+});
+lb.addEventListener('click',e=>{ if(e.target===lbImg){lb.classList.toggle('zoom');} else {lb.classList.remove('open','zoom');} });
+
+addEventListener('keydown',e=>{
+  if(lb.classList.contains('open')){ if(e.key==='Escape'){lb.classList.remove('open','zoom');} return; }
+  if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1);}
+  else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(idx-1);}
+  else if(e.key==='Home'){e.preventDefault();go(0);}
+  else if(e.key==='End'){e.preventDefault();go(slides.length-1);}
+});
+paint();
+</script>
+</body>
+</html>
