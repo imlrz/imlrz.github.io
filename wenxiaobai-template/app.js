@@ -1,30 +1,30 @@
 const COLORS = {
-  blue: {
-    label: "Academic Blue",
+  ustc: {
+    label: "USTC Blue",
     title: "冷静、可信的默认蓝",
     description: "最稳妥的计算机科学论文配色，适合系统、模型和综合研究。",
     accent: "#2E5AA8",
     soft: "#F1F4F7",
     line: "#B8C4D8"
   },
-  purple: {
-    label: "Theory Purple",
+  indigo: {
+    label: "Indigo",
     title: "更适合理论推导的深紫",
     description: "比标准蓝更内敛，适合理论、表示学习、方法论与长篇推导。",
     accent: "#514AA3",
     soft: "#F5F3FA",
     line: "#C9C3E5"
   },
-  red: {
-    label: "Journal Red",
+  wine: {
+    label: "Wine",
     title: "正式、成熟的期刊红",
     description: "传统期刊感更强，适合完整论证、跨学科研究与正式技术报告。",
     accent: "#8A3048",
     soft: "#F8F2F4",
     line: "#DAB9C3"
   },
-  yellow: {
-    label: "Report Yellow",
+  amber: {
+    label: "Amber",
     title: "温暖、克制的报告黄",
     description: "保留学术严肃感，同时更适合实验复盘、研究报告和团队发布。",
     accent: "#A56510",
@@ -42,7 +42,7 @@ const CITES = {
   fancy: {
     label: "Fancy",
     option: "fancycite",
-    text: "[Lewis et al., 2020; Park et al., 2023]"
+    text: "(Lewis et al., 2020; Park et al., 2023)"
   }
 };
 
@@ -61,7 +61,7 @@ const LOGOS = {
   }
 };
 
-let currentColor = "blue";
+let currentColor = "ustc";
 let currentCite = "normal";
 let currentLogo = "black";
 let toastTimer;

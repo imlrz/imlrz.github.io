@@ -15,22 +15,22 @@
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
-\DeclareOption{blue}{%
+\DeclareOption{ustc}{%
   \renewcommand{\paperaccenthex}{2E5AA8}%
   \renewcommand{\papertinthex}{E6EDFA}%
   \renewcommand{\papersofthex}{F1F4F7}%
   \renewcommand{\paperlinehex}{B8C4D8}}
-\DeclareOption{purple}{%
+\DeclareOption{indigo}{%
   \renewcommand{\paperaccenthex}{514AA3}%
   \renewcommand{\papertinthex}{ECEAF8}%
   \renewcommand{\papersofthex}{F5F3FA}%
   \renewcommand{\paperlinehex}{C9C3E5}}
-\DeclareOption{red}{%
+\DeclareOption{wine}{%
   \renewcommand{\paperaccenthex}{8A3048}%
   \renewcommand{\papertinthex}{F4E7EB}%
   \renewcommand{\papersofthex}{F8F2F4}%
   \renewcommand{\paperlinehex}{DAB9C3}}
-\DeclareOption{yellow}{%
+\DeclareOption{amber}{%
   \renewcommand{\paperaccenthex}{A56510}%
   \renewcommand{\papertinthex}{F7EDDC}%
   \renewcommand{\papersofthex}{F9F5EC}%
@@ -40,7 +40,7 @@
 \DeclareOption{blacklogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}}
 \DeclareOption{colorlogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-color.png}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{blue,normalcite,blacklogo}
+\ExecuteOptions{ustc,normalcite,blacklogo}
 \ProcessOptions\relax
 \LoadClass{article}
 
@@ -82,24 +82,20 @@
 \definecolor{brandbg}{HTML}{\papertinthex}
 \definecolor{brandsoft}{HTML}{\papersofthex}
 \definecolor{brandline}{HTML}{\paperlinehex}
+\definecolor{citationcyan}{HTML}{00A7E8}
 
 % References %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{hyperref}
 \RequirePackage[noabbrev,nameinlink]{cleveref}
 \ifpaperfancycite
-  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metablue,urlcolor=metablue}
+  \hypersetup{colorlinks,linkcolor=metablue,citecolor=citationcyan,urlcolor=metablue}
 \else
   \hypersetup{colorlinks,linkcolor=metablue,citecolor=metafg,urlcolor=metablue}
 \fi
 
 \RequirePackage[round,authoryear]{natbib}
-\ifpaperfancycite
-  \setcitestyle{square,semicolon}
-  \renewcommand\NAT@nmfmt[1]{{\sffamily\bfseries #1}}
-\else
-  \setcitestyle{round,semicolon}
-\fi
+\setcitestyle{round,semicolon}
 \def\bibfont{\small}
 
 % Section and caption format %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

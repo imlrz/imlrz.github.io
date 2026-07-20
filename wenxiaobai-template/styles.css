@@ -364,7 +364,7 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .sample-row + .sample-row { border-top: 1px solid var(--line); }
 .sample-row small { color: var(--muted); font-size: 9px; font-weight: 780; letter-spacing: .1em; }
 .citation-sample { margin: 7px 0 0; color: #20242a; font: 14px/1.5 var(--serif); }
-.citation-sample.fancy { color: var(--theme-accent); font-family: var(--sans); font-weight: 680; }
+.citation-sample.fancy { color: #00a7e8; }
 .logo-row { flex-direction: row; align-items: center; justify-content: space-between; }
 .logo-row img { width: 64px; height: 45px; object-fit: contain; }
 .command-box {
