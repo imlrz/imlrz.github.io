@@ -12,6 +12,7 @@
 \newcommand{\papertinthex}{E6EDFA}
 \newcommand{\papersofthex}{F1F4F7}
 \newcommand{\paperlinehex}{B8C4D8}
+\newcommand{\papercitehex}{00A7E8}
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
@@ -19,22 +20,26 @@
   \renewcommand{\paperaccenthex}{2E5AA8}%
   \renewcommand{\papertinthex}{E6EDFA}%
   \renewcommand{\papersofthex}{F1F4F7}%
-  \renewcommand{\paperlinehex}{B8C4D8}}
+  \renewcommand{\paperlinehex}{B8C4D8}%
+  \renewcommand{\papercitehex}{00A7E8}}
 \DeclareOption{indigo}{%
   \renewcommand{\paperaccenthex}{514AA3}%
   \renewcommand{\papertinthex}{ECEAF8}%
   \renewcommand{\papersofthex}{F5F3FA}%
-  \renewcommand{\paperlinehex}{C9C3E5}}
+  \renewcommand{\paperlinehex}{C9C3E5}%
+  \renewcommand{\papercitehex}{8E66FF}}
 \DeclareOption{wine}{%
   \renewcommand{\paperaccenthex}{8A3048}%
   \renewcommand{\papertinthex}{F4E7EB}%
   \renewcommand{\papersofthex}{F8F2F4}%
-  \renewcommand{\paperlinehex}{DAB9C3}}
+  \renewcommand{\paperlinehex}{DAB9C3}%
+  \renewcommand{\papercitehex}{D94B6D}}
 \DeclareOption{amber}{%
   \renewcommand{\paperaccenthex}{A56510}%
   \renewcommand{\papertinthex}{F7EDDC}%
   \renewcommand{\papersofthex}{F9F5EC}%
-  \renewcommand{\paperlinehex}{DCC7A2}}
+  \renewcommand{\paperlinehex}{DCC7A2}%
+  \renewcommand{\papercitehex}{E09A24}}
 \DeclareOption{normalcite}{\paperfancycitefalse}
 \DeclareOption{fancycite}{\paperfancycitetrue}
 \DeclareOption{blacklogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}}
@@ -82,16 +87,16 @@
 \definecolor{brandbg}{HTML}{\papertinthex}
 \definecolor{brandsoft}{HTML}{\papersofthex}
 \definecolor{brandline}{HTML}{\paperlinehex}
-\definecolor{citationcyan}{HTML}{00A7E8}
+\definecolor{metacite}{HTML}{\papercitehex}
 
 % References %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \RequirePackage{hyperref}
 \RequirePackage[noabbrev,nameinlink]{cleveref}
 \ifpaperfancycite
-  \hypersetup{colorlinks,linkcolor=metablue,citecolor=citationcyan,urlcolor=metablue}
+  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metacite,urlcolor=metablue}
 \else
-  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metafg,urlcolor=metablue}
+  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metablue,urlcolor=metablue}
 \fi
 
 \RequirePackage[round,authoryear]{natbib}

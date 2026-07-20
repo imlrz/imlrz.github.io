@@ -1,33 +1,37 @@
 const COLORS = {
   ustc: {
-    label: "USTC Blue",
-    title: "冷静、可信的默认蓝",
-    description: "最稳妥的计算机科学论文配色，适合系统、模型和综合研究。",
+    label: "远山钴蓝",
+    title: "远山钴蓝",
+    description: "明度克制，冷蓝线条落在浅灰蓝纸面上，清晰而安静。",
     accent: "#2E5AA8",
+    cite: "#00A7E8",
     soft: "#F1F4F7",
     line: "#B8C4D8"
   },
   indigo: {
-    label: "Indigo",
-    title: "更适合理论推导的深紫",
-    description: "比标准蓝更内敛，适合理论、表示学习、方法论与长篇推导。",
+    label: "暮星鸢尾紫",
+    title: "暮星鸢尾紫",
+    description: "深靛向紫端轻移，浅紫底色与细线叠出柔和而清楚的层次。",
     accent: "#514AA3",
+    cite: "#8E66FF",
     soft: "#F5F3FA",
     line: "#C9C3E5"
   },
   wine: {
-    label: "Wine",
-    title: "正式、成熟的期刊红",
-    description: "传统期刊感更强，适合完整论证、跨学科研究与正式技术报告。",
+    label: "砚边绛红",
+    title: "砚边绛红",
+    description: "低饱和绛红搭配淡玫瑰底色，纸面稳重，同时保留一点温度。",
     accent: "#8A3048",
+    cite: "#D94B6D",
     soft: "#F8F2F4",
     line: "#DAB9C3"
   },
   amber: {
-    label: "Amber",
-    title: "温暖、克制的报告黄",
-    description: "保留学术严肃感，同时更适合实验复盘、研究报告和团队发布。",
+    label: "古纸琥珀",
+    title: "古纸琥珀",
+    description: "琥珀黄与暖米色相叠，整体更柔和，标题与结构线仍然清晰。",
     accent: "#A56510",
+    cite: "#E09A24",
     soft: "#F9F5EC",
     line: "#DCC7A2"
   }
@@ -95,6 +99,7 @@ function updateConfiguration({ syncUrl = true } = {}) {
   const logo = LOGOS[currentLogo];
 
   lab.style.setProperty("--theme-accent", color.accent);
+  lab.style.setProperty("--theme-cite", color.cite);
   lab.style.setProperty("--theme-soft", color.soft);
   lab.style.setProperty("--theme-line", color.line);
 
