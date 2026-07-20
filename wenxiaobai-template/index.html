@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f1ea">
+  <meta name="description" content="问小白学术论文模板：Seed 与 Meta 两套源码级 LaTeX 模板及六种系列配色。">
+  <title>问小白论文模板 · Seed / Meta</title>
+  <link rel="icon" type="image/png" href="assets/brand/wenxiaobai-icon-black.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="问小白论文模板首页">
+      <img src="assets/brand/wenxiaobai-icon-black.png" alt="" width="44" height="31">
+      <span>
+        <strong>Wenxiaobai Paper</strong>
+        <small>Source-faithful LaTeX system</small>
+      </span>
+    </a>
+    <nav aria-label="页面导航">
+      <a href="#classics">经典模板</a>
+      <a href="#colors">系列色</a>
+      <a href="#usage">使用方法</a>
+    </nav>
+    <a class="header-download" href="assets/downloads/wenxiaobai-color-templates.zip" download>
+      下载源码
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2v10m0 0 4-4m-4 4L6 8M3 15v2h14v-2"/></svg>
+    </a>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-copy">
+        <p class="eyebrow"><span>WENXIAOBAI</span> × USTC RESEARCH</p>
+        <h1>两种论文语言，<br><em>一套研究表达。</em></h1>
+        <p class="hero-lead">从论文原始 LaTeX 类文件出发，保留真实的字体、页边距与标题结构。Seed 更锐利、技术感更强；Meta 更克制、叙事感更完整。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#classics">认识两个 Base</a>
+          <a class="button button-quiet" href="#colors">浏览系列配色 <span aria-hidden="true">↘</span></a>
+        </div>
+        <dl class="hero-facts" aria-label="模板信息">
+          <div><dt>2</dt><dd>source-level bases</dd></div>
+          <div><dt>6</dt><dd>shared palettes</dd></div>
+          <div><dt>12</dt><dd>ready-to-use PDFs</dd></div>
+        </dl>
+      </div>
+
+      <div class="hero-stage" aria-label="Seed 与 Meta 首页预览">
+        <figure class="paper paper-seed">
+          <span class="paper-label">SEED / CLASSIC</span>
+          <img src="assets/previews/seed-ustc.png" alt="Seed 经典蓝色模板首页" width="612" height="792">
+        </figure>
+        <figure class="paper paper-meta">
+          <span class="paper-label">META / CLASSIC</span>
+          <img src="assets/previews/meta-ustc.png" alt="Meta 经典灰色卡片模板首页" width="612" height="792">
+        </figure>
+        <div class="orbit-note" aria-hidden="true">SOURCE<br>FAITHFUL</div>
+      </div>
+    </section>
+
+    <section class="section classics" id="classics">
+      <div class="section-heading reveal">
+        <p class="section-index">01 / THE ORIGINALS</p>
+        <h2>先选一种排版性格</h2>
+        <p>经典版只使用最稳妥的默认配色，让字体、结构和信息层级先说话。</p>
+      </div>
+
+      <article class="classic-card seed-card reveal">
+        <div class="classic-preview">
+          <button class="preview-button" type="button" data-preview="assets/previews/seed-ustc.png" data-preview-alt="Seed Classic 完整首页预览" aria-label="放大 Seed Classic 首页">
+            <img src="assets/previews/seed-ustc.png" alt="Seed Classic 首页" width="612" height="792" loading="lazy">
+            <span>点击放大</span>
+          </button>
+        </div>
+        <div class="classic-content">
+          <div class="classic-kicker"><span class="swatch swatch-blue"></span> BASE 01</div>
+          <h3>Seed <span>Classic</span></h3>
+          <p class="classic-summary">明确的蓝色横线、居中作者区和描边摘要框。ByteSans 标题配合 Computer Modern 正文，适合方法密集、结果明确的技术论文。</p>
+          <ul class="feature-list">
+            <li><span>Typography</span><strong>ByteSans + Computer Modern</strong></li>
+            <li><span>Structure</span><strong>Rules / centered title / framed abstract</strong></li>
+            <li><span>Best for</span><strong>Systems · Models · Benchmarks</strong></li>
+          </ul>
+          <div class="card-actions">
+            <a class="button button-primary" href="assets/pdfs/seed-ustc.pdf" target="_blank" rel="noopener">查看 PDF</a>
+            <a class="text-link" href="assets/downloads/seed.cls" download>下载 seed.cls <span>↓</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="classic-card meta-card reveal">
+        <div class="classic-preview">
+          <button class="preview-button" type="button" data-preview="assets/previews/meta-ustc.png" data-preview-alt="Meta Classic 完整首页预览" aria-label="放大 Meta Classic 首页">
+            <img src="assets/previews/meta-ustc.png" alt="Meta Classic 首页" width="612" height="792" loading="lazy">
+            <span>点击放大</span>
+          </button>
+        </div>
+        <div class="classic-content">
+          <div class="classic-kicker"><span class="swatch swatch-gray"></span> BASE 02</div>
+          <h3>Meta <span>Classic</span></h3>
+          <p class="classic-summary">大面积圆角信息卡将标题、作者、摘要和元数据收进一个叙事入口。Optimistic 标题更现代，正文仍保持经典学术阅读节奏。</p>
+          <ul class="feature-list">
+            <li><span>Typography</span><strong>Optimistic + Computer Modern</strong></li>
+            <li><span>Structure</span><strong>Editorial card / left aligned / generous rhythm</strong></li>
+            <li><span>Best for</span><strong>Agents · Memory · Research narratives</strong></li>
+          </ul>
+          <div class="card-actions">
+            <a class="button button-dark" href="assets/pdfs/meta-ustc.pdf" target="_blank" rel="noopener">查看 PDF</a>
+            <a class="text-link" href="assets/downloads/meta.cls" download>下载 meta.cls <span>↓</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section color-section" id="colors">
+      <div class="section-heading reveal">
+        <p class="section-index">02 / THE COLOR LIBRARY</p>
+        <h2>同一套结构，六种研究气质</h2>
+        <p>两个 Base 共用同一组主题选项。选择一种颜色，预览会同步切换对应的 PDF 与问小白图标。</p>
+      </div>
+
+      <div class="color-lab reveal" id="color-lab" style="--theme-accent:#2e5aa8;--theme-soft:#eef2f8;--theme-line:#b8c4d8">
+        <div class="lab-toolbar">
+          <div class="base-switch" role="tablist" aria-label="选择模板 Base">
+            <button class="base-tab active" type="button" role="tab" aria-selected="true" data-base="seed">Seed</button>
+            <button class="base-tab" type="button" role="tab" aria-selected="false" data-base="meta">Meta</button>
+          </div>
+          <div class="palette-switch" role="group" aria-label="选择配色">
+            <button type="button" class="palette-dot active" data-theme="ustc" aria-label="USTC Blue" title="USTC Blue"><span style="--dot:#2e5aa8"></span></button>
+            <button type="button" class="palette-dot" data-theme="indigo" aria-label="Indigo" title="Indigo"><span style="--dot:#514aa3"></span></button>
+            <button type="button" class="palette-dot" data-theme="jade" aria-label="Jade" title="Jade"><span style="--dot:#0b7a68"></span></button>
+            <button type="button" class="palette-dot" data-theme="wine" aria-label="Wine" title="Wine"><span style="--dot:#8a3048"></span></button>
+            <button type="button" class="palette-dot" data-theme="amber" aria-label="Amber" title="Amber"><span style="--dot:#a56510"></span></button>
+            <button type="button" class="palette-dot" data-theme="graphite" aria-label="Graphite" title="Graphite"><span style="--dot:#343b45"></span></button>
+          </div>
+        </div>
+
+        <div class="lab-main">
+          <div class="lab-preview-wrap">
+            <div class="lab-preview-glow" aria-hidden="true"></div>
+            <button class="lab-preview" id="lab-preview-button" type="button" aria-label="放大当前模板首页">
+              <img id="lab-preview-image" src="assets/previews/seed-ustc.png" alt="Seed USTC Blue 首页预览" width="612" height="792">
+            </button>
+          </div>
+
+          <div class="lab-copy" aria-live="polite">
+            <p class="lab-overline"><span id="lab-base-label">SEED</span> / <span id="lab-theme-label">USTC BLUE</span></p>
+            <h3 id="lab-title">学术默认蓝</h3>
+            <p id="lab-description">最接近原始论文气质的选择。冷静、可信、适合大多数计算机科学论文。</p>
+            <div class="color-spec">
+              <div><span id="accent-swatch" class="spec-swatch"></span><small>ACCENT</small><strong id="accent-value">#2E5AA8</strong></div>
+              <div><span id="soft-swatch" class="spec-swatch"></span><small>SOFT</small><strong id="soft-value">#F1F4F7</strong></div>
+            </div>
+            <div class="lab-actions">
+              <a class="button button-theme" id="lab-pdf-link" href="assets/pdfs/seed-ustc.pdf" target="_blank" rel="noopener">打开当前 PDF</a>
+              <button class="text-link copy-command" id="copy-command" type="button" data-command="\documentclass[ustc]{seed}">复制 LaTeX 用法 <span>⌘</span></button>
+            </div>
+            <code id="lab-command">\documentclass[ustc]{seed}</code>
+          </div>
+        </div>
+
+        <div class="theme-grid" id="theme-grid" aria-label="系列配色列表"></div>
+      </div>
+    </section>
+
+    <section class="section usage-section" id="usage">
+      <div class="usage-panel reveal">
+        <div class="usage-copy">
+          <p class="section-index">03 / START WRITING</p>
+          <h2>只改一个选项，<br>不改论文结构。</h2>
+          <p>两个类文件接受完全相同的主题名。字体、字号、页边距和标题结构仍然继承自原始论文源码。</p>
+          <a class="button button-primary" href="assets/downloads/wenxiaobai-color-templates.zip" download>下载完整 LaTeX 包</a>
+        </div>
+        <div class="code-stack" aria-label="LaTeX 使用示例">
+          <div class="code-card">
+            <div><span>seed.tex</span><button type="button" data-copy="\documentclass[jade]{seed}">COPY</button></div>
+            <pre><code><b>\documentclass</b>[jade]{seed}
+
+\title{Your Research Title}
+\author{First Author \quad Second Author}
+\begin{document}
+\maketitle
+...</code></pre>
+          </div>
+          <div class="code-card code-card-dark">
+            <div><span>meta.tex</span><button type="button" data-copy="\documentclass[wine]{meta}">COPY</button></div>
+            <pre><code><b>\documentclass</b>[wine]{meta}
+
+\title{Your Research Title}
+\author{First Author}
+\affiliation{USTC / Wenxiaobai Research}
+\begin{document}
+\maketitle</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="provenance" aria-label="模板来源说明">
+      <p>Source provenance</p>
+      <div>
+        <a href="https://arxiv.org/abs/2605.03849" target="_blank" rel="noopener"><strong>Seed base</strong><span>Stream-R1 · arXiv:2605.03849 ↗</span></a>
+        <a href="https://arxiv.org/abs/2607.08716" target="_blank" rel="noopener"><strong>Meta base</strong><span>Remember When It Matters · arXiv:2607.08716 ↗</span></a>
+        <a href="https://djyszw.ustc.edu.cn/info/1070/6829.htm" target="_blank" rel="noopener"><strong>Brand system</strong><span>USTC visual identity guide ↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-brand">
+      <img src="assets/brand/ustc-wordmark.png" alt="中国科学技术大学" width="360" height="71" loading="lazy">
+      <span></span>
+      <img src="assets/brand/wenxiaobai-icon-black.png" alt="问小白" width="85" height="60" loading="lazy">
+    </div>
+    <p>Source-faithful paper templates · Designed for research communication.</p>
+    <a href="../">返回 imlrz.github.io</a>
+  </footer>
+
+  <dialog class="preview-dialog" id="preview-dialog">
+    <button class="dialog-close" type="button" aria-label="关闭预览">×</button>
+    <img id="dialog-image" src="assets/previews/seed-ustc.png" alt="模板首页预览" width="612" height="792">
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">已复制到剪贴板</div>
+  <script src="app.js"></script>
+</body>
+</html>
