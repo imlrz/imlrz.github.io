@@ -7,45 +7,40 @@
 % Class declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{meta}[2026/07/19 Source-faithful Meta paper base with selectable color themes]
+\ProvidesClass{meta}[2026/07/20 Wenxiaobai Meta paper template]
 \newcommand{\paperaccenthex}{2E5AA8}
 \newcommand{\papertinthex}{E6EDFA}
 \newcommand{\papersofthex}{F1F4F7}
 \newcommand{\paperlinehex}{B8C4D8}
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
-\DeclareOption{ustc}{%
+\newif\ifpaperfancycite
+\paperfancycitefalse
+\DeclareOption{blue}{%
   \renewcommand{\paperaccenthex}{2E5AA8}%
   \renewcommand{\papertinthex}{E6EDFA}%
   \renewcommand{\papersofthex}{F1F4F7}%
-  \renewcommand{\paperlinehex}{B8C4D8}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}}
-\DeclareOption{indigo}{%
+  \renewcommand{\paperlinehex}{B8C4D8}}
+\DeclareOption{purple}{%
   \renewcommand{\paperaccenthex}{514AA3}%
   \renewcommand{\papertinthex}{ECEAF8}%
   \renewcommand{\papersofthex}{F5F3FA}%
   \renewcommand{\paperlinehex}{C9C3E5}}
-\DeclareOption{jade}{%
-  \renewcommand{\paperaccenthex}{0B7A68}%
-  \renewcommand{\papertinthex}{E3F1ED}%
-  \renewcommand{\papersofthex}{F1F7F5}%
-  \renewcommand{\paperlinehex}{AFD1C8}}
-\DeclareOption{wine}{%
+\DeclareOption{red}{%
   \renewcommand{\paperaccenthex}{8A3048}%
   \renewcommand{\papertinthex}{F4E7EB}%
   \renewcommand{\papersofthex}{F8F2F4}%
   \renewcommand{\paperlinehex}{DAB9C3}}
-\DeclareOption{amber}{%
+\DeclareOption{yellow}{%
   \renewcommand{\paperaccenthex}{A56510}%
   \renewcommand{\papertinthex}{F7EDDC}%
   \renewcommand{\papersofthex}{F9F5EC}%
   \renewcommand{\paperlinehex}{DCC7A2}}
-\DeclareOption{graphite}{%
-  \renewcommand{\paperaccenthex}{343B45}%
-  \renewcommand{\papertinthex}{E9ECEF}%
-  \renewcommand{\papersofthex}{F2F3F5}%
-  \renewcommand{\paperlinehex}{C5CBD1}}
+\DeclareOption{normalcite}{\paperfancycitefalse}
+\DeclareOption{fancycite}{\paperfancycitetrue}
+\DeclareOption{blacklogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}}
+\DeclareOption{colorlogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-color.png}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{ustc}
+\ExecuteOptions{blue,normalcite,blacklogo}
 \ProcessOptions\relax
 \LoadClass{article}
 
@@ -92,14 +87,19 @@
 
 \RequirePackage{hyperref}
 \RequirePackage[noabbrev,nameinlink]{cleveref}
-\hypersetup{
-  colorlinks,
-  linkcolor=metablue,
-  citecolor=metablue,
-  urlcolor=metablue
-}
+\ifpaperfancycite
+  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metablue,urlcolor=metablue}
+\else
+  \hypersetup{colorlinks,linkcolor=metablue,citecolor=metafg,urlcolor=metablue}
+\fi
 
 \RequirePackage[round,authoryear]{natbib}
+\ifpaperfancycite
+  \setcitestyle{square,semicolon}
+  \renewcommand\NAT@nmfmt[1]{{\sffamily\bfseries #1}}
+\else
+  \setcitestyle{round,semicolon}
+\fi
 \def\bibfont{\small}
 
 % Section and caption format %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
