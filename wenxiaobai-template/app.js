@@ -1,7 +1,9 @@
+const ASSET_VERSION = "20260720-3";
+
 const COLORS = {
   ustc: {
-    label: "远山钴蓝",
-    title: "远山钴蓝",
+    label: "USTC Blue",
+    title: "学术默认蓝",
     description: "明度克制，冷蓝线条落在浅灰蓝纸面上，清晰而安静。",
     accent: "#2E5AA8",
     cite: "#00A7E8",
@@ -9,8 +11,8 @@ const COLORS = {
     line: "#B8C4D8"
   },
   indigo: {
-    label: "暮星鸢尾紫",
-    title: "暮星鸢尾紫",
+    label: "Indigo",
+    title: "深靛方法论",
     description: "深靛向紫端轻移，浅紫底色与细线叠出柔和而清楚的层次。",
     accent: "#514AA3",
     cite: "#8E66FF",
@@ -18,8 +20,8 @@ const COLORS = {
     line: "#C9C3E5"
   },
   wine: {
-    label: "砚边绛红",
-    title: "砚边绛红",
+    label: "Wine",
+    title: "朱砂批注红",
     description: "低饱和绛红搭配淡玫瑰底色，纸面稳重，同时保留一点温度。",
     accent: "#8A3048",
     cite: "#D94B6D",
@@ -27,8 +29,8 @@ const COLORS = {
     line: "#DAB9C3"
   },
   amber: {
-    label: "古纸琥珀",
-    title: "古纸琥珀",
+    label: "Amber",
+    title: "书页琥珀黄",
     description: "琥珀黄与暖米色相叠，整体更柔和，标题与结构线仍然清晰。",
     accent: "#A56510",
     cite: "#E09A24",
@@ -54,13 +56,13 @@ const LOGOS = {
   black: {
     label: "Black",
     option: "blacklogo",
-    src: "assets/brand/wenxiaobai-icon-black.png",
+    src: `assets/brand/wenxiaobai-icon-black.png?v=${ASSET_VERSION}`,
     alt: "问小白黑白无文字 Logo"
   },
   color: {
     label: "Color",
     option: "colorlogo",
-    src: "assets/brand/wenxiaobai-icon-color.png",
+    src: `assets/brand/wenxiaobai-icon-color.png?v=${ASSET_VERSION}`,
     alt: "问小白原彩无文字 Logo"
   }
 };
@@ -78,7 +80,7 @@ const toast = document.querySelector("#toast");
 
 function assetPath(type) {
   const extension = type === "previews" ? "png" : "pdf";
-  return `assets/${type}/meta-${currentColor}-${currentCite}-${currentLogo}.${extension}`;
+  return `assets/${type}/meta-${currentColor}-${currentCite}-${currentLogo}.${extension}?v=${ASSET_VERSION}`;
 }
 
 function commandText() {
