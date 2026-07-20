@@ -19,32 +19,27 @@
   \renewcommand{\paperaccenthex}{514AA3}%
   \renewcommand{\papertinthex}{ECEAF8}%
   \renewcommand{\papersofthex}{F5F3FA}%
-  \renewcommand{\paperlinehex}{C9C3E5}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-indigo.png}}
+  \renewcommand{\paperlinehex}{C9C3E5}}
 \DeclareOption{jade}{%
   \renewcommand{\paperaccenthex}{0B7A68}%
   \renewcommand{\papertinthex}{E3F1ED}%
   \renewcommand{\papersofthex}{F1F7F5}%
-  \renewcommand{\paperlinehex}{AFD1C8}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-jade.png}}
+  \renewcommand{\paperlinehex}{AFD1C8}}
 \DeclareOption{wine}{%
   \renewcommand{\paperaccenthex}{8A3048}%
   \renewcommand{\papertinthex}{F4E7EB}%
   \renewcommand{\papersofthex}{F8F2F4}%
-  \renewcommand{\paperlinehex}{DAB9C3}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-wine.png}}
+  \renewcommand{\paperlinehex}{DAB9C3}}
 \DeclareOption{amber}{%
   \renewcommand{\paperaccenthex}{A56510}%
   \renewcommand{\papertinthex}{F7EDDC}%
   \renewcommand{\papersofthex}{F9F5EC}%
-  \renewcommand{\paperlinehex}{DCC7A2}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-amber.png}}
+  \renewcommand{\paperlinehex}{DCC7A2}}
 \DeclareOption{graphite}{%
   \renewcommand{\paperaccenthex}{343B45}%
   \renewcommand{\papertinthex}{E9ECEF}%
   \renewcommand{\papersofthex}{F2F3F5}%
-  \renewcommand{\paperlinehex}{C5CBD1}%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-graphite.png}}
+  \renewcommand{\paperlinehex}{C5CBD1}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{ustc}
 \ProcessOptions\relax
