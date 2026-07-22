@@ -7,13 +7,14 @@
 % Class declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{meta}[2026/07/20 Wenxiaobai Meta paper template]
+\ProvidesClass{meta}[2026/07/22 Wenxiaobai Meta paper template]
 \newcommand{\paperaccenthex}{2E5AA8}
 \newcommand{\papertinthex}{E6EDFA}
 \newcommand{\papersofthex}{F1F4F7}
 \newcommand{\paperlinehex}{B8C4D8}
 \newcommand{\papercitehex}{00A7E8}
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
+\newcommand{\paperproductlogofile}{popia-icon.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
 \DeclareOption{ustc}{%
@@ -187,10 +188,12 @@
     anchor=south east,
     at= (frame.south east),
     xshift=-0.5cm,
-    yshift=0.5cm] {\makebox[4.35cm][r]{%
+    yshift=0.5cm] {\makebox[5.08cm][r]{%
       \includegraphics[width=3.15cm]{assets/ustc-wordmark.png}%
       \hspace{0.25cm}%
-      \includegraphics[height=0.55cm]{assets/\paperlogofile}}};}}
+      \includegraphics[height=0.55cm]{assets/\paperlogofile}%
+      \hspace{0.18cm}%
+      \includegraphics[height=0.55cm]{assets/\paperproductlogofile}}};}}
   % 
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}

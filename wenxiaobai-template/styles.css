@@ -366,7 +366,11 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .citation-sample { margin: 7px 0 0; color: var(--theme-accent); font: 14px/1.5 var(--serif); }
 .citation-sample.fancy { color: var(--theme-cite); }
 .logo-row { flex-direction: row; align-items: center; justify-content: space-between; }
-.logo-row img { width: 64px; height: 45px; object-fit: contain; }
+.logo-row small { line-height: 1.75; }
+.logo-pair { display: flex; align-items: center; gap: 12px; }
+.logo-pair > span { width: 1px; height: 27px; background: var(--line); }
+.logo-pair img { width: 64px; height: 45px; object-fit: contain; }
+.logo-pair .popia-logo { width: 45px; height: 45px; }
 .command-box {
   width: 100%;
   margin-top: 18px;
@@ -390,7 +394,7 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .option-reference span { min-width: 58px; font-size: 9px; font-weight: 800; letter-spacing: .12em; }
 .option-reference code { padding: 3px 7px; background: rgba(255,255,255,.68); font-size: 10px; }
 .static-code-card { position: relative; top: auto; left: auto; width: 100%; margin-top: 10px; }
-.meta-provenance { grid-template-columns: repeat(2, 1fr) !important; }
+.meta-provenance { grid-template-columns: repeat(3, 1fr) !important; }
 
 @media (max-width: 1050px) {
   .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

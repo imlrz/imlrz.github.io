@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260720-4";
+const ASSET_VERSION = "20260722-1";
 
 const COLORS = {
   ustc: {
@@ -106,7 +106,7 @@ function updateConfiguration({ syncUrl = true } = {}) {
   lab.style.setProperty("--theme-line", color.line);
 
   previewImage.src = assetPath("previews");
-  previewImage.alt = `Meta ${color.label} ${cite.label} Cite ${logo.label} Logo 首页预览`;
+  previewImage.alt = `Meta ${color.label} ${cite.label} Cite ${logo.label} Wenxiaobai Logo 与 Popia 产品 Logo 首页预览`;
   document.querySelector("#lab-color-label").textContent = color.label.toUpperCase();
   document.querySelector("#lab-title").textContent = color.title;
   document.querySelector("#lab-description").textContent = color.description;
