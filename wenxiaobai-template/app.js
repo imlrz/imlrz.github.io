@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260722-2";
+const ASSET_VERSION = "20260722-3";
 
 const COLORS = {
   ustc: {
@@ -57,13 +57,17 @@ const LOGOS = {
     label: "Black",
     option: "blacklogo",
     src: `assets/brand/wenxiaobai-icon-black.png?v=${ASSET_VERSION}`,
-    alt: "问小白黑白无文字 Logo"
+    alt: "问小白黑白无文字 Logo",
+    productSrc: `assets/brand/popia-mark-graphite.png?v=${ASSET_VERSION}`,
+    productAlt: "Popia 透明底石墨色产品 Logo"
   },
   color: {
     label: "Color",
     option: "colorlogo",
     src: `assets/brand/wenxiaobai-icon-color.png?v=${ASSET_VERSION}`,
-    alt: "问小白原彩无文字 Logo"
+    alt: "问小白原彩无文字 Logo",
+    productSrc: `assets/brand/popia-mark-gradient.png?v=${ASSET_VERSION}`,
+    productAlt: "Popia 透明底原渐变产品 Logo"
   }
 };
 
@@ -120,6 +124,9 @@ function updateConfiguration({ syncUrl = true } = {}) {
   const logoSample = document.querySelector("#logo-sample");
   logoSample.src = logo.src;
   logoSample.alt = logo.alt;
+  const productLogoSample = document.querySelector("#popia-logo-sample");
+  productLogoSample.src = logo.productSrc;
+  productLogoSample.alt = logo.productAlt;
 
   document.querySelector("#lab-pdf-link").href = assetPath("pdfs");
   const command = commandText();

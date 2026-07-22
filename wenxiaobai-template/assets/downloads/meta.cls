@@ -14,7 +14,7 @@
 \newcommand{\paperlinehex}{B8C4D8}
 \newcommand{\papercitehex}{00A7E8}
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
-\newcommand{\paperproductlogofile}{popia-wordmark-white.png}
+\newcommand{\paperproductlogofile}{popia-mark-graphite.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
 \DeclareOption{ustc}{%
@@ -43,8 +43,12 @@
   \renewcommand{\papercitehex}{E09A24}}
 \DeclareOption{normalcite}{\paperfancycitefalse}
 \DeclareOption{fancycite}{\paperfancycitetrue}
-\DeclareOption{blacklogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}}
-\DeclareOption{colorlogo}{\renewcommand{\paperlogofile}{wenxiaobai-icon-color.png}}
+\DeclareOption{blacklogo}{%
+  \renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}%
+  \renewcommand{\paperproductlogofile}{popia-mark-graphite.png}}
+\DeclareOption{colorlogo}{%
+  \renewcommand{\paperlogofile}{wenxiaobai-icon-color.png}%
+  \renewcommand{\paperproductlogofile}{popia-mark-gradient.png}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{ustc,normalcite,blacklogo}
 \ProcessOptions\relax
@@ -188,22 +192,12 @@
     anchor=south east,
     at= (frame.south east),
     xshift=-0.5cm,
-    yshift=0.5cm] {\makebox[5.62cm][r]{%
+    yshift=0.5cm] {\makebox[5.08cm][r]{%
       \includegraphics[width=3.15cm]{assets/ustc-wordmark.png}%
       \hspace{0.25cm}%
       \includegraphics[height=0.55cm]{assets/\paperlogofile}%
       \hspace{0.18cm}%
-      \tcbox[
-        on line,
-        colback=metafg,
-        colframe=metafg,
-        boxrule=0pt,
-        arc=3pt,
-        boxsep=0pt,
-        left=3pt,
-        right=3pt,
-        top=2pt,
-        bottom=2pt]{\includegraphics[width=0.90cm]{assets/\paperproductlogofile}}}};}}
+      \includegraphics[height=0.55cm]{assets/\paperproductlogofile}}};}}
   % 
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}
