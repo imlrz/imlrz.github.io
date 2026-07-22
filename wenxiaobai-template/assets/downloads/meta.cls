@@ -14,7 +14,7 @@
 \newcommand{\paperlinehex}{B8C4D8}
 \newcommand{\papercitehex}{00A7E8}
 \newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
-\newcommand{\paperproductlogofile}{popia-icon.png}
+\newcommand{\paperproductlogofile}{popia-wordmark-white.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
 \DeclareOption{ustc}{%
@@ -188,12 +188,22 @@
     anchor=south east,
     at= (frame.south east),
     xshift=-0.5cm,
-    yshift=0.5cm] {\makebox[5.08cm][r]{%
+    yshift=0.5cm] {\makebox[5.62cm][r]{%
       \includegraphics[width=3.15cm]{assets/ustc-wordmark.png}%
       \hspace{0.25cm}%
       \includegraphics[height=0.55cm]{assets/\paperlogofile}%
       \hspace{0.18cm}%
-      \includegraphics[height=0.55cm]{assets/\paperproductlogofile}}};}}
+      \tcbox[
+        on line,
+        colback=metafg,
+        colframe=metafg,
+        boxrule=0pt,
+        arc=3pt,
+        boxsep=0pt,
+        left=3pt,
+        right=3pt,
+        top=2pt,
+        bottom=2pt]{\includegraphics[width=0.90cm]{assets/\paperproductlogofile}}}};}}
   % 
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}

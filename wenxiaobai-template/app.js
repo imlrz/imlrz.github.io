@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260722-1";
+const ASSET_VERSION = "20260722-2";
 
 const COLORS = {
   ustc: {
