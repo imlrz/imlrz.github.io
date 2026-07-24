@@ -7,14 +7,13 @@
 % Class declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{meta}[2026/07/22 Wenxiaobai Meta paper template]
+\ProvidesClass{meta}[2026/07/24 Pada Meta paper template]
 \newcommand{\paperaccenthex}{2E5AA8}
 \newcommand{\papertinthex}{E6EDFA}
 \newcommand{\papersofthex}{F1F4F7}
 \newcommand{\paperlinehex}{B8C4D8}
 \newcommand{\papercitehex}{00A7E8}
-\newcommand{\paperlogofile}{wenxiaobai-icon-black.png}
-\newcommand{\paperproductlogofile}{popia-mark-graphite.png}
+\newcommand{\paperlogofile}{pada-horizontal-monochrome.png}
 \newif\ifpaperfancycite
 \paperfancycitefalse
 \DeclareOption{ustc}{%
@@ -44,11 +43,9 @@
 \DeclareOption{normalcite}{\paperfancycitefalse}
 \DeclareOption{fancycite}{\paperfancycitetrue}
 \DeclareOption{blacklogo}{%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-black.png}%
-  \renewcommand{\paperproductlogofile}{popia-mark-graphite.png}}
+  \renewcommand{\paperlogofile}{pada-horizontal-monochrome.png}}
 \DeclareOption{colorlogo}{%
-  \renewcommand{\paperlogofile}{wenxiaobai-icon-color.png}%
-  \renewcommand{\paperproductlogofile}{popia-mark-gradient.png}}
+  \renewcommand{\paperlogofile}{pada-horizontal-transparent.png}}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ExecuteOptions{ustc,normalcite,blacklogo}
 \ProcessOptions\relax
@@ -192,12 +189,8 @@
     anchor=south east,
     at= (frame.south east),
     xshift=-0.5cm,
-    yshift=0.5cm] {\makebox[5.08cm][r]{%
-      \includegraphics[width=3.15cm]{assets/ustc-wordmark.png}%
-      \hspace{0.25cm}%
-      \includegraphics[height=0.55cm]{assets/\paperlogofile}%
-      \hspace{0.18cm}%
-      \includegraphics[height=0.55cm]{assets/\paperproductlogofile}}};}}
+    yshift=0.5cm] {%
+      \includegraphics[width=2.20cm]{assets/\paperlogofile}};}}
   % 
   \begin{tcolorbox}
     \setlength{\parindent}{0cm}

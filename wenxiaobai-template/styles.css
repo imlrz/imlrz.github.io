@@ -368,9 +368,7 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .logo-row { flex-direction: row; align-items: center; justify-content: space-between; }
 .logo-row small { line-height: 1.75; }
 .logo-pair { display: flex; align-items: center; gap: 12px; }
-.logo-pair .logo-divider { width: 1px; height: 27px; background: var(--line); }
-.logo-pair > img { width: 64px; height: 45px; object-fit: contain; }
-.logo-pair > .popia-mark { width: 45px; height: 45px; }
+.logo-pair > img { width: 158px; height: 34px; object-fit: contain; }
 .command-box {
   width: 100%;
   margin-top: 18px;

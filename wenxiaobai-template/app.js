@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260722-3";
+const ASSET_VERSION = "20260724-1";
 
 const COLORS = {
   ustc: {
@@ -56,18 +56,14 @@ const LOGOS = {
   black: {
     label: "Black",
     option: "blacklogo",
-    src: `assets/brand/wenxiaobai-icon-black.png?v=${ASSET_VERSION}`,
-    alt: "问小白黑白无文字 Logo",
-    productSrc: `assets/brand/popia-mark-graphite.png?v=${ASSET_VERSION}`,
-    productAlt: "Popia 透明底石墨色产品 Logo"
+    src: `assets/brand/pada-horizontal-monochrome.png?v=${ASSET_VERSION}`,
+    alt: "透明底黑白产品横标"
   },
   color: {
     label: "Color",
     option: "colorlogo",
-    src: `assets/brand/wenxiaobai-icon-color.png?v=${ASSET_VERSION}`,
-    alt: "问小白原彩无文字 Logo",
-    productSrc: `assets/brand/popia-mark-gradient.png?v=${ASSET_VERSION}`,
-    productAlt: "Popia 透明底原渐变产品 Logo"
+    src: `assets/brand/pada-horizontal-transparent.png?v=${ASSET_VERSION}`,
+    alt: "透明底彩色产品横标"
   }
 };
 
@@ -110,7 +106,7 @@ function updateConfiguration({ syncUrl = true } = {}) {
   lab.style.setProperty("--theme-line", color.line);
 
   previewImage.src = assetPath("previews");
-  previewImage.alt = `Meta ${color.label} ${cite.label} Cite ${logo.label} Wenxiaobai Logo 与 Popia 产品 Logo 首页预览`;
+  previewImage.alt = `Meta ${color.label} ${cite.label} Cite ${logo.label} 产品横标首页预览`;
   document.querySelector("#lab-color-label").textContent = color.label.toUpperCase();
   document.querySelector("#lab-title").textContent = color.title;
   document.querySelector("#lab-description").textContent = color.description;
@@ -124,9 +120,6 @@ function updateConfiguration({ syncUrl = true } = {}) {
   const logoSample = document.querySelector("#logo-sample");
   logoSample.src = logo.src;
   logoSample.alt = logo.alt;
-  const productLogoSample = document.querySelector("#popia-logo-sample");
-  productLogoSample.src = logo.productSrc;
-  productLogoSample.alt = logo.productAlt;
 
   document.querySelector("#lab-pdf-link").href = assetPath("pdfs");
   const command = commandText();
