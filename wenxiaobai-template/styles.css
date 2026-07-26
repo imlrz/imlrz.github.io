@@ -328,7 +328,7 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
   min-height: 116px;
   padding: 20px 24px;
   display: grid;
-  grid-template-columns: 1.2fr 1fr 1fr;
+  grid-template-columns: .8fr .75fr 1.7fr;
   gap: 20px;
   border-bottom: 1px solid var(--line);
   background: #faf9f5;
@@ -358,6 +358,7 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
   cursor: pointer;
 }
 .segment.active { background: var(--theme-accent); color: white; }
+.logo-options .segment { min-width: 0; padding-inline: 8px; }
 
 .selection-samples { margin-top: 30px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .sample-row { min-height: 76px; padding: 13px 0; display: flex; flex-direction: column; justify-content: center; }
@@ -367,6 +368,9 @@ footer > a { font-size: 11px; border-bottom: 1px solid rgba(255,255,255,.45); }
 .citation-sample.fancy { color: var(--theme-cite); }
 .logo-row { flex-direction: row; align-items: center; justify-content: space-between; }
 .logo-row small { line-height: 1.75; }
+.logo-treatment-name { margin: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.logo-treatment-name strong { color: var(--theme-accent); font-size: 12px; letter-spacing: .08em; }
+.logo-treatment-name span { color: var(--muted); font: 13px/1.4 var(--serif); }
 .logo-pair { display: flex; align-items: center; gap: 12px; }
 .logo-pair > img { width: 158px; height: 34px; object-fit: contain; }
 .command-box {

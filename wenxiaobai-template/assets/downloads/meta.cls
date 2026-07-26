@@ -240,15 +240,21 @@
   \renewcommand{\paperlogofile}{pada-horizontal-tile-graphite-darkword.png}%
   \renewcommand{\paperlogowidth}{2.15cm}%
   \paperlogopillfalse}
+\DeclareOption{pilllogo}{%
+  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
+  \renewcommand{\paperlogowidth}{1.55cm}%
+  \paperlogopilltrue}
 \DeclareOption{lightlogo}{%
   \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
   \renewcommand{\paperlogowidth}{1.55cm}%
   \paperlogopillfalse}
 \DeclareOption{booktaglogo}{%
+  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
   \renewcommand{\paperlogowidth}{1.42cm}%
   \paperbooktagtrue}
 \DeclareOption{obsidiantaglogo}{%
   \renewcommand{\paperbooktaghex}{171B20}%
+  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
   \renewcommand{\paperlogowidth}{1.40cm}%
   \paperbooktagtrue
   \paperobsidiantagtrue}
@@ -302,6 +308,7 @@
 \definecolor{metatitlefg}{HTML}{\papertitlefghex}
 \definecolor{metatitlelink}{HTML}{\papertitlelinkhex}
 \definecolor{booktagbg}{HTML}{\paperbooktaghex}
+\definecolor{pilllogobg}{HTML}{4C5057}
 \ifpaperlategradient
   \pgfdeclareverticalshading{appleairlate}{100bp}{%
     color(0bp)=(metabgsecond); color(42bp)=(metabg); color(100bp)=(metabg)}
@@ -564,7 +571,7 @@
       at= (frame.south east),
       xshift=-0.5cm,
       yshift=0.5cm,
-      fill=metablue,
+      fill=pilllogobg,
       rounded corners=4pt,
       inner xsep=5pt,
       inner ysep=3.5pt] {%
