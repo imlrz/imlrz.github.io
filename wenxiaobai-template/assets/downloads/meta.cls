@@ -324,20 +324,12 @@
 \captionsetup{singlelinecheck=false,format=custom,labelsep=custom,font=small}
 \captionsetup[sub]{singlelinecheck=true,format=custom,labelsep=custom,font=small}
 
-% Meta custom fonts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% http://c.caignaert.free.fr/Install-ttf-Font.pdf
+% Helvetica sans-serif typography %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand*\ttdefault{cmvtt}
 \RequirePackage[T1]{fontenc}
-
-% \pdfmapline{+optimistic < assets/Optimistic.ttf <T1-WGL4.enc}
-% \renewcommand{\sfdefault}{optimistic}
-
-\DeclareFontFamily{T1}{optimistic}{}
-\DeclareFontShape{T1}{optimistic}{m}{n}{<-> s * [0.88] optimistic}{}
-\DeclareFontShape{T1}{optimistic}{b}{n}{<-> s * [0.88] optimistic}{}
-\pdfmapline{+optimistic < Optimistic.ttf <T1-WGL4.enc}
-\renewcommand{\sfdefault}{optimistic}
+\RequirePackage[scaled=0.92]{helvet}
+\renewcommand{\sfdefault}{phv}
 
 % Authors, affiliations, infos %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

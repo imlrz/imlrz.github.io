@@ -1,4 +1,4 @@
-const ASSET_VERSION = "20260727-1";
+const ASSET_VERSION = "20260727-2";
 
 const COLORS = {
   ustc: { label: "USTC Blue", accent: "#2E5AA8", cite: "#00A7E8", soft: "#F1F4F7", line: "#B8C4D8" },
