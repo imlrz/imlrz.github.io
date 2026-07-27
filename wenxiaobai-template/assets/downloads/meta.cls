@@ -19,12 +19,9 @@
 \newcommand{\papertitlefghex}{1C2B33}
 \newcommand{\papertitlelinkhex}{8A97AB}
 \newcommand{\paperbooktaghex}{294F83}
-\newcommand{\paperlogofile}{pada-horizontal-monochrome.png}
-\newcommand{\paperlogowidth}{2.20cm}
+\newcommand{\paperlogofile}{pada-horizontal-light.png}
+\newcommand{\paperlogowidth}{1.42cm}
 \newif\ifpaperfancycite
-\newif\ifpaperlogopill
-\newif\ifpaperbooktag
-\newif\ifpaperobsidiantag
 \newif\ifpaperdarktitle
 \newif\ifpapercolorheadings
 \newif\ifpapergradienttitle
@@ -34,9 +31,6 @@
 \newif\ifpapersegmentedtitle
 \newif\ifpaperinsettitle
 \paperfancycitefalse
-\paperlogopillfalse
-\paperbooktagfalse
-\paperobsidiantagfalse
 \paperdarktitlefalse
 \papercolorheadingsfalse
 \papergradienttitlefalse
@@ -232,34 +226,8 @@
   \paperinsettitletrue}
 \DeclareOption{normalcite}{\paperfancycitefalse}
 \DeclareOption{fancycite}{\paperfancycitetrue}
-\DeclareOption{blacklogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-monochrome.png}}
-\DeclareOption{colorlogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-transparent.png}}
-\DeclareOption{tilelogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-tile-graphite-darkword.png}%
-  \renewcommand{\paperlogowidth}{2.15cm}%
-  \paperlogopillfalse}
-\DeclareOption{pilllogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
-  \renewcommand{\paperlogowidth}{1.55cm}%
-  \paperlogopilltrue}
-\DeclareOption{lightlogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
-  \renewcommand{\paperlogowidth}{1.55cm}%
-  \paperlogopillfalse}
-\DeclareOption{booktaglogo}{%
-  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
-  \renewcommand{\paperlogowidth}{1.42cm}%
-  \paperbooktagtrue}
-\DeclareOption{obsidiantaglogo}{%
-  \renewcommand{\paperbooktaghex}{171B20}%
-  \renewcommand{\paperlogofile}{pada-horizontal-light.png}%
-  \renewcommand{\paperlogowidth}{1.40cm}%
-  \paperbooktagtrue
-  \paperobsidiantagtrue}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
-\ExecuteOptions{ustc,normalcite,blacklogo}
+\ExecuteOptions{ustc,normalcite}
 \ProcessOptions\relax
 \LoadClass{article}
 
@@ -308,7 +276,6 @@
 \definecolor{metatitlefg}{HTML}{\papertitlefghex}
 \definecolor{metatitlelink}{HTML}{\papertitlelinkhex}
 \definecolor{booktagbg}{HTML}{\paperbooktaghex}
-\definecolor{pilllogobg}{HTML}{4C5057}
 \ifpaperlategradient
   \pgfdeclareverticalshading{appleairlate}{100bp}{%
     color(0bp)=(metabgsecond); color(42bp)=(metabg); color(100bp)=(metabg)}
@@ -541,50 +508,24 @@
   \ifpapersegmentedtitle
     \tcbset{left=0pt,right=0pt,top=0pt,bottom=0pt}
   \fi
-  \ifpaperbooktag
-    \tcbset{overlay={
-      \begin{scope}
-        \clip[rounded corners=10pt]
-          (frame.south west) rectangle (frame.north east);
-        \path[fill=booktagbg]
-          (frame.south east)
-          -- ([yshift=0.92cm]frame.south east)
-          -- ([xshift=-2.15cm,yshift=0.92cm]frame.south east)
-          .. controls
-            ([xshift=-2.31cm,yshift=0.92cm]frame.south east) and
-            ([xshift=-2.38cm,yshift=0.84cm]frame.south east)
-          .. ([xshift=-2.45cm,yshift=0.67cm]frame.south east)
-          -- ([xshift=-2.76cm]frame.south east)
-          -- cycle;
-        \ifpaperobsidiantag
-          \draw[draw=metablue!82!white,line width=0.8pt]
-            ([xshift=-2.08cm,yshift=0.90cm]frame.south east)
-            -- ([xshift=-0.16cm,yshift=0.90cm]frame.south east);
-        \fi
-        \node[anchor=center,inner sep=0pt]
-          at ([xshift=-1.12cm,yshift=0.44cm]frame.south east) {%
-            \includegraphics[width=\paperlogowidth]{assets/\paperlogofile}};
-      \end{scope}}}
-  \else\ifpaperlogopill
-    \tcbset{overlay={\node[
-      anchor=south east,
-      at= (frame.south east),
-      xshift=-0.5cm,
-      yshift=0.5cm,
-      fill=pilllogobg,
-      rounded corners=4pt,
-      inner xsep=5pt,
-      inner ysep=3.5pt] {%
-        \includegraphics[width=\paperlogowidth]{assets/\paperlogofile}};}}
-  \else
-    \tcbset{overlay={\node[
-      anchor=south east,
-      at= (frame.south east),
-      xshift=-0.5cm,
-      yshift=0.5cm,
-      inner sep=0pt] {%
-        \includegraphics[width=\paperlogowidth]{assets/\paperlogofile}};}}
-  \fi\fi
+  \tcbset{overlay={
+    \begin{scope}
+      \clip[rounded corners=10pt]
+        (frame.south west) rectangle (frame.north east);
+      \path[fill=booktagbg]
+        (frame.south east)
+        -- ([yshift=0.92cm]frame.south east)
+        -- ([xshift=-2.15cm,yshift=0.92cm]frame.south east)
+        .. controls
+          ([xshift=-2.31cm,yshift=0.92cm]frame.south east) and
+          ([xshift=-2.38cm,yshift=0.84cm]frame.south east)
+        .. ([xshift=-2.45cm,yshift=0.67cm]frame.south east)
+        -- ([xshift=-2.76cm]frame.south east)
+        -- cycle;
+      \node[anchor=center,inner sep=0pt]
+        at ([xshift=-1.12cm,yshift=0.44cm]frame.south east) {%
+          \includegraphics[width=\paperlogowidth]{assets/\paperlogofile}};
+    \end{scope}}}
   % 
   \begin{tcolorbox}
   \ifpapersegmentedtitle
