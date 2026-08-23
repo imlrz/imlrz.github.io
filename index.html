@@ -301,18 +301,18 @@ body[data-active="editorial"]::before{}
 .skillset{display:flex; flex-wrap:wrap; gap:8px}
 .skillset span{font-family:var(--font-mono); font-size:.76rem; padding:6px 12px; border-radius:7px; border:1px solid var(--rule); color:var(--ink-2); background:var(--surface)}
 
-/* EDUCATION */
-.edu-list{display:flex; flex-direction:column; gap:14px}
-.edu-entry{
+/* EXPERIENCE + EDUCATION TIMELINES */
+.timeline-list{display:flex; flex-direction:column; gap:14px}
+.timeline-entry{
   display:grid; grid-template-columns:135px 1fr; gap:24px; padding:22px;
   border:1px solid var(--rule); border-radius:13px; background:var(--surface);
 }
-.edu-period{font-family:var(--font-mono); font-size:.74rem; color:var(--accent); padding-top:4px}
-.edu-entry h3{font-family:var(--font-display); font-size:1.15rem; line-height:1.3; margin-bottom:5px}
-.edu-school{font-size:.96rem; color:var(--ink-2); line-height:1.5}
-.edu-school b{color:var(--ink); font-weight:600}
-.edu-meta{font-family:var(--font-mono); font-size:.74rem; color:var(--ink-3); margin-top:7px}
-.edu-note{font-size:.9rem; color:var(--ink-2); line-height:1.55; margin-top:12px; padding-left:14px; border-left:2px solid var(--rule)}
+.timeline-period{font-family:var(--font-mono); font-size:.74rem; color:var(--accent); padding-top:4px}
+.timeline-entry h3{font-family:var(--font-display); font-size:1.15rem; line-height:1.3; margin-bottom:5px}
+.timeline-org{font-size:.96rem; color:var(--ink-2); line-height:1.5}
+.timeline-org b{color:var(--ink); font-weight:600}
+.timeline-meta{font-family:var(--font-mono); font-size:.74rem; color:var(--ink-3); margin-top:7px}
+.timeline-note{font-size:.9rem; color:var(--ink-2); line-height:1.55; margin-top:12px; padding-left:14px; border-left:2px solid var(--rule)}
 
 footer{
   position:relative; z-index:2; max-width:var(--maxw); margin:0 auto;
@@ -432,7 +432,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
   body{font-size:16.5px}
   .page{padding:96px 18px 30px}
   .proj-grid,.two-col{grid-template-columns:1fr; gap:18px}
-  .edu-entry{grid-template-columns:1fr; gap:8px}
+  .timeline-entry{grid-template-columns:1fr; gap:8px}
   .two-col{gap:24px}
   .controls{top:14px;right:14px}
   .ctrl{height:36px;padding:0 11px;font-size:.7rem}
@@ -613,25 +613,41 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       </div>
     </section>
 
-    <!-- EDUCATION -->
-    <section class="section reveal" id="education">
-      <div class="section-title"><span class="idx">05</span><span data-i18n="eduT">Education</span></div>
-      <div class="edu-list">
-        <article class="edu-entry">
-          <div class="edu-period">2026.09 — Present</div>
+    <!-- EXPERIENCE -->
+    <section class="section reveal" id="experience">
+      <div class="section-title"><span class="idx">05</span><span data-i18n="expT">Experience</span></div>
+      <div class="timeline-list">
+        <article class="timeline-entry">
+          <div class="timeline-period">2025.02 — 2025.08</div>
           <div>
-            <h3 data-i18n="eduMsDegree">Master's Student</h3>
-            <p class="edu-school" data-i18n="eduMsSchool"><b>University of Science and Technology of China</b> · School of Cyber Science</p>
-            <p class="edu-meta" data-i18n="eduMsMeta">USTC-CMI · Hefei, China</p>
-            <p class="edu-note" data-i18n="eduMsFocus">Research interests: LLM agents, agent memory, and long-context language models.</p>
+            <h3 data-i18n="expRole">LLM Algorithm Engineer Intern</h3>
+            <p class="timeline-org" data-i18n="expOrg"><b>Metastone Technology</b></p>
+            <p class="timeline-meta" data-i18n="expMeta">Beijing, China</p>
+            <p class="timeline-note" data-i18n="expDesc">Designed the memory system for a role-play product.</p>
           </div>
         </article>
-        <article class="edu-entry">
-          <div class="edu-period">2022.09 — 2026.06</div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="section reveal" id="education">
+      <div class="section-title"><span class="idx">06</span><span data-i18n="eduT">Education</span></div>
+      <div class="timeline-list">
+        <article class="timeline-entry">
+          <div class="timeline-period">2026.09 — Present</div>
+          <div>
+            <h3 data-i18n="eduMsDegree">Master's Student</h3>
+            <p class="timeline-org" data-i18n="eduMsSchool"><b>University of Science and Technology of China</b> · School of Cyber Science</p>
+            <p class="timeline-meta" data-i18n="eduMsMeta">USTC-CMI · Hefei, China</p>
+            <p class="timeline-note" data-i18n="eduMsFocus">Research interests: LLM agents, agent memory, and long-context language models.</p>
+          </div>
+        </article>
+        <article class="timeline-entry">
+          <div class="timeline-period">2022.09 — 2026.06</div>
           <div>
             <h3 data-i18n="eduBsDegree">B.S. in Data Science</h3>
-            <p class="edu-school" data-i18n="eduBsSchool"><b>University of Science and Technology of China</b> · School of Artificial Intelligence and Data Science</p>
-            <p class="edu-meta" data-i18n="eduBsMeta">Hefei, China · Top 10%</p>
+            <p class="timeline-org" data-i18n="eduBsSchool"><b>University of Science and Technology of China</b> · School of Artificial Intelligence and Data Science</p>
+            <p class="timeline-meta" data-i18n="eduBsMeta">Hefei, China · Top 10%</p>
           </div>
         </article>
       </div>
@@ -639,7 +655,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- SERVICE + SKILLS -->
     <section class="section reveal" id="more">
-      <div class="section-title"><span class="idx">06</span><span data-i18n="moreT">Service · Skills</span></div>
+      <div class="section-title"><span class="idx">07</span><span data-i18n="moreT">Service · Skills</span></div>
       <div class="two-col">
         <ul class="minilist">
           <li><b data-i18n="sv1">President, Student Union <span>School of AI &amp; Data Science, USTC</span></b></li>
@@ -702,6 +718,11 @@ const T={
     prInmind:'一个包含 125 项任务的长期智能体记忆“隐式关联盲区”基准，通过成对控制分别诊断存储、世界知识、检索与应用环节的失败。',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
     repo:'仓库 ↗',
+    expT:'工作经历',
+    expRole:'大模型算法工程师（实习）',
+    expOrg:'<b>元石科技（Metastone Technology）</b>',
+    expMeta:'中国北京',
+    expDesc:'负责角色扮演产品的记忆系统设计。',
     eduT:'教育经历',
     eduMsDegree:'硕士研究生',
     eduMsSchool:'<b>中国科学技术大学</b> · 网络空间安全学院',
