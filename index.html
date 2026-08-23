@@ -276,6 +276,7 @@ body[data-active="editorial"]::before{}
 
 /* PROJECTS */
 .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.proj-wide{grid-column:1/-1}
 .proj{
   padding:20px; border:1px solid var(--rule); border-radius:13px; background:var(--surface);
   transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
@@ -579,9 +580,19 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- PROJECTS -->
     <section class="section reveal" id="proj">
       <div class="section-title"><span class="idx">04</span><span data-i18n="projT">Projects</span></div>
-      <div class="proj-solo">
+      <div class="proj-grid">
         <div class="proj">
-          <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 59</span></div>
+          <div class="proj-head"><span class="proj-name">ReFind</span><span class="proj-star">★ 9</span></div>
+          <p data-i18n="prRefind">Agent-controlled search over raw chat logs for long-term memory. ReFind combines iterative lexical retrieval with chat-native controls and rivals structured memory systems without building summaries, trees, or knowledge graphs.</p>
+          <div class="proj-foot"><span>Python · Agent Memory</span><a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
+        </div>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">InMind</span><span class="proj-star">★ 17</span></div>
+          <p data-i18n="prInmind">A 125-task benchmark for the implicit-association blind spot in long-term agent memory, with paired controls that isolate storage, world-knowledge, retrieval, and application failures.</p>
+          <div class="proj-foot"><span>Benchmark · Dataset</span><a href="https://github.com/imlrz/InMind" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
+        </div>
+        <div class="proj proj-wide">
+          <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 83</span></div>
           <p data-i18n="pr1">Evaluation suite and leaderboard for deep-research agents, grounded in expert-written reports. Rubric extraction, batched LLM-as-judge scoring, and token accounting.</p>
           <div class="proj-foot"><span>Python</span><a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
@@ -650,6 +661,8 @@ const T={
     p2tldr:'一种基于参考的创造力自动评测方法，将大模型输出的创造力与人类参考对照打分，为昂贵的人工创造力评分提供更可靠、可自动化的替代。',
     p3tldr:'将对话式推荐重新表述为三阶段离线策略学习问题，把交互策略学习与昂贵的在线探索解耦。',
     projT:'项目',
+    prRefind:'面向长期记忆的原始聊天记录智能体可控检索。ReFind 将迭代式词法检索与聊天原生控制相结合，无需构建摘要、树或知识图谱，即可媲美结构化记忆系统。',
+    prInmind:'一个包含 125 项任务的长期智能体记忆“隐式关联盲区”基准，通过成对控制分别诊断存储、世界知识、检索与应用环节的失败。',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
     repo:'仓库 ↗',
     moreT:'教育 · 服务 · 技能',
