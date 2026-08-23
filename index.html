@@ -504,6 +504,8 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <section class="section reveal" id="news">
       <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">News</span></div>
       <ul class="news">
+        <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
+        <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
         <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv; the public leaderboard is live at agentresearchlab.com.</span></li>
         <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
         <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> is accepted to EMNLP 2025.</span></li>
@@ -513,6 +515,31 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- PUBLICATIONS -->
     <section class="section reveal" id="pub">
       <div class="section-title"><span class="idx">03</span><span data-i18n="pubT">Publications</span></div>
+      <article class="pub">
+        <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
+        <h3 class="pub-title" data-i18n="pRefindTitle">When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory</h3>
+        <p class="pub-authors"><span class="me">Ruizhe Li</span>, Licheng Zhang, Benfeng Xu, Mingxuan Du, Zheren Fu, Weidong Chen</p>
+        <p class="pub-venue">arXiv:2608.12888 · 2026</p>
+        <p class="pub-tldr" data-i18n="pRefindTldr">ReFind gives an agent iterative, controllable search over unmodified chat logs, combining lexical retrieval with session-aware ranking, local context, and temporal narrowing. It reaches the highest mean accuracy among compared systems on MemoryAgentBench without constructing summaries, trees, or knowledge graphs.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">arXiv</a>
+          <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">Code</a>
+          <a href="https://agentmemories.ai/leaderboard/academic/textual" target="_blank" rel="noopener">Leaderboard</a>
+        </div>
+      </article>
+      <article class="pub">
+        <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
+        <h3 class="pub-title" data-i18n="pInmindTitle">Keep It InMind: Benchmarking the Implicit-Association Blind Spot in Agent Memory</h3>
+        <p class="pub-authors"><span class="me">Ruizhe Li</span>, Mingxuan Du, Benfeng Xu, Zhendong Mao</p>
+        <p class="pub-venue">arXiv:2607.24368 · 2026</p>
+        <p class="pub-tldr" data-i18n="pInmindTldr">InMind is a 125-task benchmark showing that a memory can be crucial even when it is not textually similar to the current query. Its paired controls isolate whether failures come from storage, missing world knowledge, or retrieval and routing.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">arXiv</a>
+          <a href="https://github.com/imlrz/InMind" target="_blank" rel="noopener">Code</a>
+          <a href="https://keep-it-inmind.github.io/" target="_blank" rel="noopener">Website</a>
+          <a href="https://github.com/imlrz/InMind/blob/main/benchmark/dataset/inmind.jsonl" target="_blank" rel="noopener">Dataset</a>
+        </div>
+      </article>
       <article class="pub">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="p1title">DeepResearch Bench II: Diagnosing Deep Research Agents via Rubrics from Expert Reports</h3>
@@ -606,11 +633,17 @@ const T={
     aboutBody:'我是李睿哲，<b>中国科学技术大学</b>数据科学专业本科生。我对 <b>LLM agent</b>、<b>deep research</b> 与 <b>agent memory</b> 感兴趣。',
     i1:'LLM Agents', i2:'Deep Research', i3:'Agent Memory',
     newsT:'近况',
+    nRefind:'我们的论文 <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> 提出 ReFind：无需构建语义索引，由智能体直接在原始聊天记录上进行可控检索。',
+    nInmind:'我们的论文 <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> 提出了用于评测智能体记忆“隐式关联盲区”的基准。',
     n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv，公开榜单上线 agentresearchlab.com。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
     n3:'我们的论文 <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> 被 EMNLP 2025 接收。',
     pubT:'论文',
     pubBadge:'预印本 · 2026',
+    pRefindTitle:'当智能体打开聊天应用：对原始聊天记录的智能体可控检索媲美结构化记忆',
+    pRefindTldr:'ReFind 让智能体在未经改写的聊天记录上进行迭代式可控搜索，将词法检索与会话感知排序、局部上下文扩展和时间范围缩窄相结合。它无需构建摘要、树或知识图谱，即在 MemoryAgentBench 上取得所比较系统中的最高平均准确率。',
+    pInmindTitle:'Keep It InMind：评测智能体记忆中的隐式关联盲区',
+    pInmindTldr:'InMind 是一个包含 125 项任务的基准，揭示即使某条记忆与当前问题在文本上并不相似，它仍可能至关重要。成对的诊断控制可以区分失败究竟来自存储、世界知识缺失，还是检索与路由。',
     p1title:'DeepResearch Bench II：以专家报告衍生的细粒度评分标准诊断深度研究智能体',
     eqNote:' · *共同一作',
     p1tldr:'一个涵盖 22 个领域、132 个以专家报告为依据的任务、共 9,430 条完全可验证二元评分标准的基准，从信息召回、分析、表达三个维度评测深度研究报告。采用四阶段「大模型+人工」流程、超过 400 专家工时构建——即便最强系统也只满足不到 50% 的评分项。',
