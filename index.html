@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f4efe6" id="meta-theme">
-<meta name="description" content="Ruizhe Li (李睿哲) — undergraduate researcher at USTC working on deep research systems and agent memory.">
+<meta name="description" content="Ruizhe Li (李睿哲) — master's student at USTC researching LLM agents, agent memory, and long-context language models.">
 <title>Ruizhe Li (李睿哲)</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -301,6 +301,19 @@ body[data-active="editorial"]::before{}
 .skillset{display:flex; flex-wrap:wrap; gap:8px}
 .skillset span{font-family:var(--font-mono); font-size:.76rem; padding:6px 12px; border-radius:7px; border:1px solid var(--rule); color:var(--ink-2); background:var(--surface)}
 
+/* EDUCATION */
+.edu-list{display:flex; flex-direction:column; gap:14px}
+.edu-entry{
+  display:grid; grid-template-columns:135px 1fr; gap:24px; padding:22px;
+  border:1px solid var(--rule); border-radius:13px; background:var(--surface);
+}
+.edu-period{font-family:var(--font-mono); font-size:.74rem; color:var(--accent); padding-top:4px}
+.edu-entry h3{font-family:var(--font-display); font-size:1.15rem; line-height:1.3; margin-bottom:5px}
+.edu-school{font-size:.96rem; color:var(--ink-2); line-height:1.5}
+.edu-school b{color:var(--ink); font-weight:600}
+.edu-meta{font-family:var(--font-mono); font-size:.74rem; color:var(--ink-3); margin-top:7px}
+.edu-note{font-size:.9rem; color:var(--ink-2); line-height:1.55; margin-top:12px; padding-left:14px; border-left:2px solid var(--rule)}
+
 footer{
   position:relative; z-index:2; max-width:var(--maxw); margin:0 auto;
   padding:30px 28px 60px; border-top:1px solid var(--rule);
@@ -419,6 +432,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
   body{font-size:16.5px}
   .page{padding:96px 18px 30px}
   .proj-grid,.two-col{grid-template-columns:1fr; gap:18px}
+  .edu-entry{grid-template-columns:1fr; gap:8px}
   .two-col{gap:24px}
   .controls{top:14px;right:14px}
   .ctrl{height:36px;padding:0 11px;font-size:.7rem}
@@ -468,14 +482,14 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 <div class="page">
   <header class="masthead reveal">
     <div class="avatar">李</div>
-    <div class="eyebrow" data-i18n="eyebrow">USTC · AI &amp; Data Science</div>
+    <div class="eyebrow" data-i18n="eyebrow">USTC · Cyber Science</div>
     <h1 class="name">Ruizhe Li</h1>
     <div class="name-cn">李睿哲</div>
-    <p class="tagline" data-i18n="tagline">Undergraduate researcher working on <b>deep research systems</b> and <b>agent memory</b> — how LLM agents gather, verify, and synthesize information at expert level.</p>
+    <p class="tagline" data-i18n="tagline">Master's student researching <b>LLM agents</b>, <b>agent memory</b>, and <b>long-context language models</b> — how agents retrieve, retain, and use information over long horizons.</p>
     <div class="affil" data-i18n="affil">
       <b>University of Science and Technology of China</b> · Hefei<br>
-      School of Artificial Intelligence and Data Science<br>
-      Group of Prof. Zhendong Mao (USTC-CMI)
+      School of Cyber Science<br>
+      Cross-Media Intelligence Group (USTC-CMI)
     </div>
     <div class="links">
       <a class="link" href="mailto:imlrz@mail.ustc.edu.cn">
@@ -493,11 +507,11 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- ABOUT -->
     <section class="section reveal" id="about">
       <div class="section-title"><span class="idx">01</span><span data-i18n="aboutT">About</span></div>
-      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), an undergraduate at <b>USTC</b> majoring in Data Science. I'm interested in <b>LLM agents</b>, <b>deep research</b>, and <b>agent memory</b>.</p>
+      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), a master's student at <b>USTC</b>. My research focuses on <b>LLM agents</b>, <b>agent memory</b>, and <b>long-context language models</b>.</p>
       <div class="chips">
         <span class="chip" data-i18n="i1">LLM Agents</span>
-        <span class="chip" data-i18n="i2">Deep Research</span>
-        <span class="chip" data-i18n="i3">Agent Memory</span>
+        <span class="chip" data-i18n="i2">Agent Memory</span>
+        <span class="chip" data-i18n="i3">Long-Context LLMs</span>
       </div>
     </section>
 
@@ -599,12 +613,35 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       </div>
     </section>
 
+    <!-- EDUCATION -->
+    <section class="section reveal" id="education">
+      <div class="section-title"><span class="idx">05</span><span data-i18n="eduT">Education</span></div>
+      <div class="edu-list">
+        <article class="edu-entry">
+          <div class="edu-period">2026.09 — Present</div>
+          <div>
+            <h3 data-i18n="eduMsDegree">Master's Student</h3>
+            <p class="edu-school" data-i18n="eduMsSchool"><b>University of Science and Technology of China</b> · School of Cyber Science</p>
+            <p class="edu-meta" data-i18n="eduMsMeta">USTC-CMI · Hefei, China</p>
+            <p class="edu-note" data-i18n="eduMsFocus">Research interests: LLM agents, agent memory, and long-context language models.</p>
+          </div>
+        </article>
+        <article class="edu-entry">
+          <div class="edu-period">2022.09 — 2026.06</div>
+          <div>
+            <h3 data-i18n="eduBsDegree">B.S. in Data Science</h3>
+            <p class="edu-school" data-i18n="eduBsSchool"><b>University of Science and Technology of China</b> · School of Artificial Intelligence and Data Science</p>
+            <p class="edu-meta" data-i18n="eduBsMeta">Hefei, China · Top 10%</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
     <!-- SERVICE + SKILLS -->
     <section class="section reveal" id="more">
-      <div class="section-title"><span class="idx">05</span><span data-i18n="moreT">Education · Service · Skills</span></div>
+      <div class="section-title"><span class="idx">06</span><span data-i18n="moreT">Service · Skills</span></div>
       <div class="two-col">
         <ul class="minilist">
-          <li><b data-i18n="ed1">B.S. in Data Science <span>USTC · School of AI &amp; Data Science</span></b></li>
           <li><b data-i18n="sv1">President, Student Union <span>School of AI &amp; Data Science, USTC</span></b></li>
           <li><b data-i18n="sv2">Teaching Assistant, DS4001 <span>Data Science course · 2025 Spring</span></b></li>
           <li><b data-i18n="sv3">Member, Tang Zhongying Charity Society <span>Volunteering</span></b></li>
@@ -637,12 +674,12 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 const T={
   en:{}, // English is the in-HTML default; keys below override for ZH only
   zh:{
-    eyebrow:'中国科学技术大学 · 人工智能与数据科学',
-    tagline:'本科研究者，研究<b>深度研究系统</b>与<b>智能体记忆</b>——让大模型智能体以专家水准检索、核验并综合信息。',
-    affil:'<b>中国科学技术大学</b> · 合肥<br>人工智能与数据科学学院<br>毛震东教授课题组（USTC-CMI）',
+    eyebrow:'中国科学技术大学 · 网络空间安全',
+    tagline:'硕士研究生，研究 <b>LLM Agent</b>、<b>Agent Memory</b> 与 <b>Long-Context LLM</b>——探索智能体如何在长时程交互中检索、保留并运用信息。',
+    affil:'<b>中国科学技术大学</b> · 合肥<br>网络空间安全学院<br>跨媒体智能课题组（USTC-CMI）',
     aboutT:'关于',
-    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>数据科学专业本科生。我对 <b>LLM agent</b>、<b>deep research</b> 与 <b>agent memory</b> 感兴趣。',
-    i1:'LLM Agents', i2:'Deep Research', i3:'Agent Memory',
+    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>硕士研究生。我的研究方向包括 <b>LLM Agent</b>、<b>Agent Memory</b> 与 <b>Long-Context LLM</b>。',
+    i1:'LLM Agents', i2:'Agent Memory', i3:'Long-Context LLMs',
     newsT:'近况',
     nRefind:'我们的论文 <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> 提出 ReFind：无需构建语义索引，由智能体直接在原始聊天记录上进行可控检索。',
     nInmind:'我们的论文 <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> 提出了用于评测智能体记忆“隐式关联盲区”的基准。',
@@ -665,8 +702,15 @@ const T={
     prInmind:'一个包含 125 项任务的长期智能体记忆“隐式关联盲区”基准，通过成对控制分别诊断存储、世界知识、检索与应用环节的失败。',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
     repo:'仓库 ↗',
-    moreT:'教育 · 服务 · 技能',
-    ed1:'数据科学 理学学士 <span>中国科学技术大学 · 人工智能与数据科学学院</span>',
+    eduT:'教育经历',
+    eduMsDegree:'硕士研究生',
+    eduMsSchool:'<b>中国科学技术大学</b> · 网络空间安全学院',
+    eduMsMeta:'跨媒体智能课题组（USTC-CMI）· 中国合肥',
+    eduMsFocus:'研究方向：LLM Agent、Agent Memory 与 Long-Context LLM。',
+    eduBsDegree:'数据科学专业 · 理学学士',
+    eduBsSchool:'<b>中国科学技术大学</b> · 人工智能与数据科学学院',
+    eduBsMeta:'中国合肥 · 前 10%',
+    moreT:'服务 · 技能',
     sv1:'学生会主席 <span>人工智能与数据科学学院，中国科学技术大学</span>',
     sv2:'助教，DS4001 <span>数据科学课程 · 2025 春</span>',
     sv3:'唐仲英爱心社 成员 <span>志愿服务</span>',
