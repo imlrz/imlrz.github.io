@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#faf8f3">
+<meta name="description" content="组会 0923 · Jev / System One Models · 输入输出、实测、架构、RLCD 与开源复现">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%238a3b1d%22/><path d=%22M18 14h28v9H30v16c0 8-5 13-14 13h-3v-9h3c3 0 5-1 5-5V14Z%22 fill=%22%23fffaf2%22/></svg>">
+<title>Jev · 组会 0923</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#faf8f3;--surface:#fff;--surface-2:#f4efe4;--ink:#1b1814;--ink-2:#433d34;
+  --ink-3:#766e60;--ink-4:#a89e8b;--accent:#8a3b1d;--accent-2:#6a4a16;--rule:#e4ddcd;
+  --rule-2:#efe9db;--pos:#3a5a44;--neg:#7d3a2c;--blue:#2f5275;--violet:#665181;
+  --display:"Spectral","Noto Serif SC",Georgia,serif;--body:"Newsreader","Noto Serif SC",Georgia,serif;
+  --mono:"JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow:hidden}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(138,59,29,.3)}
+a:hover{border-bottom-color:var(--accent)}
+::selection{background:#e7d9c4} b{font-weight:600}.en{font-family:var(--mono);font-size:.9em}
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:80;transition:width .35s ease}
+.chrome{position:fixed;top:0;left:0;right:0;z-index:70;display:flex;justify-content:space-between;align-items:center;padding:14px 26px;pointer-events:none;gap:14px}
+.chrome .l{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}.chrome .l b{color:var(--accent)}
+.rqnav{display:flex;gap:6px;pointer-events:auto}.rqnav a{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);border:1px solid var(--rule);border-radius:20px;padding:4px 11px;background:rgba(255,255,255,.68);backdrop-filter:blur(8px);transition:.2s}.rqnav a:hover{color:var(--accent);border-color:var(--accent)}.rqnav a.on{color:#fff;background:var(--accent);border-color:var(--accent)}
+.chrome .home{pointer-events:auto;font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:none;border-bottom:1px solid var(--rule)}
+.deck{height:100vh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}.deck::-webkit-scrollbar{display:none}
+.slide{min-height:100vh;scroll-snap-align:start;scroll-snap-stop:always;display:flex;flex-direction:column;justify-content:center;padding:70px 34px 80px;position:relative}.in{max-width:1040px;margin:0 auto;width:100%}
+.kick{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:13px}.kick::before{content:"";width:22px;height:1px;background:var(--accent)}.kick .dim{color:var(--ink-3)}
+h1.title{font-family:var(--display);font-weight:600;font-size:clamp(2.4rem,7vw,5rem);line-height:1.02;margin-bottom:18px;letter-spacing:-.02em}
+h2.head{font-family:var(--display);font-weight:600;font-size:clamp(1.55rem,3.3vw,2.15rem);line-height:1.22;margin-bottom:12px}
+h3.sub{font-family:var(--display);font-weight:600;font-size:1.14rem;margin:12px 0 5px}
+.report-head{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,2.7vw,1.7rem);line-height:1.25;margin-bottom:10px}
+.slide p{color:var(--ink-2);margin:9px 0;font-size:1rem}.slide p b{color:var(--ink)}.lead{font-size:1.16rem!important;color:var(--ink)!important}.muted{color:var(--ink-3)!important;font-size:.91rem!important}.tiny{font-size:.76rem!important;color:var(--ink-4)!important}.pmeta{font-family:var(--mono);font-size:.74rem;color:var(--ink-3)}.pmeta .v{color:var(--accent)}
+.tag{display:inline-flex;align-items:center;border:1px solid var(--rule);border-radius:20px;padding:2px 8px;font-family:var(--mono);font-size:.66rem;color:var(--ink-3);background:var(--surface);vertical-align:2px;margin-right:5px}.tag.fact{color:var(--pos);border-color:rgba(58,90,68,.35);background:rgba(58,90,68,.06)}.tag.infer{color:var(--accent-2);border-color:rgba(106,74,22,.35);background:rgba(106,74,22,.06)}.tag.unknown{color:var(--neg);border-color:rgba(125,58,44,.35);background:rgba(125,58,44,.06)}.tag.test{color:var(--blue);border-color:rgba(47,82,117,.35);background:rgba(47,82,117,.06)}
+ul.b{list-style:none;margin:9px 0}ul.b li{position:relative;padding-left:19px;margin:5px 0;color:var(--ink-2);font-size:.98rem}ul.b li::before{content:"—";position:absolute;left:0;color:var(--ink-4)}
+ol.n{list-style:none;counter-reset:c;margin:9px 0}ol.n>li{counter-increment:c;position:relative;padding-left:30px;margin:8px 0;color:var(--ink-2);font-size:1rem}ol.n>li::before{content:counter(c);position:absolute;left:0;top:1px;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.69rem;display:flex;align-items:center;justify-content:center}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.cards.two{grid-template-columns:repeat(2,1fr)}.card{padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:var(--surface)}.card h4{font-family:var(--display);font-weight:600;font-size:1.02rem;margin-bottom:4px}.card h4 .en{color:var(--accent);font-size:.78em}.card p{margin:5px 0 0;font-size:.88rem;color:var(--ink-3);line-height:1.48}.card.accent{border-top:3px solid var(--accent)}.card.pos{border-top:3px solid var(--pos)}.card.blue{border-top:3px solid var(--blue)}
+.cols{display:grid;grid-template-columns:1.02fr .98fr;gap:25px;align-items:center}.cols.wide-left{grid-template-columns:1.28fr .72fr}.cols.wide-right{grid-template-columns:.8fr 1.2fr}.cols.top{align-items:start}
+.divider{background:var(--surface-2)}.divider .rqbig{font-family:var(--mono);font-size:clamp(3.2rem,12vw,7.2rem);font-weight:600;color:var(--accent);line-height:.95}.divider h2{font-family:var(--display);font-weight:600;font-size:clamp(1.7rem,4vw,2.5rem);margin:12px 0 18px;max-width:26ch}.divider .question{font-size:1.18rem;color:var(--ink-2);max-width:54ch}
+.agenda{list-style:none;margin:18px 0}.agenda li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:1.12rem;color:var(--ink)}.agenda li:last-child{border-bottom:none}.agenda li b{font-family:var(--mono);font-size:.76rem;color:var(--accent);margin-right:12px;letter-spacing:.05em}
+.kv{display:flex;flex-wrap:wrap;margin:13px 0;border:1px solid var(--rule);border-radius:7px;overflow:hidden}.kv div{flex:1 1 0;min-width:120px;padding:11px 14px;border-right:1px solid var(--rule-2)}.kv div:last-child{border-right:none}.kv b{display:block;font-family:var(--display);font-weight:600;font-size:1.32rem;color:var(--accent);line-height:1.05}.kv span{font-size:.75rem;color:var(--ink-3)}
+.callout{margin-top:13px;padding:12px 15px;border-left:3px solid var(--accent);background:rgba(138,59,29,.05);border-radius:0 8px 8px 0;color:var(--ink);font-size:.98rem}.callout.pos{border-color:var(--pos);background:rgba(58,90,68,.055)}.callout.blue{border-color:var(--blue);background:rgba(47,82,117,.055)}
+pre.code{background:#241f1a;color:#e8dcc8;border-radius:8px;padding:14px 17px;overflow:auto;max-height:58vh;font-family:var(--mono);font-size:.75rem;line-height:1.55;margin:10px 0;tab-size:2}.code .key{color:#d9a870}.code .str{color:#a9c6a3}.code .num{color:#a9bdd7}.code .dim{color:#8d8477}
+.io-flow{display:grid;grid-template-columns:minmax(0,1fr) 74px minmax(0,1fr);gap:10px;align-items:stretch;margin:10px 0}.io-box{border:1px solid var(--rule);border-radius:9px;background:var(--surface);padding:10px}.io-box h3{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 7px}.io-box pre.code{margin:0;max-height:40vh;font-size:.62rem;line-height:1.38;padding:11px 12px}.io-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);text-align:center}.io-mid b{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-family:var(--display);font-size:1.1rem}.io-mid span{font-size:.62rem;color:var(--ink-3);margin-top:6px;line-height:1.3}.io-types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.io-type{border-top:2px solid var(--accent);background:var(--surface);padding:9px 12px;border-radius:0 0 7px 7px}.io-type b{font-family:var(--display)}.io-type span{display:block;color:var(--ink-3);font-size:.76rem;line-height:1.4;margin-top:2px}
+.pipe{display:flex;align-items:stretch;gap:8px;margin:14px 0}.pipe .node{flex:1;padding:13px 12px;border:1px solid var(--rule);background:var(--surface);border-radius:8px;text-align:center}.pipe .node b{display:block;font-family:var(--display);font-size:1rem}.pipe .node span{font-size:.73rem;color:var(--ink-3)}.pipe .arr{display:flex;align-items:center;color:var(--accent);font-family:var(--mono)}
+.tbl-wrap{overflow:auto;margin:11px 0;max-height:64vh}table{border-collapse:collapse;width:100%;font-size:.86rem}caption{caption-side:top;text-align:left;font-size:.77rem;color:var(--ink-3);margin-bottom:6px;font-family:var(--mono)}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.42}thead th{position:sticky;top:0;background:var(--surface-2);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);font-family:var(--mono);font-size:.64rem;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2);z-index:1}tbody tr:last-child td{border-bottom:1px solid var(--ink)}td:first-child{font-weight:600}tr.hi td{background:rgba(138,59,29,.045)}.best{color:var(--accent);font-weight:600}.subtle{color:var(--ink-3);font-size:.83em}
+.chart{margin:14px 0}.row{display:grid;grid-template-columns:145px 1fr 55px;gap:11px;align-items:center;margin:8px 0}.row .label{font-size:.85rem;color:var(--ink-2)}.track{height:17px;background:var(--rule-2);border-radius:20px;overflow:hidden}.fill{height:100%;width:var(--w);background:var(--ink-4);border-radius:20px}.fill.jev{background:var(--accent)}.fill.open{background:var(--blue)}.fill.base{background:var(--rule)}.row .val{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);text-align:right}.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-family:var(--mono);font-size:.66rem;color:var(--ink-3)}.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;background:var(--ink-4)}.legend i.jev{background:var(--accent)}.legend i.open{background:var(--blue)}
+.matrix{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin:13px 0}.metric{padding:12px 10px;border:1px solid var(--rule);background:var(--surface);border-radius:7px}.metric b{display:block;font-family:var(--display);font-size:1.3rem;color:var(--accent);line-height:1}.metric span{font-size:.7rem;color:var(--ink-3)}
+figure{margin:13px 0 4px}figure .frame{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;display:flex;justify-content:center;align-items:center;cursor:zoom-in}figure img{display:block;max-width:100%;max-height:52vh;width:auto;height:auto}figure.tall img{max-height:65vh}figcaption{margin-top:6px;font-size:.72rem;line-height:1.4;color:var(--ink-4);font-family:var(--mono)}
+.visual-triptych{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:11px 0}.visual-triptych figure{margin:0}.visual-triptych .frame{height:128px;background:#181818;border-color:#36322d}.visual-triptych img{width:100%;height:100%;max-height:none;object-fit:contain}.visual-triptych figcaption{font-size:.64rem;line-height:1.35;margin-top:5px;color:var(--ink-3)}
+.mab-evidence{margin-top:10px}.mab-evidence>summary{display:inline-flex;align-items:center;gap:9px;list-style:none;cursor:pointer;border:1px solid var(--rule);border-radius:999px;padding:7px 13px;background:var(--surface);color:var(--accent);font-family:var(--mono);font-size:.7rem;line-height:1;transition:border-color .2s,background .2s}.mab-evidence>summary::-webkit-details-marker{display:none}.mab-evidence>summary:hover{border-color:var(--accent);background:rgba(138,59,29,.045)}.mab-evidence>summary::before{content:"＋";font-size:.9rem}.mab-evidence .close-label{display:none}.mab-evidence[open]>summary{position:fixed;right:calc(4vw + 18px);top:70px;z-index:180;background:var(--accent);border-color:var(--accent);color:#fff}.mab-evidence[open]>summary::before{content:"×"}.mab-evidence[open] .open-label{display:none}.mab-evidence[open] .close-label{display:inline}.mab-dismiss{position:fixed;inset:0;z-index:150;border:0;background:rgba(27,24,20,.58);backdrop-filter:blur(3px);cursor:default}.mab-sheet{position:fixed;left:50%;bottom:54px;z-index:160;transform:translateX(-50%);width:min(1180px,94vw);height:min(78vh,760px);padding:17px 20px 20px;border:1px solid rgba(255,255,255,.35);border-radius:15px 15px 8px 8px;background:var(--bg);box-shadow:0 -12px 55px rgba(27,24,20,.28);overflow:hidden;animation:mab-rise .22s cubic-bezier(.2,.8,.2,1)}.mab-sheet-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:10px;font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}.mab-sheet-head small{color:var(--ink-4);font-size:.62rem}.mab-sheet figure{height:calc(100% - 29px);margin:0}.mab-sheet .frame{height:100%;padding:5px}.mab-sheet img{max-height:100%;max-width:100%;object-fit:contain}@keyframes mab-rise{from{opacity:0;transform:translate(-50%,24px)}to{opacity:1;transform:translate(-50%,0)}}
+.formula{font-family:var(--mono);font-size:.94rem;text-align:center;padding:17px;border:1px solid var(--rule);background:var(--surface);border-radius:8px;margin:12px 0;color:var(--ink-2)}
+.formula.compact{font-size:.78rem;line-height:1.62;padding:11px 13px;margin:8px 0}
+.arch-line{display:grid;grid-template-columns:1.08fr 28px 1.12fr 28px 1.08fr 28px .88fr;gap:5px;align-items:stretch;margin:13px 0}.arch-node{border:1px solid var(--rule);border-top:3px solid var(--ink-4);border-radius:8px;background:var(--surface);padding:12px 10px;text-align:center}.arch-node.accent{border-top-color:var(--accent)}.arch-node.pos{border-top-color:var(--pos)}.arch-node b{display:block;font-family:var(--display);font-size:.94rem}.arch-node span{display:block;margin-top:4px;color:var(--ink-3);font-size:.7rem;line-height:1.4}.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono)}
+.pointer-detail{grid-template-columns:1.04fr .96fr}.compact-list li,.b.compact-list li,.n.compact-list>li{font-size:.83rem;margin:4px 0;line-height:1.42}.corpus-strip{display:flex;align-items:center;justify-content:center;gap:10px;margin:9px 0 13px}.corpus-strip>div:not(.plus){min-width:175px;padding:9px 14px;border:1px solid var(--rule);border-radius:8px;background:var(--surface);text-align:center}.corpus-strip b{display:block;font-family:var(--display);font-size:1.26rem;color:var(--accent);line-height:1}.corpus-strip span{font-size:.72rem;color:var(--ink-3)}.corpus-strip .plus{font-family:var(--mono);color:var(--ink-4)}
+.sample-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:10px 0}.sample{border:1px solid var(--rule);border-radius:8px;background:var(--surface);overflow:hidden}.sample header{display:flex;justify-content:space-between;gap:8px;padding:8px 10px;background:var(--surface-2);border-bottom:1px solid var(--rule);align-items:center}.sample header b{font-family:var(--display);color:var(--accent)}.sample header span{font-family:var(--mono);font-size:.54rem;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sample dl{display:grid;grid-template-columns:58px 1fr;padding:8px 10px;gap:4px 7px;font-size:.7rem;line-height:1.32}.sample dt{font-family:var(--mono);font-size:.57rem;color:var(--ink-4);text-transform:uppercase}.sample dd{color:var(--ink-2);min-width:0}.sample dd strong{color:var(--pos)}.construction.two-lane{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.construction>div{border-left:3px solid var(--blue);padding:8px 11px;background:rgba(47,82,117,.045);border-radius:0 7px 7px 0}.construction b{display:block;font-family:var(--display);font-size:.9rem}.construction span{display:block;font-size:.72rem;line-height:1.4;color:var(--ink-3);margin-top:2px}
+.loss-grid{display:grid;grid-template-columns:.8fr 1.1fr 1.1fr;gap:9px;margin:11px 0}.loss-card{border:1px solid var(--rule);border-top:3px solid var(--ink-4);border-radius:8px;background:var(--surface);padding:11px 13px}.loss-card.accent{border-top-color:var(--accent)}.loss-card.pos{border-top-color:var(--pos)}.loss-card b{display:block;font-family:var(--display);font-size:.92rem}.loss-card span{display:block;font-family:var(--mono);font-size:.68rem;line-height:1.5;color:var(--ink-3);margin-top:3px}.stage-list{display:grid;gap:6px}.stage-list>div{display:grid;grid-template-columns:26px 1fr;gap:8px;align-items:start;padding:7px 9px;border:1px solid var(--rule);border-radius:7px;background:var(--surface)}.stage-list em{width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--accent);color:#fff;font-family:var(--mono);font-size:.65rem;font-style:normal}.stage-list p{font-size:.74rem;margin:0;line-height:1.38}.compact-code{font-size:.67rem;line-height:1.42;max-height:46vh}.compact-kv{margin:8px 0}.compact-kv div{padding:8px 10px}.compact-kv b{font-size:1.13rem}.nimble-samples .sample dl{font-size:.69rem}.provenance-flow{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr;align-items:stretch;margin:10px 0 13px}.provenance-flow>div{border:1px solid var(--rule);border-radius:8px;background:var(--surface);padding:9px 10px}.provenance-flow>div b{display:block;font-family:var(--display);font-size:.88rem;color:var(--accent)}.provenance-flow>div span{font-size:.68rem;line-height:1.34;color:var(--ink-3)}.provenance-flow i{display:flex;align-items:center;justify-content:center;color:var(--accent);font-style:normal}.lineage{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:8px 0}.lineage div{border:1px solid var(--rule);border-radius:7px;background:var(--surface);padding:9px;text-align:center}.lineage b{display:block;color:var(--accent);font-family:var(--display);font-size:.95rem}.lineage span{font-family:var(--mono);font-size:.58rem;color:var(--ink-3)}
+.mechanism{display:grid;grid-template-columns:1fr 24px 1.18fr 24px 1.15fr;gap:7px;align-items:stretch;margin:14px 0}.mech-step{min-width:0;padding:14px 15px;border:1px solid var(--rule);border-top:3px solid var(--ink-4);border-radius:9px;background:var(--surface)}.mech-step.accent{border-top-color:var(--accent)}.mech-step.pos{border-top-color:var(--pos)}.mech-step .num{font-family:var(--mono);font-size:.59rem;letter-spacing:.1em;color:var(--accent);display:block}.mech-step b{display:block;font-family:var(--display);font-size:1.03rem;line-height:1.28;margin:3px 0 5px}.mech-step small{display:block;color:var(--ink-3);font-size:.73rem;line-height:1.42}.mech-arrow{display:flex;align-items:center;justify-content:center;font-family:var(--mono);color:var(--accent);font-size:1.25rem}.token-row{display:flex;flex-wrap:wrap;gap:4px;margin:7px 0}.token-row code,.vocab-row code{display:inline-block;padding:3px 6px;border:1px solid var(--rule);border-radius:4px;background:var(--surface-2);color:var(--ink-2);font-family:var(--mono);font-size:.65rem}.token-row code.mark,.vocab-row code.mark{background:rgba(138,59,29,.11);border-color:rgba(138,59,29,.32);color:var(--accent)}.readout-map{display:grid;grid-template-columns:1fr 24px 1fr;gap:8px;align-items:center;margin:12px 0}.readout-panel{border:1px solid var(--rule);border-radius:9px;background:var(--surface);padding:11px 14px;min-width:0}.readout-panel h3{font-family:var(--display);font-size:1rem;margin:0 0 5px}.readout-panel p{font-size:.77rem;line-height:1.42;margin:3px 0}.readout-panel .formula{font-size:.7rem;margin:6px 0;padding:8px 9px}.readout-bridge{text-align:center;color:var(--accent);font-family:var(--mono)}.hidden-pair{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.hidden-pair>div{border-left:2px solid var(--blue);padding-left:8px}.hidden-pair>div:last-child{border-color:var(--pos)}.hidden-pair b{display:block;font-family:var(--mono);font-size:.68rem}.hidden-pair span{font-size:.69rem;color:var(--ink-3)}.vocab-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:9px 0}.vocab-row .dimmed{opacity:.38;text-decoration:line-through}.vocab-row .ellipsis{color:var(--ink-4);font-family:var(--mono);font-size:.72rem}.mech-caption{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.mech-caption>div{border-left:3px solid var(--blue);background:rgba(47,82,117,.045);padding:8px 10px;border-radius:0 7px 7px 0;font-size:.76rem;line-height:1.4;color:var(--ink-2)}.mech-caption b{color:var(--ink)}.training-loop{display:grid;grid-template-columns:1fr 24px 1fr 24px 1.1fr 24px 1.05fr;gap:6px;align-items:stretch;margin:13px 0}.training-loop .mech-step{padding:10px 11px}.training-loop .mech-step b{font-size:.91rem}.training-loop .mech-step small{font-size:.67rem}.gradient-line{display:flex;align-items:center;justify-content:center;gap:12px;border:1px dashed rgba(138,59,29,.5);border-radius:7px;background:rgba(138,59,29,.045);padding:6px 10px;margin:0 0 10px;color:var(--accent);font-family:var(--mono);font-size:.66rem;text-align:center}.gradient-line .frozen{color:var(--ink-4);text-decoration:line-through}.training-foot{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:start}.training-foot h3{font-family:var(--display);font-size:1rem;margin:0 0 4px}.training-foot .stage-list p{font-size:.7rem}.training-foot .callout{margin-top:0;font-size:.77rem;line-height:1.4;padding:9px 11px}.training-foot ul.b{margin:2px 0}.training-foot ul.b li{font-size:.72rem;line-height:1.38;margin:3px 0}.slide.is-active .mech-step,.slide.is-active .readout-panel,.slide.is-active .gradient-line{animation:mechanism-in .5s both;animation-delay:calc(var(--step,0) * .2s)}.slide.is-active .mech-arrow{animation:mechanism-arrow .55s both;animation-delay:calc(var(--step,0) * .2s)}@keyframes mechanism-in{from{opacity:.28;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}@keyframes mechanism-arrow{from{opacity:.25;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+.mech-step small{font-size:.8rem}.training-loop .mech-step small{font-size:.75rem}.readout-panel p,.mech-caption>div{font-size:.82rem}.training-foot .stage-list p,.training-foot ul.b li{font-size:.78rem}
+.mech-step small b,.training-loop .mech-step small b{display:inline;font-family:inherit;font-size:inherit;line-height:inherit;margin:0;color:var(--ink)}
+.dense-table{font-size:.74rem;min-width:620px}.dense-table th,.dense-table td{padding:4px 8px;line-height:1.25}.compact-results{max-height:57vh}.grouped-table .group-row th{position:static;background:rgba(47,82,117,.075);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);font-family:var(--display);font-size:.77rem;letter-spacing:0;text-transform:none;color:var(--blue);padding:6px 8px}.grouped-table td:first-child{min-width:135px}.inline-evidence{margin:8px 0}.inline-evidence>summary{display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:1px solid var(--rule);border-radius:20px;background:var(--surface);padding:6px 11px;font-family:var(--mono);font-size:.66rem;color:var(--accent);list-style:none}.inline-evidence>summary::-webkit-details-marker{display:none}.inline-evidence>summary::before{content:"＋"}.inline-evidence[open]>summary::before{content:"−"}.inline-evidence .tbl-wrap{max-height:34vh;margin:7px 0}.inline-evidence p.tiny{margin:6px 0}.slide .inline-evidence p.tiny{font-size:.68rem!important}
+.native14-table{min-width:1180px}.native14-table td:not(:first-child){white-space:nowrap}
+.sourcebox{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:12px}.sourcebox a{display:block;border:1px solid var(--rule);border-radius:7px;padding:9px 12px;background:var(--surface);font-size:.82rem}.sourcebox a span{display:block;font-family:var(--mono);font-size:.61rem;color:var(--ink-4);margin-top:2px}
+.stamp{position:absolute;right:36px;bottom:72px;font-family:var(--mono);font-size:.64rem;color:var(--ink-4)}
+.hint{margin-top:20px;font-family:var(--mono);font-size:.7rem;color:var(--ink-4)}.hint kbd{border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:1px 6px;font-size:.7rem;color:var(--ink-3);background:var(--surface)}
+.hud{position:fixed;bottom:15px;left:50%;transform:translateX(-50%);z-index:75;display:flex;align-items:center;gap:12px;background:rgba(250,248,243,.92);backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:50px;padding:6px 8px;box-shadow:0 6px 22px rgba(60,40,20,.1)}.hud button{width:32px;height:32px;border-radius:50%;border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);cursor:pointer;font-size:.95rem}.hud button:hover{border-color:var(--accent);color:var(--accent)}.hud button:disabled{opacity:.3}.hud .ctr{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);min-width:145px;text-align:center}.hud .ctr b{color:var(--accent)}.hud .ctr .sec{display:block;font-size:.59rem;color:var(--ink-4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:145px}
+.rail{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:75;display:flex;flex-direction:column;gap:5px}.rail i{width:6px;height:6px;border-radius:50%;background:var(--rule);cursor:pointer;transition:.2s}.rail i.on{background:var(--accent);transform:scale(1.45)}.rail i[data-d="1"]{border:1px solid var(--ink-4)}
+.lb{position:fixed;inset:0;z-index:200;background:rgba(18,14,10,.93);display:none;align-items:center;justify-content:center;padding:22px;overflow:auto;cursor:zoom-out;backdrop-filter:blur(3px)}.lb.open{display:flex}.lb img{max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:6px;background:#fff;cursor:zoom-in}.lb.zoom{align-items:flex-start;justify-content:flex-start}.lb.zoom img{max-width:none;max-height:none;cursor:zoom-out}.lb-hint{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.66rem;color:rgba(255,255,255,.72);pointer-events:none}
+@media(max-width:820px){body{font-size:16px}.cols,.cards,.cards.two,.sourcebox,.io-types,.construction.two-lane,.loss-grid{grid-template-columns:1fr;gap:10px}.slide{padding:68px 18px 80px}.rail{display:none}.chrome .l{display:none}.chrome{justify-content:center}.chrome .home{position:absolute;right:18px}.matrix{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:112px 1fr 48px}.pipe{display:grid;grid-template-columns:1fr}.pipe .arr{justify-content:center;transform:rotate(90deg)}.io-flow{grid-template-columns:1fr}.io-mid{flex-direction:row;gap:8px}.io-mid b{width:38px;height:38px}.io-box pre.code{max-height:34vh}figure img{max-height:38vh}.rqnav a{padding:4px 8px}.visual-triptych,.sample-grid{grid-template-columns:repeat(3,minmax(260px,1fr));overflow-x:auto;padding-bottom:5px}.arch-line{grid-template-columns:1fr}.arch-arrow{transform:rotate(90deg)}.corpus-strip{overflow-x:auto;justify-content:flex-start}.provenance-flow{grid-template-columns:1fr}.provenance-flow i{transform:rotate(90deg)}.mab-sheet{bottom:52px;width:96vw;height:76vh;padding:14px 12px}.mab-evidence[open]>summary{right:4vw;top:62px}.mab-sheet-head small{display:none}}
+@media(max-width:820px){.mechanism,.training-loop{grid-template-columns:1fr;gap:5px}.mech-arrow{transform:rotate(90deg);min-height:17px}.slide.is-active .mech-arrow{animation:none}.readout-map,.mech-caption,.training-foot{grid-template-columns:1fr}.readout-bridge{transform:rotate(90deg)}.gradient-line{flex-wrap:wrap}.mech-step{padding:9px 11px}.slide[data-sec="Kev-4B"],.slide[data-sec="Kev-4B：训练与 loss"],.slide[data-sec="Nimble-9B"],.slide[data-sec="Nimble-9B：数据构造与训练"]{justify-content:flex-start}}
+@media(max-height:850px) and (min-width:821px){.slide{padding-top:58px;padding-bottom:68px}.kick{margin-bottom:9px}.cards{margin-top:9px}.card{padding:11px 14px}.card p{font-size:.84rem}.pipe{margin:10px 0}.kv{margin:10px 0}.callout{margin-top:9px;padding:10px 14px}h2.head{margin-bottom:8px}.sourcebox{margin-top:8px}.visual-triptych .frame{height:104px}}
+@media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}.slide.is-active .mech-step,.slide.is-active .readout-panel,.slide.is-active .gradient-line,.slide.is-active .mech-arrow{animation:none}}
+</style>
+<link rel="stylesheet" href="kev-viz.css">
+<link rel="stylesheet" href="nimble-viz.css">
+</head>
+<body>
+<div id="bar"></div>
+<div class="chrome">
+  <div class="l">组会 0923 · <b>Jev / System One</b></div>
+  <nav class="rqnav"><a data-go="rq1">RQ1</a><a data-go="discussion1">D1</a><a data-go="rq2">RQ2</a><a data-go="discussion2">D2</a><a data-go="rq3">RQ3</a></nav>
+  <a class="home" href="../../index.html">← 主页</a>
+</div>
+
+<main class="deck" id="deck">
+
+<section class="slide" data-rq="0" data-sec="封面">
+  <div class="in">
+    <div class="kick">System One Models <span class="dim">· 组会 2026.09.23</span></div>
+    <h1 class="title">Jev</h1>
+    <p class="lead">不生成字符串的“前沿智能函数”——<br>它是新架构、新训练任务，还是新的产品边界？</p>
+    <ul class="agenda">
+      <li><b>RQ1</b>Jev 的效果究竟如何？</li>
+      <li><b>RQ2</b>Jev 是如何出现的？</li>
+      <li><b>RQ3</b>Jev 是否有开源复现？</li>
+    </ul>
+    <p class="pmeta">李睿哲 · 2026.09.23</p>
+    <div class="hint">用 <kbd>↓</kbd> / <kbd>→</kbd> / <kbd>空格</kbd> 翻页，<kbd>↑</kbd> / <kbd>←</kbd> 往回 · 顶部可跳章</div>
+  </div>
+</section>
+
+<section class="slide" id="basics" data-rq="basics" data-sec="证据标签">
+  <div class="in">
+    <div class="kick">阅读约定 <span class="dim">· 先区分知道什么</span></div>
+    <h2 class="head">本次最重要的四种标签</h2>
+    <div class="cards">
+      <article class="card pos"><h4><span class="tag fact">已公开</span> 官方可验证</h4><p>API schema、价格、输出类型、并行采样与公开声明。</p></article>
+      <article class="card blue"><h4><span class="tag test">我们实测</span> 当前快照</h4><p>InMind、MAB、DRB2、DRB1 和 TTCW；结论受实验协议限制。</p></article>
+      <article class="card accent"><h4><span class="tag infer">合理推测</span> 不等于披露</h4><p>LLM backbone、dynamic readout、Qwen3.5 基座等只做证据链分析。</p></article>
+    </div>
+    <div class="callout"><span class="tag unknown">仍未知</span> Jev 的参数量、base model、attention mask、decision head、RLCD 损失函数和训练数据配比，官方都没有发布。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="basics" data-sec="输入输出">
+  <div class="in">
+    <div class="kick">Jev 的基本情况 <span class="dim">· state in, decisions out</span></div>
+    <div class="cols top">
+      <div>
+        <h2 class="head">一个 <span class="en">state</span>，多个共享该状态的 <span class="en">questions</span></h2>
+        <ul class="b">
+          <li><b>state</b>：字符串、object 或 array，是所有问题共享的语境。</li>
+          <li><b>questions</b>：运行时声明问题、评分标准和合法候选。</li>
+          <li><b>answers</b>：使用同名 ID 返回 typed value 与概率。</li>
+        </ul>
+        <div class="callout pos"><b>不是 JSON mode。</b> JSON mode 仍在自回归生成 token；Jev 声称直接并行产生类型化决策。</div>
+      </div>
+      <pre class="code"><span class="dim">{</span>
+  <span class="key">"state"</span>: {
+    <span class="key">"message"</span>: <span class="str">"I was charged twice. Fix this ASAP."</span>,
+    <span class="key">"duplicate_charge"</span>: <span class="str">true</span>
+  },
+  <span class="key">"questions"</span>: {
+    <span class="key">"intent"</span>: { <span class="key">"type"</span>: <span class="str">"choice"</span>, … },
+    <span class="key">"frustration"</span>: { <span class="key">"type"</span>: <span class="str">"score"</span>, … },
+    <span class="key">"needs_human"</span>: { <span class="key">"type"</span>: <span class="str">"noul"</span>, … }
+  }
+<span class="dim">}</span></pre>
+    </div>
+    <p class="tiny">输入长度：当前公开 OpenAPI 没有披露硬性 context 上限；因此不把实测限制误写成架构上限。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="basics" data-sec="三种输出">
+  <div class="in">
+    <div class="kick">Jev 的基本情况 <span class="dim">· 3 primitives</span></div>
+    <h2 class="head">三种输出，对应程序的三种控制结构</h2>
+    <div class="cards">
+      <article class="card accent"><h4><span class="en">Choice</span> · match / route</h4><p>从运行时给定的候选中选一个；返回 choice、全部候选概率与 confidence。</p></article>
+      <article class="card blue"><h4><span class="en">Score</span> · rank / threshold</h4><p>对有序 rubric 评分；score 是各级别概率的加权期望，可为小数。</p></article>
+      <article class="card pos"><h4><span class="en">Noul</span> · if</h4><p>评估一个 yes/no 命题；单个数值就是 P(yes / true)，0.5 表示不确定。</p></article>
+    </div>
+    <div class="pipe">
+      <div class="node"><b>结构化状态</b><span>text / object / array</span></div><div class="arr">→</div>
+      <div class="node"><b>动态任务</b><span>instructions + criteria</span></div><div class="arr">→</div>
+      <div class="node"><b>概率决策</b><span>choice / score / noul</span></div><div class="arr">→</div>
+      <div class="node"><b>普通代码</b><span>if / match / sort</span></div>
+    </div>
+    <p class="muted">所谓“不会 hallucinate”只能严格理解为：<b>不会返回 schema 之外的值</b>。它仍然可以在合法选项中选错。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="basics" data-sec="ID 与 criteria">
+  <div class="in">
+    <div class="kick">Schema 语义 <span class="dim">· intent 是什么</span></div>
+    <div class="cols top">
+      <div>
+        <h2 class="head"><span class="en">intent / frustration / needs_human</span> 是调用者自定义的 question ID</h2>
+        <ul class="b">
+          <li>用来将请求里的问题和响应里的答案一一对应。</li>
+          <li>真正定义任务的是 <b>type、instructions 和 criteria</b>。</li>
+          <li><span class="en">criteria</span> 的 key 是合法输出，value 是其语义描述。</li>
+        </ul>
+        <div class="callout"><b>key 可以是句子吗？</b> OpenAPI 把 choice name 定义为 string，因此技术上可以。但工程上建议用稳定短 key，把完整定义写在 value 中。</div>
+      </div>
+      <pre class="code"><span class="key">"intent"</span>: {
+  <span class="key">"type"</span>: <span class="str">"choice"</span>,
+  <span class="key">"instructions"</span>: <span class="str">"Which team should handle this?"</span>,
+  <span class="key">"criteria"</span>: {
+    <span class="key">"billing"</span>: <span class="str">"Payments, refunds, or charges"</span>,
+    <span class="key">"technical"</span>: <span class="str">"Product malfunction"</span>,
+    <span class="key">"other"</span>: <span class="str">"Everything else"</span>
+  }
+}
+
+<span class="dim">// 响应使用同一个 ID</span>
+<span class="key">"intent"</span>: {
+  <span class="key">"choice"</span>: <span class="str">"billing"</span>,
+  <span class="key">"probabilities"</span>: {<span class="key">"billing"</span>: <span class="num">0.96</span>, …}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="basics" data-sec="并行、延迟与价格">
+  <div class="in">
+    <div class="kick">System One 的产品承诺 <span class="dim">· 说法需分层</span></div>
+    <h2 class="head">“并行”是同一请求的输出方式，不是 prefix cache hit</h2>
+    <div class="kv">
+      <div><b>$0.042</b><span>/ 1M input tokens · 官方定价</span></div>
+      <div><b>free</b><span>output tokens · 官方当前定价</span></div>
+      <div><b>70–500ms</b><span>端到端 · 官方公布范围</span></div>
+      <div><b>255</b><span>choice cardinality · 官方公布</span></div>
+    </div>
+    <div class="cards two">
+      <article class="card pos"><h4>官方确认的“并行”</h4><p>一个 state 对应多个 questions，模型不用像 LLM 一样逐 token 解码长字符串；多个 typed outputs 在一次查询中返回。</p></article>
+      <article class="card accent"><h4>不能据此推出 prefix hit</h4><p>跨请求的相同前缀是否缓存、账单是否折扣，是 serving 层问题。当前没有官方证据支持“前缀命中”。</p></article>
+    </div>
+    <p class="tiny">速度与价格来自 TypeSafe 自报；官方也明说 193.6× / 444.6× 是其 workflow 上偏高的增益，不应外推为所有任务的普遍结论。</p>
+  </div>
+</section>
+
+<section class="slide divider" id="rq1" data-rq="rq1" data-sec="RQ1 · 效果">
+  <div class="in"><div class="rqbig">RQ1</div><h2>Jev 的效果究竟如何？</h2><p class="question">不用官方的 workflow 图直接下结论，而是看它在检索、judge 和时序判定上的交叉实测。</p></div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="实验全景">
+  <div class="in">
+    <div class="kick">RQ1 <span class="dim">· 5 类任务</span></div>
+    <h2 class="head">评测的关键不是“一个总分”，而是什么条件下有效</h2>
+    <table>
+      <thead><tr><th>Benchmark</th><th>测什么</th><th>视角</th><th>样本</th><th>主指标</th></tr></thead>
+      <tbody>
+        <tr><td>MAB</td><td>记忆选择</td><td>query + memory</td><td>60</td><td>Accuracy</td></tr>
+        <tr><td>InMind</td><td>对话记忆检索</td><td>exchange / session</td><td>20 same + 125 Jev</td><td>R@K / MRR</td></tr>
+        <tr><td>DRB2</td><td>深度研究步骤决策</td><td>739 个 typed decisions</td><td>739</td><td>Acc / macro-F1 / κ</td></tr>
+        <tr><td>DRB1</td><td>报告质量 judge</td><td>RACE 多维裁决</td><td>17 same</td><td>Overall / per-dimension</td></tr>
+        <tr><td>TTCW</td><td>时序一致性</td><td>hard vs soft aggregation</td><td>48 stories / 672</td><td>rank correlation</td></tr>
+      </tbody>
+    </table>
+    <div class="callout blue"><span class="tag test">实测</span> 所有数字都是当前协议下的快照；尤其 open model 受上下文分块、硬阈值和数据映射影响。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="MAB">
+  <div class="in">
+    <div class="kick">RQ1 · MAB <span class="dim">60 题记忆选择</span></div>
+    <h2 class="head">Jev 在这个小样本上领先，但 Nimble / Kev 已经非常接近</h2>
+    <div class="chart">
+      <div class="row"><span class="label">Jev · query + memory</span><div class="track"><div class="fill jev" style="--w:75%"></div></div><span class="val">75.0%</span></div>
+      <div class="row"><span class="label">Jev · memory state</span><div class="track"><div class="fill jev" style="--w:73.3%"></div></div><span class="val">73.3%</span></div>
+      <div class="row"><span class="label">Nimble-9B</span><div class="track"><div class="fill open" style="--w:71.7%"></div></div><span class="val">71.7%</span></div>
+      <div class="row"><span class="label">Kev-4B</span><div class="track"><div class="fill open" style="--w:66.7%"></div></div><span class="val">66.7%</span></div>
+      <div class="row"><span class="label">ReFind</span><div class="track"><div class="fill" style="--w:56.7%"></div></div><span class="val">56.7%</span></div>
+      <div class="row"><span class="label">Laya</span><div class="track"><div class="fill" style="--w:31.7%"></div></div><span class="val">31.7%</span></div>
+    </div>
+    <div class="callout"><b>解读：</b>时间戳格式从 memory 移到 query 后，Jev 从 44/60 回到 45/60。这更像 input layout 敏感性，而不是“时序推理已解决”。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="InMind">
+  <div class="in">
+    <div class="kick">RQ1 · InMind <span class="dim">exchange retrieval</span></div>
+    <div class="cols top">
+      <div>
+        <h2 class="head">交换级检索是 Jev 目前最稳定的证据</h2>
+        <div class="matrix">
+          <div class="metric"><b>84.8</b><span>R@1 · Jev full 125</span></div>
+          <div class="metric"><b>92.0</b><span>R@5</span></div>
+          <div class="metric"><b>94.4</b><span>R@10</span></div>
+          <div class="metric"><b>.882</b><span>MRR</span></div>
+          <div class="metric"><b>76.8</b><span>Answer · Top10</span></div>
+        </div>
+        <p class="muted">完整 125 条 Jev 交换级检索成本约 $1.0425；会话级视图 R@1 降到 49.6，说明粒度选择很重要。</p>
+      </div>
+      <div class="tbl-wrap">
+        <table><caption>same 20 · exchange view</caption><thead><tr><th>Model</th><th>R@1</th><th>R@5</th><th>R@10</th><th>MRR</th></tr></thead><tbody>
+          <tr class="hi"><td>Jev</td><td class="best">85</td><td>90</td><td>90</td><td class="best">.867</td></tr>
+          <tr><td>Nimble-9B</td><td>70</td><td class="best">95</td><td class="best">95</td><td>.774</td></tr>
+          <tr><td>Kev-4B</td><td>55</td><td>65</td><td>70</td><td>.606</td></tr>
+          <tr><td>Laya</td><td>10</td><td>15</td><td>15</td><td>.113</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="DRB2">
+  <div class="in">
+    <div class="kick">RQ1 · DRB2 <span class="dim">739 typed decisions</span></div>
+    <h2 class="head">准确率看起来很高，但 macro-F1 才揭示少数类的差距</h2>
+    <table>
+      <thead><tr><th>Model / rule</th><th>Accuracy</th><th>Macro-F1</th><th>Cohen κ</th><th>解读</th></tr></thead>
+      <tbody>
+        <tr><td>Gemini 2.5 Pro</td><td class="best">90.66</td><td class="best">.8858</td><td class="best">.7944</td><td>当前最强</td></tr>
+        <tr class="hi"><td>Jev</td><td>89.17</td><td>.8071</td><td>.7478</td><td>接近前沿 LLM</td></tr>
+        <tr><td>GPT-5</td><td>87.14</td><td>.6050</td><td>.7032</td><td>少数类 F1 较弱</td></tr>
+        <tr><td>Nimble-9B · hard-any</td><td>70.64</td><td>.5641</td><td>.4536</td><td>准确率接近 always-0</td></tr>
+        <tr><td>Kev-4B · hard-any</td><td>68.74</td><td>.5494</td><td>.4421</td><td>仍有明显差距</td></tr>
+        <tr><td>Always 0</td><td>70.50</td><td>.2757</td><td>0</td><td>类别不平衡基线</td></tr>
+      </tbody>
+    </table>
+    <p class="muted">不能只报 accuracy：一个永返 0 的模型也有 70.50%，但它对真正需要裁决的少数类几乎无用。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="DRB1">
+  <div class="in">
+    <div class="kick">RQ1 · DRB1 <span class="dim">17 篇 same slice</span></div>
+    <h2 class="head">Jev 在 RACE judge 上已接近顶级 LLM，但样本仅 17 篇</h2>
+    <div class="chart">
+      <div class="row"><span class="label">GPT-5.5</span><div class="track"><div class="fill" style="--w:75.28%"></div></div><span class="val">75.28</span></div>
+      <div class="row"><span class="label">Jev · RACE</span><div class="track"><div class="fill jev" style="--w:74.54%"></div></div><span class="val">74.54</span></div>
+      <div class="row"><span class="label">Gemini 3 Pro</span><div class="track"><div class="fill" style="--w:74.02%"></div></div><span class="val">74.02</span></div>
+      <div class="row"><span class="label">Jev · direct</span><div class="track"><div class="fill jev" style="--w:72.25%"></div></div><span class="val">72.25</span></div>
+      <div class="row"><span class="label">Jev · holistic</span><div class="track"><div class="fill jev" style="--w:66.05%"></div></div><span class="val">66.05</span></div>
+    </div>
+    <div class="kv"><div><b>93.40</b><span>OPC · Jev RACE</span></div><div><b>75.49</b><span>PAR</span></div><div><b>67.00</b><span>FAP</span></div><div><b>62.26</b><span>FAS</span></div></div>
+    <p class="tiny">这是同样 17 篇报告上的小样本交叉对比，不是全量 DRB1 leaderboard 结论。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="TTCW">
+  <div class="in">
+    <div class="kick">RQ1 · TTCW <span class="dim">48 stories / 672 judgments</span></div>
+    <div class="cols top">
+      <div>
+        <h2 class="head">相同的 Jev 输出，保留概率后排序相关性显著更高</h2>
+        <div class="cards two">
+          <article class="card"><h4>Hard sum</h4><p>Spearman <b>.1138</b><br>Kendall <b>.1236</b><br>Pairwise <b>.6944</b></p></article>
+          <article class="card accent"><h4>Soft sum</h4><p>Spearman <b>.5305</b><br>Kendall <b>.4569</b><br>Pairwise <b>.7500</b></p></article>
+        </div>
+      </div>
+      <div>
+        <div class="formula">hard: Σ 1[pᵢ ≥ τ]<br><br><b>soft: Σ pᵢ</b></div>
+        <p class="muted">硬阈值把 0.49 和 0.01 都压成 0，也把 0.51 和 0.99 都压成 1。概率是 Jev 最有价值的产品界面，不应立即丢掉。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq1" data-sec="RQ1 结论">
+  <div class="in">
+    <div class="kick">RQ1 · 结论 <span class="dim">· 强在哪里</span></div>
+    <h2 class="head">证据支持的是“强 decision model”，不是“万能 LLM 替代者”</h2>
+    <div class="cards">
+      <article class="card pos"><h4>强证据</h4><p>交换级 memory retrieval、规则分解后的 judge / scorer、保留概率的排序聚合。</p></article>
+      <article class="card blue"><h4>中等证据</h4><p>DRB2 接近前沿 LLM，DRB1 小样本接近 GPT-5.5；但仍需扩大同协议实验。</p></article>
+      <article class="card accent"><h4>仍未证明</h4><p>长上下文、复杂时序推理、视觉多模态、任意开放生成任务。</p></article>
+    </div>
+    <div class="callout"><b>开源替代的当前排名：</b>Nimble-9B 是最强的“不改架构”基线；Kev-4B 是更接近 dynamic decision readout 的架构实验。</div>
+  </div>
+</section>
+
+<section class="slide divider" id="rq2" data-rq="rq2" data-sec="RQ2 · 如何产生">
+  <div class="in"><div class="rqbig">RQ2</div><h2>Jev 是如何出现的？</h2><p class="question">LLM 预训练带来通用表征；Jev 将输出空间从自由字符串改成动态决策，再用 RLCD 和数据把概率变得可用。</p></div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="必要条件">
+  <div class="in">
+    <div class="kick">RQ2 · 必然性 <span class="dim">· why now</span></div>
+    <h2 class="head">Jev 的“现在出现”有四个必要条件</h2>
+    <div class="cards two">
+      <article class="card pos"><h4>1 · 通用 LLM 表征</h4><p>动态 label 的语义可以在运行时理解，而不是每个任务重新收集标注。</p></article>
+      <article class="card blue"><h4>2 · 便宜合成数据</h4><p>强 LLM 能够构造跨领域决策任务、反例、改写和软标签。</p></article>
+      <article class="card accent"><h4>3 · 推理成本矛盾</h4><p>生成式 frontier intelligence 很强，但高频、实时、机器消费的任务无法为长 CoT 付费。</p></article>
+      <article class="card"><h4>4 · 产品界面改变</h4><p>程序需要概率、类型和可组合控制流，不是更流畅的自然语言。</p></article>
+    </div>
+    <div class="callout"><b>BERT 时代能不能出现？</b> 能出现“概率分类 API”，但很难出现同一个 zero-shot 模型在运行时理解新任务、新标签与复杂 state 的形态。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="架构证据">
+  <div class="in">
+    <div class="kick">RQ2 · 架构 <span class="dim">· backbone ≠ readout</span></div>
+    <h2 class="head">最稳妥的抽象：<span class="en">pretrained LLM backbone + dynamic decision readout</span></h2>
+    <div class="pipe">
+      <div class="node"><b>预训练 LLM</b><span>Transformer 通用表征</span></div><div class="arr">→</div>
+      <div class="node"><b>state + questions + options</b><span>运行时任务语义</span></div><div class="arr">→</div>
+      <div class="node"><b>decision readout</b><span>动态候选打分</span></div><div class="arr">→</div>
+      <div class="node"><b>RLCD</b><span>正确性 + 校准</span></div>
+    </div>
+    <div class="cards">
+      <article class="card pos"><h4><span class="tag fact">已公开</span></h4><p>Transformer-based；从 pretrained base model 继续训练；new architecture、parallel sampler、RLCD。</p></article>
+      <article class="card accent"><h4><span class="tag infer">合理推测</span></h4><p>主干仍是 decoder-style LLM Transformer；改造集中在输入组织、mask、query / option 表征与 readout。</p></article>
+      <article class="card"><h4><span class="tag unknown">仍未知</span></h4><p>是否使用原 LM head、是否有 scalar / pointer head、是否一次 forward，以及具体 attention mask。</p></article>
+    </div>
+    <div class="callout pos">不要把“Decoder-only / encoder / parallel queries”并列为三种底层架构。<b>LLM Transformer 是 backbone；其上的动态读出才是未知变量。</b></div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="决策读出">
+  <div class="in">
+    <div class="kick">RQ2 · 架构 <span class="dim">· 为什么不是固定分类头</span></div>
+    <div class="cols top">
+      <div>
+        <h2 class="head">运行时候选会变，所以不可能只是 <span class="en">Linear(h, fixed_num_classes)</span></h2>
+        <div class="formula">zᵢ = F(state, question, optionᵢ)<br>pᵢ = softmax(z)ᵢ</div>
+        <p class="muted">同一个共享 F 对任意数量、任意语义的候选打分，才能支持 zero-shot dynamic label space。</p>
+      </div>
+      <div class="cards" style="grid-template-columns:1fr">
+        <article class="card"><h4>1 · 受限 token logits</h4><p>把 options 映射到专用 token，只读决策位置的 logits，不继续文本 decode。</p></article>
+        <article class="card"><h4>2 · hidden state + shared scalar</h4><p>每个 option 先得到表示，再用共享 head 读出 zᵢ。</p></article>
+        <article class="card"><h4>3 · parallel decision queries</h4><p>专用 question / option query 共享 state，在一个并行 sampler 中读出多个 scalar。</p></article>
+      </div>
+    </div>
+    <p class="tiny">三者是同一 LLM backbone 上的读出设计，可以混合；官方尚未披露 Jev 采用哪一种。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="RLCD">
+  <div class="in">
+    <div class="kick">RQ2 · 训练方法 <span class="dim">· RLCD vs RLHF / RLVR</span></div>
+    <figure><div class="frame"><img src="assets/img/01-training-paradigm.png" alt="LM、LLM、RLHF/RLVR 与 RLCD"></div><figcaption>TypeSafe 官方叙事：从 pretrained LLM 分叉到面向 chat / reasoning 的 RLHF/RLVR，或面向 calibrated decisions 的 RLCD。</figcaption></figure>
+    <table><thead><tr><th>路线</th><th>优化目标</th><th>奖励 / 监督</th><th>输出</th></tr></thead><tbody>
+      <tr><td>RLHF</td><td>人类偏好的回答</td><td>human preference / preference model</td><td>有帮助、自然的文本</td></tr>
+      <tr><td>RLVR</td><td>可程序验证的最终结果</td><td>checker / unit test / rule</td><td>reasoning + answer</td></tr>
+      <tr class="hi"><td>RLCD</td><td>决策正确且概率诚实</td><td>programmatic outcome / target distribution?</td><td>typed probabilities</td></tr>
+    </tbody></table>
+    <p class="tiny">RLCD 现在更像一个 task / North Star，不是已公开的唯一优化器；截至 2026-09-23 没有技术报告或完整损失函数。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="训练数据">
+  <div class="in">
+    <div class="kick">RQ2 · 数据 <span class="dim">· data matter</span></div>
+    <div class="cols wide-left top">
+      <div>
+        <h2 class="head">真正困难的不是生成很多文本，而是构造可信的概率目标</h2>
+        <ul class="b">
+          <li><span class="tag fact">已公开</span> TypeSafe 称自己为 data research lab；训练数据由团队制作，不用客户数据训练。</li>
+          <li><span class="tag unknown">仍未知</span> 规模、生成模型、过滤流程、软标签来源、领域配比。</li>
+          <li><span class="tag infer">合理推测</span> 同义改写、选项乱序、否定/反事实、OOD 和带已知 posterior 的合成环境都很关键。</li>
+        </ul>
+        <div class="callout"><b>hard label 不够。</b> 标签为 A 无法告诉模型这是 51/49 的模糊样本，还是 99/1 的确定样本。</div>
+      </div>
+      <figure><div class="frame"><img src="assets/img/02-synthetic-data.png" alt="TypeSafe 对训练数据的公开说明"></div><figcaption>官方只披露方向，没有发布 dataset card。</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq2" data-sec="Base model 猜测">
+  <div class="in">
+    <div class="kick">RQ2 · Base model <span class="dim">· evidence ladder</span></div>
+    <h2 class="head">当前可讲的结论是“像 Qwen3.5”，不是“已证实为 Qwen3.5”</h2>
+    <div class="cards">
+      <article class="card pos"><h4>1 · 官方证据</h4><p>Jev 从 pretrained base model 出发，是 transformer-based model。官方未给出模型名、参数量或 tokenizer。</p></article>
+      <article class="card blue"><h4>2 · 社区线索</h4><p>小红书截图/社区讨论将特征指向 Qwen3.5；Nimble 和 Kev 也都选择 Qwen3.5 来复制这种形态。</p></article>
+      <article class="card accent"><h4>3 · 不能排除</h4><p>自研 dense / hybrid backbone、其他开源基座、或混合多个技术路线；性能轮廓不能唯一反推 base。</p></article>
+    </div>
+    <div class="callout blue"><b>组会表述建议：</b>“Qwen3.5 是当前有支持的社区假设，但官方尚未确认。”</div>
+    <p class="tiny"><a href="https://www.xiaohongshu.com/explore/6ab299a30000000018006000">社区线索：小红书原帖 ↗</a> · 网页未直接复制受限页面图片，仅保留可审核的出处。</p>
+  </div>
+</section>
+
+<section class="slide divider" id="rq3" data-rq="rq3" data-sec="RQ3 · 开源复现">
+  <div class="in"><div class="rqbig">RQ3</div><h2>Jev 是否有开源复现？</h2><p class="question">没有项目复现了 proprietary Jev / RLCD。但 Nimble 和 Kev 分别验证了“原 LM head”与“新 decision head”两条路。</p></div>
+</section>
+
+<section class="slide" data-rq="rq3" data-sec="Nimble-9B">
+  <div class="in">
+    <div class="kick">RQ3 · Nimble-9B <span class="dim">· 最小改造路线</span></div>
+    <h2 class="head">保留 Qwen3.5-9B 的生成架构，只训一个 token 的 A/B/C 候选 logits</h2>
+    <div class="cards two">
+      <article class="card pos"><h4>Base model</h4><p><b>Qwen/Qwen3.5-9B</b> 作为直接父模型；它本身已是 post-trained checkpoint，底层来自 Qwen3.5-9B-Base。</p></article>
+      <article class="card blue"><h4>Data</h4><p><b>2,676 train + 324 eval</b>；1,338 对 contrastive pairs，34 task families / 10 categories。数据与构造代码已开源。</p></article>
+      <article class="card accent"><h4>Architecture</h4><p>不加新 head；使用原 vocabulary LM head，对单 token 候选 A/B/C 做 restricted logits 交叉熵。</p></article>
+      <article class="card"><h4>Training</h4><p>LoRA r=16 / α=32 / dropout .05，1 epoch，lr 5e-5，effective batch 8，BF16 H100。<b>SFT / CE，不是 RL。</b></p></article>
+    </div>
+    <div class="callout"><b>意义：</b>它验证了“不需要新底层架构，只改训练任务也能做出强 typed decision model”；但单 token 候选限制了表达形态。</div>
+    <p class="tiny"><a href="https://github.com/bespokelabsai/nimble">GitHub · bespokelabsai/nimble ↗</a> · <a href="https://huggingface.co/bespokelabs/Bespoke-Nimble-9B">Hugging Face ↗</a></p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq3" data-sec="Kev-4B">
+  <div class="in">
+    <div class="kick">RQ3 · Kev-4B <span class="dim">· 专用 decision readout</span></div>
+    <h2 class="head">Qwen3.5-4B-Base + LoRA + pointer head，让每个 option 成为动态可打分对象</h2>
+    <div class="cards two">
+      <article class="card pos"><h4>Base model</h4><p>当前 main 为 <b>Qwen/Qwen3.5-4B-Base</b>；旧 qwen3 tag 才是 Qwen3-4B-Base。</p></article>
+      <article class="card blue"><h4>Data</h4><p>10 个公开源×1,000 + 896 policy + 1,680 compositional = <b>12,576</b>；数据开源为 kev-suites。</p></article>
+      <article class="card accent"><h4>Architecture</h4><p>每个问题独立成 causal row 并共享 state prefix；使用 decide hidden state 与 option-end hidden state 的 pointer score。</p></article>
+      <article class="card"><h4>Training</h4><p>LoRA r=16，初始 2 epochs / lr 5e-5；delta 1 epoch / lr 2e-5；<b>监督 CE，无 RL</b>；事后温度 T=2.14。</p></article>
+    </div>
+    <div class="formula">scoreᵢ = q(h<sub>decide</sub>) · k(h<sub>option-end,i</sub>) / √256<br>p = softmax(score)</div>
+    <p class="tiny"><a href="https://github.com/jaredpalmer/kev">GitHub · jaredpalmer/kev ↗</a></p>
+  </div>
+</section>
+
+<section class="slide" data-rq="rq3" data-sec="复现对比">
+  <div class="in">
+    <div class="kick">RQ3 · 对比 <span class="dim">· what is reproduced</span></div>
+    <h2 class="head">开源项目复现的是产品形态和部分技术假设，不是 RLCD</h2>
+    <table>
+      <thead><tr><th></th><th>Jev</th><th>Nimble-9B</th><th>Kev-4B</th></tr></thead>
+      <tbody>
+        <tr><td>Base</td><td>未公开</td><td>Qwen3.5-9B</td><td>Qwen3.5-4B-Base</td></tr>
+        <tr><td>Readout</td><td>未公开</td><td>原 LM head · A/B/C logits</td><td>pointer head · dynamic options</td></tr>
+        <tr><td>Data</td><td>自建，未开源</td><td>3K 级开源对比数据</td><td>12.6K 开源决策数据</td></tr>
+        <tr><td>Objective</td><td>RLCD · 细节未公开</td><td>candidate-logit CE</td><td>pointer CE + temp scaling</td></tr>
+        <tr><td>Our MAB 60</td><td class="best">75.0%</td><td>71.7%</td><td>66.7%</td></tr>
+        <tr><td>Our InMind same20 R@1</td><td class="best">85%</td><td>70%</td><td>55%</td></tr>
+      </tbody>
+    </table>
+    <div class="callout pos"><b>开源给出的最强反事实：</b>即使不知道 RLCD，也能用小规模监督数据做到一部分 Jev 能力。因此官方优势若成立，更可能集中在数据覆盖、OOD 校准、读出/采样与 serving 联合优化。</div>
+  </div>
+</section>
+
+<section class="slide divider" id="discussion2" data-rq="discussion2" data-sec="Discussion 2：TypeSafe 的理念">
+  <div class="in"><div class="rqbig">D2</div><h2>TypeSafe 的理念：重新选择任务</h2><p class="question">System One / System Two、The Bitterest Lesson，以及为什么他们不想再造一个 chat model。</p></div>
+</section>
+
+<section class="slide" data-rq="discussion2" data-sec="System One / Two">
+  <div class="in">
+    <div class="kick">Discussion 2 <span class="dim">· System One & System Two</span></div>
+    <div class="cols">
+      <div>
+        <h2 class="head">System One 是任务形状，不是已公开的神经网络类型</h2>
+        <div class="cards two">
+          <article class="card accent"><h4>System One</h4><p>快速、高频、输出空间已知的决策；目标是软件直接消费。</p></article>
+          <article class="card"><h4>System Two</h4><p>慢速、审议、长链推理、规划与自由生成；更像 reasoning LLM / agent。</p></article>
+        </div>
+        <p class="muted">Jev 之名来自 Jevons paradox：单位智能越便宜，可能解锁更多原本不值得自动化的决策，反而增加总需求。</p>
+      </div>
+      <figure><div class="frame"><img src="assets/img/04-system-one-jev-names.png" alt="System One 与 Jev 命名来源"></div></figure>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion2" data-sec="Bitterest Lesson">
+  <div class="in">
+    <div class="kick">Discussion 2 <span class="dim">· The Bitterest Lesson</span></div>
+    <h2 class="head">官方的优先级排序：<span class="en">right task &gt; data &gt; compute &gt; algorithms</span></h2>
+    <div class="pipe">
+      <div class="node"><b>Right task</b><span>机器真正需要什么输出？</span></div><div class="arr">→</div>
+      <div class="node"><b>Data</b><span>能否覆盖现实决策分布？</span></div><div class="arr">→</div>
+      <div class="node"><b>Compute</b><span>还能扩大多少？</span></div><div class="arr">→</div>
+      <div class="node"><b>Algorithms</b><span>最后才是巧妙方法</span></div>
+    </div>
+    <div class="callout"><b>Jev 的核心叙事：</b>预训练已经产生大量通用智能；与其让它生成人类喜欢的长文字串，不如换成软件可以依赖的决策任务和概率界面。</div>
+    <p class="muted">这也解释了为什么 RLCD 现阶段首先是任务定义，其次才是具体算法。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion2" data-sec="Damned Benchmark">
+  <div class="in">
+    <div class="kick">Discussion 2 <span class="dim">· Lies, Damned Lies, and Benchmarks</span></div>
+    <h2 class="head">一个 benchmark 即使没有训练集泄漏，也可能被“间接过拟合”</h2>
+    <div class="cards">
+      <article class="card"><h4>模型追 benchmark</h4><p>训相似数据，或试足够多超参数，然后选中公开分数最高的 checkpoint。</p></article>
+      <article class="card"><h4>benchmark 追模型</h4><p>新模型与直觉冲突时，人们修订指标，直到排名看起来“合理”。</p></article>
+      <article class="card"><h4>用户责任</h4><p>运行私有 eval；报告 caveat、负例和试验次数；把每次结果当成时间快照。</p></article>
+    </div>
+    <div class="callout blue"><b>对我们这组实验的启示：</b>MAB 60、InMind same20、DRB1 same17 都不能单独支撑普遍性结论；更重要的是找到它在什么粒度、读出和聚合规则下失效。</div>
+  </div>
+</section>
+
+<section class="slide divider" id="discussion1" data-rq="discussion1" data-sec="Discussion 1：“TA 不一样”">
+  <div class="in"><div class="rqbig">D1</div><h2>“TA 不一样”</h2><p class="question">泛化性、可靠性、成本与时延。</p></div>
+</section>
+
+<section class="slide" data-rq="discussion1" data-sec="D1：泛化性">
+  <div class="in">
+    <div class="kick">Discussion 1 <span class="dim">· 1 / 3</span></div><h2 class="head">泛化性</h2>
+    <p class="muted">与固定任务的 BERT classifier 相比，Jev 的底座有更广的通用知识；给它新的问题和候选，它也能直接做判断。</p>
+    <div class="cards two">
+      <article class="card accent"><h4>MAB · 同一 60 题</h4><p>Top-5 检索后回答正确：Jev <b>45/60（75.0%）</b>；Laya <b>19/60（31.7%）</b>。</p></article>
+      <article class="card blue"><h4>InMind · 同一 20 题</h4><p>Exchange gold chunk 检索：Jev <b>R@1 85%、R@5 90%</b>；Laya <b>R@1 10%、R@5 15%</b>。</p></article>
+    </div>
+    <div class="callout"><b>怎么理解：</b>同样拿来判断一段 memory 对问题有没有用，Jev 在这两组任务上明显更强。但 Jev 与 Laya 的底座、训练和长文本处理都不同，不能只凭这两个分数证明优势全来自“世界知识”。</div>
+    <p class="tiny">来源：<a href="JEV_CROSS_BENCHMARK_REPORT.md">本地交叉测试报告 ↗</a>。MAB 是固定 60 题子集；InMind 的 exchange 粒度比 session 粒度更适合直接比较。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion1" data-sec="D1：可靠性">
+  <div class="in">
+    <div class="kick">Discussion 1 <span class="dim">· 2 / 3</span></div><h2 class="head">可靠性</h2>
+    <p class="muted">我们把“对齐”分成三层；只看选对了没有，还不够。</p>
+    <div class="cards">
+      <article class="card"><h4>1 · Argmax 对齐</h4><p>排第一的答案是不是对的？</p></article>
+      <article class="card"><h4>2 · Top-k 对齐</h4><p>正确答案是不是排在前面？</p></article>
+      <article class="card"><h4>3 · 概率对齐</h4><p>给出的概率和实际正确率是否相符？</p></article>
+    </div>
+    <div class="callout blue">论据待补。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion1" data-sec="D1：成本与时延">
+  <div class="in">
+    <div class="kick">Discussion 1 <span class="dim">· 3 / 3</span></div><h2 class="head">成本与时延</h2>
+    <p class="muted">先放我们实测过的 Jev 检索开销；与生成式 LLM 的同协议对照，后面再补。</p>
+    <div class="tbl-wrap"><table class="dense-table"><thead><tr><th>实验</th><th>平均候选 / 题</th><th>检索 API 费用 / 题（一次排序）</th><th>单次调用平均时延</th></tr></thead><tbody>
+      <tr><td>MAB · 60 题</td><td>447.5</td><td><b>$0.01694</b></td><td>未记录</td></tr>
+      <tr><td>InMind · 125 题 / exchange</td><td>241</td><td><b>$0.008340</b></td><td>518 ms</td></tr>
+      <tr><td>InMind · 125 题 / session</td><td>47</td><td><b>$0.005743</b></td><td>696 ms</td></tr>
+    </tbody></table></div>
+    <div class="callout"><b>注意：</b>费用是各实验的 Jev 检索总费用除以题数，不含后续回答 / 判分；MAB 的 447.5 是 26,848 个候选除以 60 题。518 / 696 ms 是单次请求，不是整题端到端时延；没有同协议的生成式 LLM 对照，暂不能说“快了多少倍”。</div>
+    <p class="tiny">来源：<a href="JEV_CROSS_BENCHMARK_REPORT.md">MAB 成本汇总 ↗</a>；InMind125 本地原始汇总 <code>always-on-memory/results/jev_inmind_pairwise_probes/summary_full125.md</code>。</p>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion" data-sec="Application">
+  <div class="in">
+    <div class="kick">Application <span class="dim">· 从 API 到方法</span></div>
+    <h2 class="head">最直接的三类应用</h2>
+    <div class="cards">
+      <article class="card accent"><h4>Judge / Scorer</h4><p>代码、报告、agent trace、安全规则、风险和质量维度的并行评分。</p></article>
+      <article class="card blue"><h4>Classify / Label</h4><p>路由、意图、优先级、实体和政策标签；标签集可运行时更新。</p></article>
+      <article class="card pos"><h4>Jev post-train</h4><p>先用通用 Jev 冷启动，累积 outcome / 私有数据后，再蒸馏成更小的专用 decision model。</p></article>
+    </div>
+    <div class="callout pos"><b>现实闭环：</b>Jev 处理新任务和 OOD；成熟的固定高流量任务逐步蒸馏到本地小模型。这不是“淘汰分类器”，而是改变分类器的创建方式。</div>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion" data-sec="Open problems">
+  <div class="in">
+    <div class="kick">Open problems <span class="dim">· 下一步不只是变大</span></div>
+    <h2 class="head">把 System One 扩展到更复杂任务，需要打破当前的简化假设</h2>
+    <div class="cards two">
+      <article class="card"><h4>1 · Reasoning Jev</h4><p>能否在不回到长链自回归生成的前提下，引入更稳定、更便宜的内部计算？</p></article>
+      <article class="card"><h4>2 · Long-context Jev</h4><p>如何在长状态中保留检索召回与校准？是换 base，还是引入 hierarchical readout？</p></article>
+      <article class="card"><h4>3 · Multimodal Jev</h4><p>当前 Doom demo 读取的是带文本的结构化状态，不是图像。真多模态需要 vision / audio encoder 或多模态 base。</p></article>
+      <article class="card"><h4>4 · Uni-Jev-LLM</h4><p>一个模型能否在 typed parallel decision 与开放生成之间切换，而不牺牲两边的效率和校准？</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion" data-sec="Open discussions">
+  <div class="in">
+    <div class="kick">Open discussions <span class="dim">· 组会留题</span></div>
+    <ol class="n">
+      <li>RLCD 真的需要 RL 吗？Proper scoring rule + soft-label SFT + calibration 能走多远？</li>
+      <li>动态 label space 的校准能跨任务比较吗？法律上的 0.8 和客服上的 0.8 是一件事吗？</li>
+      <li>多个 question 独立读出会不会互相矛盾？约束应该进模型，还是交给程序 / solver？</li>
+      <li>Jev 的差异有多少来自模型，有多少来自 sampler、batching 和 serving？</li>
+      <li>开源复现小样本接近 Jev，是否说明官方护城河主要是数据覆盖与 OOD calibration？</li>
+    </ol>
+  </div>
+</section>
+
+<section class="slide" data-rq="discussion" data-sec="Takeaways">
+  <div class="in">
+    <div class="kick">Takeaways <span class="dim">· 三句话</span></div>
+    <h2 class="head">如果只记住三件事</h2>
+    <div class="cards">
+      <article class="card accent"><h4>01 · 界面</h4><p>Jev 的关键不是“小 LLM”，而是从自由文本改为动态 typed probabilities。</p></article>
+      <article class="card blue"><h4>02 · 证据</h4><p>它在 retrieval / judge / scorer 上已显示前沿能力，但长上下文、推理和多模态尚未证明。</p></article>
+      <article class="card pos"><h4>03 · 护城河</h4><p>架构可能只是一部分；更难复制的很可能是任务定义、合成数据、校准与 serving 联合优化。</p></article>
+    </div>
+    <div class="sourcebox">
+      <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">Introducing System One Models & Jev<span>TypeSafe · official</span></a>
+      <a href="https://typesafe.ai/blog/bitterest-lesson">The Bitterest Lesson<span>TypeSafe · official</span></a>
+      <a href="https://typesafe.ai/blog/antibenchmaxxing">Lies, Damned Lies, and Benchmarks<span>TypeSafe · official</span></a>
+      <a href="https://api.typesafe.ai/docs">System One OpenAPI<span>TypeSafe · official API schema</span></a>
+      <a href="https://github.com/bespokelabsai/nimble">Nimble<span>GitHub · open source</span></a>
+      <a href="https://github.com/jaredpalmer/kev">Kev<span>GitHub · open source</span></a>
+      <a href="JEV_CROSS_BENCHMARK_REPORT.md">Cross-benchmark report<span>本地实测·完整报告</span></a>
+      <a href="https://evals.typesafe.ai/">Workflow evals<span>TypeSafe · official evals</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="slide divider" data-rq="discussion" data-sec="结束">
+  <div class="in" style="text-align:center">
+    <div class="kick" style="justify-content:center">谢谢 <span class="dim">· 组会 0923 · Jev</span></div>
+    <h2 class="head">机器真正需要的，<br>也许不是更好的文字，而是更可靠的决策。</h2>
+    <p class="muted"><a href="../../index.html">← 返回主页</a></p>
+  </div>
+</section>
+
+</main>
+
+<div class="lb" id="lb"><img alt=""><div class="lb-hint">点击图片切换原始大小 · Esc / 点击空白处关闭</div></div>
+<div class="rail" id="rail"></div>
+<div class="hud"><button id="prev" aria-label="上一页">↑</button><div class="ctr"><span><b id="cur">1</b> / <span id="tot">0</span></span><span class="sec" id="secname">封面</span></div><button id="next" aria-label="下一页">↓</button></div>
+
+<script src="slides.js"></script>
+<script>
+const deck=document.getElementById('deck');
+deck.innerHTML=window.JEV_SLIDES;
+const outlineOrder=[
+  '封面','Jev 概况','输入输出','请求 → 响应',
+  'RQ1：Jev 效果究竟如何？','RQ1：MAB','RQ1：InMind','RQ1：DRB2','RQ1：DRB1','RQ1：TTCW',
+  'Discussion 1：“TA 不一样”','D1：泛化性','D1：可靠性','D1：成本与时延',
+  'RQ2：Jev 是如何出生的？','官方确认的信息','RLCD vs. RLHF / RLVR','RLCD 是什么','数据长什么样','Base Model 的猜测',
+  'Discussion 2：TypeSafe 的理念','System One / System Two','The Bitterest Lesson','Damned Benchmark',
+  'RQ3：Jev 是否有开源复现？','Kev-4B：hidden → pointer','Kev-4B：真实数据','Nimble-9B：hidden → vocabulary logits','Nimble-9B：真实数据',
+  'InMind：同一 20 题，gold chunk retrieval','InMind：全量 125 题，最终回答成功率','MAB：固定 60 题，Top-5 后回答准确率','DRB2：10 个文本任务、739 条 rubric decision','DRB1：同一 17/50 题的人类一致性','TTCW：全量 48 stories / 672 items',
+  'Open Problem','Reasoning / Lctx / Multimodal / Uni-Jev-LLM','Application','结束'
+];
+const slideBySection=new Map([...deck.querySelectorAll('.slide')].map(s=>[s.dataset.sec,s]));
+const orderedSlides=outlineOrder.map(name=>slideBySection.get(name)).filter(Boolean);
+deck.replaceChildren(...orderedSlides);
+let outlineGroup='0';
+const dividerGroups={basics:'basics',rq1:'rq1',rq2:'rq2',discussion1:'discussion1',rq3:'rq3',discussion2:'discussion2','open-problem':'open'};
+orderedSlides.forEach(s=>{if(s.id&&dividerGroups[s.id])outlineGroup=dividerGroups[s.id];s.dataset.rq=outlineGroup});
+const slides=[...deck.querySelectorAll('.slide')];
+const rail=document.getElementById('rail');
+const curEl=document.getElementById('cur'),totEl=document.getElementById('tot'),secEl=document.getElementById('secname');
+const prevB=document.getElementById('prev'),nextB=document.getElementById('next'),bar=document.getElementById('bar');
+const rqLinks=[...document.querySelectorAll('.rqnav a')];
+let idx=0;totEl.textContent=slides.length;
+slides.forEach((s,i)=>{const d=document.createElement('i');d.title=s.dataset.sec||'';if(s.classList.contains('divider'))d.dataset.d='1';d.addEventListener('click',()=>go(i));rail.appendChild(d)});
+const dots=[...rail.children];
+function paint(){curEl.textContent=idx+1;secEl.textContent=slides[idx].dataset.sec||'';bar.style.width=(idx/(slides.length-1)*100)+'%';dots.forEach((d,i)=>d.classList.toggle('on',i===idx));prevB.disabled=idx===0;nextB.disabled=idx===slides.length-1;const rq=slides[idx].dataset.rq;rqLinks.forEach(a=>a.classList.toggle('on',(a.dataset.group||a.dataset.go)===rq))}
+function go(i){document.querySelectorAll('.mab-evidence[open]').forEach(d=>d.removeAttribute('open'));idx=Math.max(0,Math.min(slides.length-1,i));slides[idx].scrollIntoView({behavior:'smooth'});paint()}
+const io=new IntersectionObserver(es=>es.forEach(e=>{e.target.classList.toggle('is-active',e.isIntersecting);if(e.isIntersecting){idx=slides.indexOf(e.target);paint()}}),{root:deck,threshold:.55});slides.forEach(s=>io.observe(s));
+prevB.onclick=()=>go(idx-1);nextB.onclick=()=>go(idx+1);rqLinks.forEach(a=>a.addEventListener('click',()=>{const t=document.getElementById(a.dataset.go);if(t)go(slides.indexOf(t))}));
+const lb=document.getElementById('lb'),lbImg=lb.querySelector('img');document.querySelectorAll('figure .frame').forEach(fr=>fr.addEventListener('click',()=>{const im=fr.querySelector('img');if(!im)return;lbImg.src=im.currentSrc||im.src;lb.classList.add('open');lb.classList.remove('zoom');lb.scrollTop=0;lb.scrollLeft=0}));lb.addEventListener('click',e=>{if(e.target===lbImg)lb.classList.toggle('zoom');else lb.classList.remove('open','zoom')});
+document.querySelectorAll('.mab-dismiss').forEach(btn=>btn.addEventListener('click',()=>btn.closest('details').removeAttribute('open')));
+addEventListener('keydown',e=>{if(lb.classList.contains('open')){if(e.key==='Escape')lb.classList.remove('open','zoom');return}if(e.target.closest?.('summary,button,input,select,textarea'))return;const openEvidence=document.querySelector('.mab-evidence[open]');if(openEvidence&&e.key==='Escape'){openEvidence.removeAttribute('open');return}if(['ArrowDown','ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1)}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(idx-1)}else if(e.key==='Home'){e.preventDefault();go(0)}else if(e.key==='End'){e.preventDefault();go(slides.length-1)}});paint();
+</script>
+<script src="kev-viz.js"></script>
+<script src="nimble-viz.js"></script>
+</body>
+</html>
