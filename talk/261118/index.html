@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="laser-mode">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Similarity ≠ Utility · InMind Talk</title>
+  <link rel="stylesheet" href="slides.css">
+  <script defer src="slides.js"></script>
+</head>
+<body>
+  <div id="laser-dot" aria-hidden="true"></div>
+  <div id="bar"></div>
+
+  <header class="chrome">
+    <div class="chrome-left">EvoAgentX Talk · <b>Keep It InMind</b></div>
+    <nav class="rqnav" aria-label="章节跳转">
+      <button type="button" data-go="intro" class="on">开场</button>
+      <button type="button" data-go="rq1">RQ1 · Bench</button>
+      <button type="button" data-go="rq2">RQ2 · 定位</button>
+      <button type="button" data-go="rq3">RQ3 · 解决</button>
+      <button type="button" data-go="outro">总结</button>
+    </nav>
+    <div class="chrome-right">
+      <button type="button" class="chrome-btn" id="btn-grid" title="目录总览 (G)">目录 G</button>
+      <button type="button" class="chrome-btn" id="btn-notes" title="口述备注 (N)">备注 N</button>
+    </div>
+  </header>
+
+  <main class="deck" id="deck">
+
+    <!-- =========================================================
+         P01: Cover
+         ========================================================= -->
+    <section class="slide divider" data-chap="intro" data-title="封面 · Similarity ≠ Utility">
+      <div class="in cover-center">
+        <h1 class="cover-en">Similarity ≠ Utility</h1>
+        <p class="cover-zh">智能体长期记忆系统与测试基准中的盲点</p>
+        <hr class="cover-rule">
+        <div class="cover-meta">
+          <div><b>李睿哲</b> &ensp;·&ensp; 中国科学技术大学 (USTC)</div>
+          <div style="font-size:17px;margin-top:4px;">EvoAgentX Community Talk &ensp;·&ensp; 2026.11.18</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P02: 主流长期记忆框架
+         ========================================================= -->
+    <section class="slide" data-chap="intro" data-title="主流长期记忆框架">
+      <div class="in">
+        <header class="s-head">
+          <h2>主流长期记忆框架</h2>
+          <span class="tag">Standard Architecture</span>
+        </header>
+        <div data-pipeline="plain"></div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P03: 2 个例子 (Independent Horizontal Swipe on Each 3rd Answer)
+         ========================================================= -->
+    <section class="slide" data-chap="intro" data-title="2 个例子">
+      <div class="in">
+        <header class="s-head">
+          <h2>2 个例子</h2>
+          <span class="tag">Direct ✓ · Indirect ✗</span>
+        </header>
+
+        <div class="chat-windows">
+          <!-- Left Chat App Window -->
+          <div class="chat-win">
+            <div class="chat-win-bar">
+              <b>Case A · 树坚果过敏与马卡龙</b>
+              <span class="swipe-hint">← 滑动底部回复 →</span>
+            </div>
+            <div class="chat-stream">
+              <div class="time-sep">Session #09 · 写入记忆</div>
+              <div class="msg-row user"><div class="bub">吃了混合坚果全身起荨麻疹，刚查出树坚果过敏。</div></div>
+              <div class="msg-row bot"><div class="avatar">AI</div><div class="bub">已记下你的树坚果过敏信息，后续饮食建议会注意避开。</div></div>
+
+              <div class="time-sep">38 Sessions Later · 直接询问</div>
+              <div class="msg-row user"><div class="bub">还记得我对什么过敏吗？</div></div>
+              <div class="msg-row bot">
+                <div class="avatar">AI</div>
+                <div class="bub">记得，你对<b>树坚果</b>过敏。</div>
+                <span class="verdict-pill ok">✓</span>
+              </div>
+
+              <div class="time-sep">38 Sessions Later · 间接提问</div>
+              <div class="msg-row user"><div class="bub">周末想试试做马卡龙，有什么食谱？</div></div>
+              <div class="ans-slider" data-ans-slider>
+                <div class="ans-track">
+                  <div class="ans-pane">
+                    <div class="msg-row bot fail">
+                      <div class="avatar">AI</div>
+                      <div class="bub">经典法式马卡龙：准备<b>杏仁粉 100g</b>、糖粉 100g、蛋白 75g……</div>
+                      <span class="verdict-pill no">✗</span>
+                    </div>
+                  </div>
+                  <div class="ans-pane">
+                    <div class="msg-row bot good">
+                      <div class="avatar">AI</div>
+                      <div class="bub">传统马卡龙含<b>杏仁粉（属树坚果）</b>，会引发过敏；建议改用葵花籽粉配方。</div>
+                      <span class="verdict-pill ok">✓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ans-dots" aria-hidden="true"><i class="on fail-dot"></i><i class="ok-dot"></i></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Chat App Window -->
+          <div class="chat-win">
+            <div class="chat-win-bar">
+              <b>Case B · 养猫与百合花</b>
+              <span class="swipe-hint">← 滑动底部回复 →</span>
+            </div>
+            <div class="chat-stream">
+              <div class="time-sep">Session #09 · 写入记忆</div>
+              <div class="msg-row user"><div class="bub">我家养了一只橘猫，平时特别喜欢啃家里的东西。</div></div>
+              <div class="msg-row bot"><div class="avatar">AI</div><div class="bub">好呀，小橘猫很活泼！有养宠问题随时问我。</div></div>
+
+              <div class="time-sep">38 Sessions Later · 直接询问</div>
+              <div class="msg-row user"><div class="bub">我家里养了什么宠物？</div></div>
+              <div class="msg-row bot">
+                <div class="avatar">AI</div>
+                <div class="bub">你家里养了一只<b>猫</b>。</div>
+                <span class="verdict-pill ok">✓</span>
+              </div>
+
+              <div class="time-sep">38 Sessions Later · 间接提问</div>
+              <div class="msg-row user"><div class="bub">想买束百合插客厅茶几上，怎么养护？</div></div>
+              <div class="ans-slider" data-ans-slider>
+                <div class="ans-track">
+                  <div class="ans-pane">
+                    <div class="msg-row bot fail">
+                      <div class="avatar">AI</div>
+                      <div class="bub">花茎斜剪 45 度插入清水，放在客厅明亮通风处即可……</div>
+                      <span class="verdict-pill no">✗</span>
+                    </div>
+                  </div>
+                  <div class="ans-pane">
+                    <div class="msg-row bot good">
+                      <div class="avatar">AI</div>
+                      <div class="bub">你家里养了猫，<b>百合全株及花粉对猫有剧毒</b>（可致急性肾衰），切勿带回家中。</div>
+                      <span class="verdict-pill ok">✓</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ans-dots" aria-hidden="true"><i class="on fail-dot"></i><i class="ok-dot"></i></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rel-footer">
+          <div class="rel-item">
+            <span>target fact</span>
+            <span style="font-family:var(--mono);font-size:15px;color:var(--muted);">◀── sim ──▶</span>
+            <span>query</span>
+            <b style="color:var(--rose);font-family:var(--sans);">✗</b>
+          </div>
+          <div class="rel-item">
+            <span>target fact</span>
+            <span style="font-family:var(--mono);font-size:15px;color:var(--forest);font-weight:700;">═══ know ═══▶</span>
+            <span>query</span>
+            <b style="color:var(--forest);font-family:var(--sans);">✓</b>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P04: Benchmark 现状 (MAB Original Table Screenshot)
+         ========================================================= -->
+    <section class="slide" data-chap="intro" data-title="Benchmark 现状 · MAB">
+      <div class="in">
+        <header class="s-head">
+          <h2>Benchmark 现状</h2>
+          <span class="tag">MemoryAgentBench · ICLR 2026</span>
+        </header>
+        <div class="img-frame zoomable" style="max-width:1060px;margin:0 auto;">
+          <img src="assets/mab_table3_clean.png" alt="MemoryAgentBench Table 3 原文截图">
+        </div>
+        <div class="fig-cap">
+          <b>MAB 原文主表</b> &ensp;·&ensp; 朴素 BM25（绿底行，41.5）击败几乎所有复杂记忆系统（点击图片放大）
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P05: 近期工作 (Interactive Paper Focus Tabs + 4 Real Screenshots)
+         ========================================================= -->
+    <section class="slide" data-chap="intro" data-title="近期工作">
+      <div class="in">
+        <header class="s-head">
+          <h2>近期工作</h2>
+          <div class="pill-tabs">
+            <button type="button" class="pill-tab active" data-paper-tab="all">全部叠放</button>
+            <button type="button" class="pill-tab" data-paper-tab="bm25">1 · BM25 Wins</button>
+            <button type="button" class="pill-tab" data-paper-tab="refind">2 · ReFind</button>
+            <button type="button" class="pill-tab" data-paper-tab="rawrag">3 · RAW-RAG</button>
+            <button type="button" class="pill-tab" data-paper-tab="memtax">4 · Memory Tax</button>
+          </div>
+        </header>
+
+        <div class="paper-cascade">
+          <div class="paper-shot" data-paper-card="bm25" style="top:0px;left:0px;z-index:1;">
+            <img src="assets/paper_bm25_scale.png" alt="BM25 Wins at Scale">
+          </div>
+          <div class="paper-shot" data-paper-card="refind" style="top:46px;left:240px;z-index:2;">
+            <img src="assets/paper_refind.png" alt="ReFind">
+          </div>
+          <div class="paper-shot" data-paper-card="rawrag" style="top:96px;left:480px;z-index:3;">
+            <img src="assets/paper_raw_rag.png" alt="RAW-RAG">
+          </div>
+          <div class="paper-shot" data-paper-card="memtax" style="top:144px;left:722px;z-index:4;">
+            <img src="assets/paper_memory_tax.png" alt="Memory Tax">
+          </div>
+        </div>
+
+        <div class="fig-cap" id="p5-takeaway" style="margin-top:18px;font-weight:600;color:var(--forest);">
+          悬停或点击上方标签切换焦点 · 点击任一截图全屏放大
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P06: RQ1 Divider
+         ========================================================= -->
+    <section class="slide divider" data-chap="rq1" data-title="RQ1：Bench 生产过程的 Bias">
+      <div class="in rq-center">
+        <div class="rq-label">RESEARCH QUESTION 1</div>
+        <h2 class="rq-title">RQ1：Bench 生产过程的 Bias</h2>
+        <hr class="cover-rule">
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P07: RQ1：Bench 生产过程的 Bias (Construction Flow)
+         ========================================================= -->
+    <section class="slide" data-chap="rq1" data-title="RQ1 · 现有出题流程">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ1：Bench 生产过程的 Bias</h2>
+          <span class="tag">Dialog → Query Leakage</span>
+        </header>
+
+        <div style="display:grid;grid-template-columns:1.15fr auto 0.85fr;align-items:center;gap:28px;">
+          <div style="border:1.8px solid var(--ink);padding:22px 26px;background:#ffffff;">
+            <div style="font-family:var(--serif);font-size:24px;font-weight:700;color:var(--forest);margin-bottom:14px;">dialog</div>
+            <div style="display:flex;flex-direction:column;gap:11px;font-size:16.5px;">
+              <div style="color:#95a19d;">[Session 01] 周末去宜家买了盏落地灯……</div>
+              <div style="background:var(--hl-yellow);border-left:3.5px solid var(--hl-yellow-border);padding:7px 12px;font-weight:600;">
+                [Session 03] “我有 2 只猫，分别叫 Ketty 和 Lily。”
+              </div>
+              <div style="color:#95a19d;">[Session 08] 下周二组会要讲一篇多模态论文……</div>
+              <div style="background:var(--hl-yellow);border-left:3.5px solid var(--hl-yellow-border);padding:7px 12px;font-weight:600;">
+                [Session 14] “昨天在救助站又收养了一只小猫！”
+              </div>
+              <div style="color:#95a19d;">[Session 21] 帮我看看这段排序脚本为什么报错……</div>
+              <div style="background:var(--hl-yellow);border-left:3.5px solid var(--hl-yellow-border);padding:7px 12px;font-weight:600;">
+                [Session 29] “很难过，陪我多年的 Ketty 去世了……”
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:14px;">
+            <svg width="32" height="260" viewBox="0 0 32 260">
+              <path d="M 2 20 H 26 V 240 H 2" fill="none" stroke="#161A19" stroke-width="2"/>
+              <line x1="2" y1="130" x2="26" y2="130" stroke="#161A19" stroke-width="2"/>
+            </svg>
+            <div style="text-align:center;">
+              <div style="font-size:19px;font-weight:700;color:var(--forest);margin-bottom:6px;">human / LLM</div>
+              <div style="font-size:28px;color:var(--ink);">──────▶</div>
+            </div>
+          </div>
+
+          <div style="border:1.8px solid var(--forest);background:var(--pale);padding:26px 28px;">
+            <div style="font-family:var(--serif);font-size:25px;font-weight:700;color:var(--forest);margin-bottom:18px;">Query &amp; Answer</div>
+            <div style="background:#ffffff;border:1px solid var(--line);padding:14px 16px;margin-bottom:12px;">
+              <div style="font-size:12px;font-family:var(--mono);color:var(--muted);margin-bottom:4px;">QUERY</div>
+              <div style="font-size:20px;font-weight:700;">“我现在有几只<span style="background:var(--hl-yellow);padding:0 4px;">猫</span>？”</div>
+            </div>
+            <div style="background:#ffffff;border:1px solid var(--line);padding:14px 16px;margin-bottom:16px;">
+              <div style="font-size:12px;font-family:var(--mono);color:var(--muted);margin-bottom:4px;">ANSWER</div>
+              <div style="font-size:20px;font-weight:700;color:var(--forest);">2 只（Lily + 新收养小猫）</div>
+            </div>
+            <div style="font-size:15px;font-weight:600;color:var(--muted);">
+              看着原句提问 → Query 直接共享核心词「猫」
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P08: RQ1：Bench 生产过程的 Bias (KDE Curves + Interactive InMind Compare!)
+         ========================================================= -->
+    <section class="slide" data-chap="rq1" data-title="RQ1 · 相似度分布实证">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ1：Bench 生产过程的 Bias</h2>
+          <div class="seg-switch" id="p8-switch" data-state="0">
+            <span class="thumb"></span>
+            <button type="button" data-st="0" class="active">现有 3 个基准</button>
+            <button type="button" data-st="1">+ 对比 InMind</button>
+          </div>
+        </header>
+
+        <div class="zoomable">
+          <img id="p8-kde-img" src="assets/bge_3bench_kde.png" alt="相似度分布对比" style="width:100%;display:block;">
+        </div>
+        <div class="fig-cap" id="p8-kde-cap" style="margin-top:20px;">
+          <b>现有 3 个基准 Target 显著右移</b> &ensp;·&ensp; 仅靠表面余弦相似度即可分离目标记忆
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P09: InMind Memory Bench (Reverse Construction Diagram)
+         ========================================================= -->
+    <section class="slide" data-chap="rq1" data-title="InMind Memory Bench · 反向构造">
+      <div class="in">
+        <header class="s-head">
+          <h2>InMind Memory Bench</h2>
+          <span style="font-size:22px;font-weight:700;color:var(--forest);">
+            sim <span style="color:var(--rose);">✗</span> &emsp; knowledge <span>✓</span>
+          </span>
+        </header>
+
+        <svg viewBox="0 0 1180 460" width="100%" height="445" aria-label="Knowledge Base Split">
+          <defs>
+            <marker id="ak" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#161A19"/>
+            </marker>
+            <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 1.5 L 8.5 5 L 0 8.5 z" fill="#A64452"/>
+            </marker>
+          </defs>
+
+          <rect x="330" y="10" width="580" height="84" fill="#EDF4F1" stroke="#245B56" stroke-width="2.2"/>
+          <text x="620" y="43" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="22" font-weight="700" fill="#245B56">Knowledge Base（FDA / 烘焙指南）</text>
+          <text x="620" y="73" text-anchor="middle" font-size="17.5" fill="#161A19">“传统马卡龙用杏仁粉制作，杏仁属于树坚果过敏原”</text>
+
+          <path d="M 620 94 V 130 H 360 V 166" fill="none" stroke="#161A19" stroke-width="2" marker-end="url(#ak)"/>
+          <path d="M 620 130 H 890 V 166" fill="none" stroke="#161A19" stroke-width="2" marker-end="url(#ak)"/>
+
+          <rect x="210" y="170" width="300" height="76" fill="#ffffff" stroke="#161A19" stroke-width="2"/>
+          <text x="360" y="201" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="20.5" font-weight="700" fill="#245B56">Part I · 过敏原属性</text>
+          <text x="360" y="229" text-anchor="middle" font-size="16.5" fill="#5B6763">树坚果过敏（Tree Nut）</text>
+
+          <rect x="740" y="170" width="300" height="76" fill="#ffffff" stroke="#161A19" stroke-width="2"/>
+          <text x="890" y="201" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="20.5" font-weight="700" fill="#245B56">Part II · 食物载体</text>
+          <text x="890" y="229" text-anchor="middle" font-size="16.5" fill="#5B6763">制作法式马卡龙（不提杏仁）</text>
+
+          <line x1="528" y1="208" x2="722" y2="208" stroke="#A64452" stroke-width="2.2" stroke-dasharray="8 6" marker-start="url(#ar)" marker-end="url(#ar)"/>
+          <text x="625" y="192" text-anchor="middle" font-size="25" font-weight="700" fill="#A64452">✗</text>
+          <text x="625" y="235" text-anchor="middle" font-size="14.5" font-weight="600" fill="#A64452">BM25 &amp; Embedding 过滤</text>
+
+          <line x1="360" y1="246" x2="360" y2="304" stroke="#161A19" stroke-width="2" marker-end="url(#ak)"/>
+          <rect x="195" y="308" width="330" height="88" fill="#ffffff" stroke="#245B56" stroke-width="2.2"/>
+          <text x="360" y="339" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="20.5" font-weight="700" fill="#245B56">target fact</text>
+          <text x="360" y="372" text-anchor="middle" font-size="16" fill="#161A19">“吃了混合坚果起荨麻疹，坚果过敏”</text>
+
+          <line x1="890" y1="246" x2="890" y2="304" stroke="#161A19" stroke-width="2" marker-end="url(#ak)"/>
+          <rect x="725" y="308" width="330" height="88" fill="#ffffff" stroke="#245B56" stroke-width="2.2"/>
+          <text x="890" y="339" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="20.5" font-weight="700" fill="#245B56">query</text>
+          <text x="890" y="372" text-anchor="middle" font-size="16" fill="#161A19">“周末想做马卡龙，有什么食谱？”</text>
+
+          <line x1="195" y1="352" x2="146" y2="352" stroke="#161A19" stroke-width="2" marker-end="url(#ak)"/>
+          <rect x="26" y="246" width="112" height="174" fill="#ffffff" stroke="#161A19" stroke-width="2"/>
+          <line x1="44" y1="278" x2="120" y2="278" stroke="#8A9692" stroke-width="1.8"/>
+          <line x1="44" y1="304" x2="120" y2="304" stroke="#8A9692" stroke-width="1.8"/>
+          <line x1="44" y1="330" x2="120" y2="330" stroke="#8A9692" stroke-width="1.8"/>
+          <line x1="44" y1="354" x2="120" y2="354" stroke="#245B56" stroke-width="3"/>
+          <line x1="44" y1="382" x2="120" y2="382" stroke="#8A9692" stroke-width="1.8"/>
+          <text x="82" y="448" text-anchor="middle" font-family="Times New Roman, Georgia, serif" font-size="22" fill="#161A19">mem.</text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P10: InMind Memory Bench (Anthropic -> 32 KBs -> Interactive Specimens)
+         ========================================================= -->
+    <section class="slide" data-chap="rq1" data-title="InMind Memory Bench · 构建与样本">
+      <div class="in">
+        <header class="s-head">
+          <h2>InMind Memory Bench</h2>
+          <span class="tag">10 Domains · 32 KBs · 125 Tasks</span>
+        </header>
+
+        <div style="display:grid;grid-template-columns:1.22fr auto 0.85fr auto 0.95fr;align-items:center;gap:18px;">
+          <div style="border:1.5px solid var(--ink);padding:12px;background:#ffffff;height:345px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-size:16px;font-weight:700;color:var(--forest);text-align:center;">Anthropic 真实个人咨询分布</div>
+            <div class="zoomable" style="flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+              <img src="assets/anthropic_domains_crop.png" alt="Anthropic Guidance Conversations by Domain" style="max-width:100%;max-height:265px;object-fit:contain;">
+            </div>
+            <div style="font-size:12.5px;color:var(--muted);text-align:center;">37,657 对话 · 10 大生活领域（点击放大）</div>
+          </div>
+
+          <div style="font-size:26px;color:var(--forest);font-weight:700;">→</div>
+
+          <div style="border:1.5px solid var(--ink);padding:16px;background:var(--pale);height:345px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="font-size:16px;font-weight:700;color:var(--forest);text-align:center;">32 个权威 Knowledge Base</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:14px;font-weight:600;">
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">FDA / DailyMed</div>
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">CDC / ASPCA</div>
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">O*NET / OSHA</div>
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">CFPB / IRS</div>
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">DOL / USCIS</div>
+              <div style="background:#fff;padding:8px;border:1px solid var(--line);">W3C / CPSC</div>
+            </div>
+            <div style="font-size:12.5px;color:var(--muted);text-align:center;">3,380 Chunks → 过滤 &amp; 人工核验</div>
+          </div>
+
+          <div style="font-size:26px;color:var(--forest);font-weight:700;">→</div>
+
+          <div style="border:2px solid var(--forest);padding:16px;background:#ffffff;height:345px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;">
+            <div style="font-size:18px;font-weight:700;color:var(--forest);">InMind Memory Bench</div>
+            <img src="assets/bge_inmind_kde.png" class="zoomable" alt="InMind BGE Overlap" style="max-width:100%;max-height:215px;object-fit:contain;">
+            <div style="font-size:14px;font-weight:700;color:var(--ink);">125 Tasks · Δ = +0.001（完全重合）</div>
+          </div>
+        </div>
+
+        <!-- Interactive Domain Sample Explorer -->
+        <div style="margin-top:18px;border:1px solid var(--line);background:var(--pale-2);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+          <div class="pill-tabs" style="flex-shrink:0;">
+            <button type="button" class="pill-tab active" data-dom="med">医疗用药</button>
+            <button type="button" class="pill-tab" data-dom="food">食品过敏</button>
+            <button type="button" class="pill-tab" data-dom="child">育儿安全</button>
+            <button type="button" class="pill-tab" data-dom="halal">宗教饮食</button>
+            <button type="button" class="pill-tab" data-dom="pet">居家宠物</button>
+          </div>
+          <div id="p10-specimen" style="font-size:14px;color:var(--ink);text-align:right;">
+            <b>医疗健康：</b>记忆「正在服用卡马西平」 · 提问「早餐喝西柚汁好吗？」 · 知识桥：西柚抑制 CYP3A4 致血药浓度升高
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P11: RQ2 Divider
+         ========================================================= -->
+    <section class="slide divider" data-chap="rq2" data-title="RQ2：Memory 系统问题在哪？">
+      <div class="in rq-center">
+        <div class="rq-label">RESEARCH QUESTION 2</div>
+        <h2 class="rq-title">RQ2：Memory 系统问题在哪？</h2>
+        <hr class="cover-rule">
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P12: RQ2：Memory 系统问题在哪？ (Three Suspects)
+         ========================================================= -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 三个潜在故障点">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ2：Memory 系统问题在哪？</h2>
+          <span class="tag">extract ? · retriever ? · LLM ?</span>
+        </header>
+        <div data-pipeline="rq2"></div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P13: RQ2：Memory 系统问题在哪？ (① 排除 LLM moved below!)
+         ========================================================= -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · ① 排除 LLM">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ2：Memory 系统问题在哪？</h2>
+          <span class="tag">Control 1 · In-Context</span>
+        </header>
+
+        <div class="sub-banner">
+          <span><em>① 排除 LLM</em> &ensp;（绕过检索，直接提供目标事实）</span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.1fr auto 0.55fr auto 1.15fr auto 0.72fr;align-items:center;gap:14px;padding:12px 0;">
+          <div>
+            <div class="p-node" style="min-height:224px;">
+              <div class="p-node-head"><span>In-Context Control</span><span>Bypass Retrieval</span></div>
+              <div style="border:2px solid var(--forest);background:var(--pale);padding:9px 11px;margin-bottom:8px;">
+                <div style="font:700 10.5px var(--mono);color:var(--forest);">INJECTED TARGET FACT</div>
+                <div style="font-size:14px;font-weight:700;color:var(--ink);margin-top:2px;">“吃了混合坚果起荨麻疹，树坚果过敏”</div>
+              </div>
+              <div class="mctx-card">Query：“周末想做马卡龙，有什么食谱？”</div>
+              <div class="mctx-card" style="opacity:0.65;">（不提供任何“杏仁粉”提示）</div>
+            </div>
+            <div class="p-node-foot">context</div>
+          </div>
+
+          <div style="font-size:22px;color:var(--ink);">──▶</div>
+
+          <div>
+            <div class="p-stage hl-yellow" style="min-height:224px;padding:18px 12px;">
+              <div class="st-name">LLM</div>
+              <div class="st-sub">GPT-5-mini<br>世界知识推理</div>
+            </div>
+            <div class="p-node-foot">&nbsp;</div>
+          </div>
+
+          <div style="font-size:22px;color:var(--ink);">──▶</div>
+
+          <div>
+            <div class="p-node" style="min-height:224px;border-color:var(--forest);">
+              <div class="p-node-head"><span style="color:var(--forest);">Assistant Reply</span><span style="color:var(--forest);">✓ 主动预警</span></div>
+              <div style="background:var(--pale);padding:12px 14px;font-size:14px;line-height:1.55;color:var(--ink);flex:1;display:flex;align-items:center;">
+                <div>“传统法式马卡龙使用<b>杏仁粉（属树坚果）</b>，会引发你的过敏反应！建议改用<b>葵花籽粉或南瓜籽粉</b>的无坚果马卡龙配方……”</div>
+              </div>
+            </div>
+            <div class="p-node-foot">answer</div>
+          </div>
+
+          <div style="width:10px;"></div>
+
+          <div style="border:2.5px solid var(--forest);background:var(--pale);padding:26px 18px;text-align:center;">
+            <div style="font-family:var(--serif);font-size:54px;font-weight:700;color:var(--forest);line-height:1;">84.0%</div>
+            <div style="font-size:14px;color:var(--muted);margin-top:10px;font-weight:600;">105 / 125 成功预警</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P14: RQ2：Memory 系统问题在哪？ (② 排除 storage moved below!)
+         ========================================================= -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · ② 排除 storage">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ2：Memory 系统问题在哪？</h2>
+          <span class="tag">Control 2 · Direct Query</span>
+        </header>
+
+        <div class="sub-banner" style="margin-bottom:8px;">
+          <span><em>② 排除 storage</em> &ensp;（同一记忆库改用直接提问：准确率 76.0% – 99.2% ✓）</span>
+        </div>
+
+        <div data-pipeline="storage"></div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P15: RQ2：Memory 系统问题在哪？ (InMind Results + Table/Chart Toggle)
+         ========================================================= -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · InMind 结果">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ2：Memory 系统问题在哪？</h2>
+          <div class="seg-switch" data-view-switch="p15-views" data-state="0">
+            <span class="thumb"></span>
+            <button type="button" data-st="0" class="active">表格视图</button>
+            <button type="button" data-st="1">断崖对比图</button>
+          </div>
+        </header>
+
+        <div id="p15-views">
+          <!-- Pane 0: Clean Booktabs Table (Direct & Indirect ONLY, MiniLM ONLY) -->
+          <div style="max-width:860px;margin:0 auto;">
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th class="num">Direct (%)</th>
+                  <th class="num">Indirect (%)</th>
+                  <th class="num">Δ (Indirect − Direct)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group group-first"><td colspan="4">Backbone Control (Target in Context)</td></tr>
+                <tr class="pale">
+                  <td>Backbone (GPT-5-mini)</td>
+                  <td class="num">—</td>
+                  <td class="num">84.0</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr class="group"><td colspan="4">Naive RAG</td></tr>
+                <tr><td>BM25</td><td class="num">53.6</td><td class="num">9.6</td><td class="num" style="color:var(--rose);">−44.0</td></tr>
+                <tr><td>Dense (MiniLM)</td><td class="num">92.0</td><td class="num">9.6</td><td class="num" style="color:var(--rose);">−82.4</td></tr>
+                <tr class="group"><td colspan="4">Memory Systems (MiniLM)</td></tr>
+                <tr><td>A-RAG</td><td class="num">97.6</td><td class="num">4.8</td><td class="num" style="color:var(--rose);">−92.8</td></tr>
+                <tr><td>xMemory</td><td class="num">84.8</td><td class="num">4.8</td><td class="num" style="color:var(--rose);">−80.0</td></tr>
+                <tr><td>Mem0</td><td class="num">76.0</td><td class="num">3.2</td><td class="num" style="color:var(--rose);">−72.8</td></tr>
+                <tr><td>A-Mem</td><td class="num">99.2</td><td class="num">6.4</td><td class="num" style="color:var(--rose);">−92.8</td></tr>
+                <tr><td>HippoRAG 2</td><td class="num">93.6</td><td class="num">8.8</td><td class="num" style="color:var(--rose);">−84.8</td></tr>
+                <tr><td>MemoryOS</td><td class="num">87.2</td><td class="num">8.0</td><td class="num" style="color:var(--rose);">−79.2</td></tr>
+              </tbody>
+            </table>
+            <div class="fig-cap">
+              <b>InMind-125 主实验结果</b> &ensp;·&ensp; Direct 高达 76%–99%，Indirect 全线跌至个位数（3.2%–9.6%）
+            </div>
+          </div>
+
+          <!-- Pane 1: Visual Paired Cliff Bars -->
+          <div style="display:none;max-width:920px;margin:0 auto;">
+            <div style="display:flex;justify-content:flex-end;gap:24px;font-size:13px;margin-bottom:12px;">
+              <span><i style="display:inline-block;width:12px;height:10px;background:var(--forest);margin-right:6px;"></i>Direct (%)</span>
+              <span><i style="display:inline-block;width:12px;height:10px;background:var(--rose);margin-right:6px;"></i>Indirect (%)</span>
+            </div>
+            <div class="hbar-list">
+              <div class="hbar-row"><b>Backbone (上界)</b><div class="hbar-track"><div class="hbar-fill" style="width:84%;"></div></div><span style="font-family:var(--mono);font-size:13.5px;">— / <b>84.0%</b></span></div>
+              <div class="hbar-row"><span>Dense (MiniLM)</span><div class="hbar-pair"><i style="width:92%;background:var(--forest);"></i><i style="width:9.6%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">92.0 / <b style="color:var(--rose);">9.6%</b></span></div>
+              <div class="hbar-row"><span>A-Mem</span><div class="hbar-pair"><i style="width:99.2%;background:var(--forest);"></i><i style="width:6.4%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">99.2 / <b style="color:var(--rose);">6.4%</b></span></div>
+              <div class="hbar-row"><span>A-RAG</span><div class="hbar-pair"><i style="width:97.6%;background:var(--forest);"></i><i style="width:4.8%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">97.6 / <b style="color:var(--rose);">4.8%</b></span></div>
+              <div class="hbar-row"><span>HippoRAG 2</span><div class="hbar-pair"><i style="width:93.6%;background:var(--forest);"></i><i style="width:8.8%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">93.6 / <b style="color:var(--rose);">8.8%</b></span></div>
+              <div class="hbar-row"><span>MemoryOS</span><div class="hbar-pair"><i style="width:87.2%;background:var(--forest);"></i><i style="width:8.0%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">87.2 / <b style="color:var(--rose);">8.0%</b></span></div>
+              <div class="hbar-row"><span>xMemory</span><div class="hbar-pair"><i style="width:84.8%;background:var(--forest);"></i><i style="width:4.8%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">84.8 / <b style="color:var(--rose);">4.8%</b></span></div>
+              <div class="hbar-row"><span>Mem0</span><div class="hbar-pair"><i style="width:76.0%;background:var(--forest);"></i><i style="width:3.2%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13.5px;">76.0 / <b style="color:var(--rose);">3.2%</b></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P16: RQ3 Divider
+         ========================================================= -->
+    <section class="slide divider" data-chap="rq3" data-title="RQ3：如何解决">
+      <div class="in rq-center">
+        <div class="rq-label">RESEARCH QUESTION 3</div>
+        <h2 class="rq-title">RQ3：如何解决</h2>
+        <hr class="cover-rule">
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P17: RQ3：如何解决 - 定位问题 (Red Retriever)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 定位问题（Retriever）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - 定位问题</h2>
+          <span class="tag">Storage ✓ · LLM ✓ · Retriever ✗</span>
+        </header>
+        <div data-pipeline="rq3"></div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P18: RQ3：如何解决 - 定位问题 (Wait - A-RAG?)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 定位问题（A-RAG 追问）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - 定位问题</h2>
+          <span class="tag">World Knowledge in Loop?</span>
+        </header>
+
+        <div style="padding:36px 20px;">
+          <div style="font-size:44px;font-weight:700;line-height:1.38;color:var(--ink);">
+            所有方案 <span style="color:var(--forest);">retriever</span> 阶段都没用到<br>
+            <span style="font-family:var(--serif);font-style:italic;">world knowledge</span> 吗？
+          </div>
+
+          <div style="display:inline-block;margin-top:36px;font-size:52px;font-weight:800;color:var(--forest);border-bottom:3.5px solid var(--forest);padding-bottom:4px;">
+            不全是。
+          </div>
+
+          <div style="margin-top:34px;font-family:var(--serif);font-size:34px;color:var(--muted);">
+            eg. &ensp; <b style="color:var(--ink);font-family:var(--sans);">A-RAG</b> &ensp;<span style="font-size:22px;font-family:var(--sans);">（LLM 多轮检索规划，Indirect 仍仅 4.8%）</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P19: RQ3：如何解决 - 定位问题 (4 Paradigms Interactive Inspector)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 定位问题（4 种方案）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - 定位问题</h2>
+          <span class="tag">点击下方卡片查看各范式失效轨迹</span>
+        </header>
+
+        <div class="img-frame zoomable" style="padding:16px 20px;">
+          <img src="assets/agent_memory_taxonomy.png" alt="A. Naive RAG, B. Graph RAG, C. Agentic RAG, D. Memory System">
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px;font-size:14px;">
+          <button type="button" class="paradigm-card active" data-para="a">
+            <b style="color:var(--forest);">A. Naïve RAG</b><br>直接向量/词面匹配，无世界知识
+          </button>
+          <button type="button" class="paradigm-card" data-para="b">
+            <b style="color:var(--forest);">B. Graph RAG</b><br>缺外部常识边，入口仍靠相似度
+          </button>
+          <button type="button" class="paradigm-card" data-para="c">
+            <b style="color:var(--forest);">C. Agentic RAG</b><br>未见记忆前盲猜查询词，落地仍走虚线
+          </button>
+          <button type="button" class="paradigm-card" data-para="d">
+            <b style="color:var(--forest);">D. Memory System</b><br>热度常驻漏掉低频高危，检索仍走虚线
+          </button>
+        </div>
+
+        <div id="p19-trace" style="margin-top:12px;background:var(--hl-red);border-left:3.5px solid var(--rose);padding:10px 16px;font-size:14.5px;color:var(--ink);">
+          <b>A. Naïve RAG 轨迹：</b>Query「养猫准备建议」 → 向量召回宠物开销、猫砂盆 →「家里有百合」排在百名之外（Indirect 9.6%）
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P20: RQ3：如何解决 - 定位问题 (MiniLM vs emb3-large moved below!)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 定位问题（MiniLM vs emb3）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - 定位问题</h2>
+          <div class="seg-switch" data-view-switch="p20-views" data-state="0">
+            <span class="thumb"></span>
+            <button type="button" data-st="0" class="active">数值对比表</button>
+            <button type="button" data-st="1">84% 上界标尺</button>
+          </div>
+        </header>
+
+        <div class="sub-banner">
+          <span><em>换更强的 Embedding 能修好这条虚线吗？</em> &ensp;<small style="font-size:15px;font-weight:500;color:var(--muted);">MiniLM (384d) → text-embedding-3-large (3072d)</small></span>
+        </div>
+
+        <div id="p20-views">
+          <!-- Pane 0: Table -->
+          <div style="display:grid;grid-template-columns:1.12fr 0.88fr;gap:38px;align-items:center;">
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>System</th>
+                  <th class="num">MiniLM (%)</th>
+                  <th class="num">emb3-large (%)</th>
+                  <th class="num">Gain</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="pale">
+                  <td>Backbone (In-Context 上界)</td>
+                  <td class="num" colspan="2" style="text-align:center;">84.0</td>
+                  <td class="num">—</td>
+                </tr>
+                <tr><td>Naive RAG (Dense)</td><td class="num">9.6</td><td class="num">16.0</td><td class="num">+6.4</td></tr>
+                <tr><td>A-RAG</td><td class="num">4.8</td><td class="num">7.2</td><td class="num">+2.4</td></tr>
+                <tr><td>xMemory</td><td class="num">4.8</td><td class="num">6.4</td><td class="num">+1.6</td></tr>
+                <tr><td>Mem0</td><td class="num">3.2</td><td class="num">6.4</td><td class="num">+3.2</td></tr>
+                <tr><td>A-Mem</td><td class="num">6.4</td><td class="num">9.6</td><td class="num">+3.2</td></tr>
+                <tr><td>HippoRAG 2</td><td class="num">8.8</td><td class="num">5.6</td><td class="num" style="color:var(--rose);">−3.2</td></tr>
+                <tr><td>MemoryOS</td><td class="num">8.0</td><td class="num">14.4</td><td class="num">+6.4</td></tr>
+              </tbody>
+            </table>
+
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <div style="background:var(--hl-red);border-left:4px solid var(--rose);padding:18px 22px;">
+                <div style="font-size:13.5px;font-weight:700;color:var(--rose);margin-bottom:5px;">Indirect 全部 ≤ 16.0%（距 84.0% 差 ~70 pts）</div>
+                <div style="font-size:20px;font-weight:700;color:var(--ink);">更强语义表征 ≠ 世界知识桥接</div>
+              </div>
+              <div style="background:var(--pale);border-left:4px solid var(--forest);padding:18px 22px;">
+                <div style="font-size:13.5px;font-weight:700;color:var(--forest);margin-bottom:5px;">推论</div>
+                <div style="font-size:20px;font-weight:700;color:var(--ink);">替换虚线 Similarity Link → Plan A</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pane 1: Visual Scale against 84% -->
+          <div style="display:none;max-width:940px;margin:0 auto;">
+            <div style="display:flex;justify-content:flex-end;gap:22px;font-size:13px;margin-bottom:10px;">
+              <span><i style="display:inline-block;width:12px;height:9px;background:#96a8a3;margin-right:6px;"></i>MiniLM</span>
+              <span><i style="display:inline-block;width:12px;height:9px;background:var(--rose);margin-right:6px;"></i>emb3-large</span>
+              <span><i style="display:inline-block;width:12px;height:9px;background:var(--forest);margin-right:6px;"></i>Backbone (84.0%)</span>
+            </div>
+            <div class="hbar-list">
+              <div class="hbar-row"><b>Backbone 上界</b><div class="hbar-track"><div class="hbar-fill" style="width:84%;"></div></div><b style="font-family:var(--mono);">84.0%</b></div>
+              <div class="hbar-row"><span>Naive RAG</span><div class="hbar-pair"><i style="width:9.6%;background:#96a8a3;"></i><i style="width:16%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">9.6 → <b>16.0%</b></span></div>
+              <div class="hbar-row"><span>MemoryOS</span><div class="hbar-pair"><i style="width:8%;background:#96a8a3;"></i><i style="width:14.4%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">8.0 → <b>14.4%</b></span></div>
+              <div class="hbar-row"><span>A-Mem</span><div class="hbar-pair"><i style="width:6.4%;background:#96a8a3;"></i><i style="width:9.6%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">6.4 → <b>9.6%</b></span></div>
+              <div class="hbar-row"><span>A-RAG</span><div class="hbar-pair"><i style="width:4.8%;background:#96a8a3;"></i><i style="width:7.2%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">4.8 → <b>7.2%</b></span></div>
+              <div class="hbar-row"><span>xMemory</span><div class="hbar-pair"><i style="width:4.8%;background:#96a8a3;"></i><i style="width:6.4%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">4.8 → <b>6.4%</b></span></div>
+              <div class="hbar-row"><span>Mem0</span><div class="hbar-pair"><i style="width:3.2%;background:#96a8a3;"></i><i style="width:6.4%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">3.2 → <b>6.4%</b></span></div>
+              <div class="hbar-row"><span>HippoRAG 2</span><div class="hbar-pair"><i style="width:8.8%;background:#96a8a3;"></i><i style="width:5.6%;background:var(--rose);"></i></div><span style="font-family:var(--mono);font-size:13px;">8.8 → <b>5.6%</b></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P21: RQ3：如何解决 - Plan A：世界知识打分器 (Definition)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · 世界知识打分器">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">Plan A</span>
+        </header>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:48px;padding:36px 0;">
+          <div class="brace-row">
+            <span style="font-size:38px;font-weight:700;color:var(--forest);">Plan A : &ensp; retriever</span>
+            <svg width="34" height="140" viewBox="0 0 34 140">
+              <path d="M 28 6 C 12 6, 16 70, 4 70 C 16 70, 12 134, 28 134" fill="none" stroke="#245B56" stroke-width="3"/>
+            </svg>
+            <div class="brace-items">
+              <div>World Knowledge</div>
+              <div>全量打分</div>
+            </div>
+          </div>
+
+          <div style="background:var(--pale);padding:24px 40px;font-size:30px;font-weight:700;color:var(--ink);text-align:center;">
+            一个拥有 <span style="color:var(--forest);">World Knowledge</span>，能对 memory 进行<span style="color:var(--forest);">全量打分</span>的 retriever
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P22: RQ3：如何解决 - Plan A：世界知识打分器 (TypeSafe Jev)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · Jev 路线图">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">Jev · TypeSafe (2026.09)</span>
+        </header>
+
+        <div class="img-frame zoomable" style="max-width:1020px;margin:0 auto;background:#141414;border-color:#141414;padding:12px;">
+          <img src="assets/01-training-paradigm.png" alt="TypeSafe RLCD Training Paradigm">
+        </div>
+
+        <div style="text-align:center;margin-top:20px;font-family:var(--serif);font-size:21px;color:var(--ink);">
+          <i>π<sub>q</sub></i> = argsort<sub><i>i</i></sub> ( −<i>s</i><sub>Jev</sub>(<i>q</i>, <i>m<sub>i</sub></i>) ) &emsp;·&emsp;
+          <span style="font-family:var(--sans);font-size:16.5px;color:var(--muted);">InMind 挂出两个月后发布 · 逐条输出校准效用概率</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P23: RQ3：如何解决 - Plan A：世界知识打分器 (三条性质)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · 三条性质">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">Three Properties</span>
+        </header>
+
+        <div style="max-width:980px;margin:24px auto;display:flex;flex-direction:column;gap:34px;">
+          <div style="display:flex;align-items:baseline;gap:24px;">
+            <span style="font-size:34px;font-weight:800;color:var(--forest);">①</span>
+            <div>
+              <div style="font-size:30px;font-weight:700;">广泛的世界知识（World Knowledge）</div>
+              <div style="font-size:18px;color:var(--muted);margin-top:4px;">LLM 预训练基座 vs. BERT 判别器</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:24px;">
+            <span style="font-size:34px;font-weight:800;color:var(--forest);">②</span>
+            <div>
+              <div style="font-size:30px;font-weight:700;">可靠的排序分数（Reliable Ranking Scores）</div>
+              <div style="font-size:18px;color:var(--muted);margin-top:4px;">校准决策 RLCD vs. 普通生成模型 Token 概率</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:baseline;gap:24px;">
+            <span style="font-size:34px;font-weight:800;color:var(--forest);">③</span>
+            <div>
+              <div style="font-size:30px;font-weight:700;">可承受的全量打分开销（Affordable Full-Pool Scoring）</div>
+              <div style="font-size:18px;color:var(--muted);margin-top:4px;">单题分美分检索账单与规模边界</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P24: RQ3：如何解决 - Plan A：世界知识打分器 (InMind-125 R@k & Indirect)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · InMind-125 实验">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">InMind-125 · 241 Candidates / Query</span>
+        </header>
+
+        <div style="display:grid;grid-template-columns:1.05fr 0.95fr;gap:40px;align-items:start;">
+          <div>
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>Method &amp; Indexed Text</th>
+                  <th class="num">R@1</th>
+                  <th class="num">R@5</th>
+                  <th class="num">R@10</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>BM25, user turn</td><td class="num">1.6</td><td class="num">4.8</td><td class="num">5.6</td></tr>
+                <tr><td>MiniLM, user turn</td><td class="num">0.0</td><td class="num">2.4</td><td class="num">8.8</td></tr>
+                <tr><td>BM25, full exchange</td><td class="num">0.8</td><td class="num">2.4</td><td class="num">4.0</td></tr>
+                <tr><td>MiniLM, full exchange</td><td class="num">0.0</td><td class="num">1.6</td><td class="num">7.2</td></tr>
+                <tr class="pale"><td>Jev Utility, full exchange</td><td class="num">84.8</td><td class="num">92.0</td><td class="num">94.4</td></tr>
+              </tbody>
+            </table>
+
+            <!-- Interactive Case Rank Switcher -->
+            <div style="margin-top:20px;border:1px solid var(--line);background:var(--pale-2);padding:12px 15px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <b style="font-size:13.5px;color:var(--forest);">单题黄金证据排名对照（/ 241）</b>
+                <div class="seg-switch" data-view-switch="p24-cases" data-state="0">
+                  <span class="thumb"></span>
+                  <button type="button" data-st="0" class="active">感冒药←高血压</button>
+                  <button type="button" data-st="1">养宠物←哮喘</button>
+                </div>
+              </div>
+              <div id="p24-cases" style="font-size:15.5px;">
+                <div>Jev <b>#1</b> &ensp;|&ensp; MiniLM <b>#54</b> &ensp;|&ensp; BM25 <b>#178</b></div>
+                <div style="display:none;">Jev <b>#1</b> &ensp;|&ensp; MiniLM <b>#107</b> &ensp;|&ensp; BM25 <b>#241</b></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>Configuration (GPT-5-mini)</th>
+                  <th class="num">Indirect (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Backbone (Target in context)</td><td class="num">84.0</td></tr>
+                <tr><td>Naive RAG (BM25 / emb3-large)</td><td class="num">9.6 / 16.0</td></tr>
+                <tr><td>A-RAG / A-Mem (emb3-large)</td><td class="num">7.2 / 9.6</td></tr>
+                <tr><td>HippoRAG 2 (MiniLM)</td><td class="num">8.8</td></tr>
+                <tr><td>MemoryOS (emb3-large)</td><td class="num">14.4</td></tr>
+                <tr class="pale"><td>Jev (Top-5 exchanges)</td><td class="num">76.0</td></tr>
+              </tbody>
+            </table>
+            <div class="fig-cap"><b>端到端 Indirect (%)</b> · 95 / 125 题成功预警</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P25: RQ3：如何解决 - Plan A：世界知识打分器 (20-Task Curve)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · 20 题曲线辨析">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">Property ① vs. ② · 20-Task Probe</span>
+        </header>
+
+        <div class="sub-banner" style="margin-bottom:14px;">
+          <span><em>辨析 ① 与 ②：认出关联 ≠ 排在第一</em></span>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.18fr 0.82fr;gap:36px;align-items:center;">
+          <div class="zoomable">
+            <img src="assets/inmind20_recall_curve.png" alt="20题召回曲线" style="width:100%;display:block;">
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>Scorer</th>
+                  <th class="num">R@1</th>
+                  <th class="num">R@5</th>
+                  <th class="num">R@50</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Laya (ModernBERT)</td><td class="num">10%</td><td class="num">15%</td><td class="num">30%</td></tr>
+                <tr><td>Qwen3.5 4B</td><td class="num">5%</td><td class="num">10%</td><td class="num">40%</td></tr>
+                <tr><td>Qwen3.5 9B</td><td class="num">40%</td><td class="num">70%</td><td class="num">90%</td></tr>
+                <tr class="pale"><td>Jev</td><td class="num">85%</td><td class="num">90%</td><td class="num">90%</td></tr>
+              </tbody>
+            </table>
+
+            <div style="background:var(--pale);padding:15px 18px;font-size:15.5px;line-height:1.6;">
+              <div><b style="color:var(--forest);">① R@50（世界知识）：</b>Jev 90% = Qwen-9B 90% &gg; BERT 30%</div>
+              <div style="margin-top:6px;"><b style="color:var(--forest);">② R@1（首位排序）：</b>Jev 85% &gg; Qwen-9B 40%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P26: RQ3：如何解决 - Plan A：世界知识打分器 (MAB-60 & Cost)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan A · 通用迁移与开销">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan A：世界知识打分器</h2>
+          <span class="tag">Property ③ · MAB-60 &amp; API Cost</span>
+        </header>
+
+        <div style="display:grid;grid-template-columns:1.08fr 0.92fr;gap:42px;align-items:start;">
+          <div>
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>MAB Method</th>
+                  <th class="num">AR</th>
+                  <th class="num">TTL</th>
+                  <th class="num">LRU</th>
+                  <th class="num">SF</th>
+                  <th class="num">Overall</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>BM25 (Full)</td><td class="num">60.5</td><td class="num">44.5</td><td class="num">35.6</td><td class="num">25.5</td><td class="num">41.5</td></tr>
+                <tr><td>HippoRAG-v2 (Full)</td><td class="num">65.1</td><td class="num">35.8</td><td class="num">36.2</td><td class="num">29.5</td><td class="num">41.6</td></tr>
+                <tr><td>ReFind* (60 Qs)</td><td class="num">49.8</td><td class="num">30.0</td><td class="num">55.5</td><td class="num">41.7</td><td class="num">44.3</td></tr>
+                <tr class="pale"><td>Jev Top-5* (60 Qs)</td><td class="num">65.5</td><td class="num">40.0</td><td class="num">59.0</td><td class="num">57.1</td><td class="num">55.4</td></tr>
+              </tbody>
+            </table>
+            <div class="fig-cap"><b>MAB 60 题分层抽样 (%)</b></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:22px;">
+            <table class="booktabs">
+              <thead>
+                <tr>
+                  <th>Run</th>
+                  <th class="num">Mean Candidates</th>
+                  <th class="num">USD / Query</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>InMind (Exchanges)</td><td class="num">241.0</td><td class="num">$0.0083</td></tr>
+                <tr><td>InMind (Sessions)</td><td class="num">47.0</td><td class="num">$0.0057</td></tr>
+                <tr><td>MAB-60 (Conversations)</td><td class="num">1,258.2</td><td class="num">$0.0310</td></tr>
+              </tbody>
+            </table>
+
+            <div style="background:var(--hl-red);border-left:4px solid var(--rose);padding:16px 20px;font-size:17px;font-weight:700;">
+              <span style="color:var(--rose);">规模瓶颈：</span>全量扫描开销仍随记忆库线性增长 O(N)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P27: RQ3：如何解决 - Plan B：常驻式记忆 (Concept)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan B · 常驻式记忆（范式反思）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan B：常驻式记忆</h2>
+          <span class="tag">Plan B · Rethinking the Paradigm</span>
+        </header>
+
+        <div data-pipeline="planb"></div>
+
+        <div style="display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:22px;">
+          <div style="font-size:30px;font-weight:700;color:var(--ink);">
+            笔记本 <span style="font-size:19px;font-weight:400;color:var(--muted);">（存库翻查）</span>
+            &emsp;<span style="color:var(--forest);">───▶</span>&emsp;
+            人脑 <span style="font-size:19px;color:var(--forest);">（内化 / 常驻）</span>
+          </div>
+
+          <div style="font-size:27px;font-weight:700;padding-top:12px;border-top:1px solid var(--line);width:760px;text-align:center;">
+            <span style="color:var(--ink);">参数记忆？<small style="font-size:15.5px;font-weight:500;color:var(--muted);">（未来探索方向）</small></span>
+            &emsp;<span style="color:var(--forest);font-size:32px;">//</span>&emsp;
+            <span style="color:var(--forest);">常驻摘要（Always-in-State）</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P28: RQ3：如何解决 - Plan B：常驻式记忆 (Results)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan B · 常驻式记忆（实验结果）">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan B：常驻式记忆</h2>
+          <span class="tag">200-Line Persistent Markdown</span>
+        </header>
+
+        <div style="max-width:860px;margin:0 auto;">
+          <table class="booktabs" style="font-size:20px;">
+            <thead>
+              <tr>
+                <th>Method (GPT-5-mini)</th>
+                <th class="num">Direct (%)</th>
+                <th class="num">Indirect (%)</th>
+                <th class="num">Δ<sub>Backbone</sub></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Backbone (Target in context)</td>
+                <td class="num">—</td>
+                <td class="num">84.0</td>
+                <td class="num">0.0</td>
+              </tr>
+              <tr>
+                <td>Best Retrieval Configuration</td>
+                <td class="num">97.6</td>
+                <td class="num">16.0</td>
+                <td class="num" style="color:var(--rose);">−68.0</td>
+              </tr>
+              <tr class="pale">
+                <td>Always-in-State（常驻摘要）</td>
+                <td class="num">98.4</td>
+                <td class="num">68.8</td>
+                <td class="num">−15.2</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:30px;font-size:17px;">
+            <div style="background:var(--pale);padding:16px 20px;">
+              <b style="color:var(--forest);">优势：</b>高后果重要约束始终可见，绕开相似度盲区
+            </div>
+            <div style="background:var(--hl-red);padding:16px 20px;">
+              <b style="color:var(--rose);">局限：</b>上下文容量有限，无法容纳海量细粒度历史
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P29: RQ3：如何解决 - Plan C (Hybrid)
+         ========================================================= -->
+    <section class="slide" data-chap="rq3" data-title="Plan C · Hybrid">
+      <div class="in">
+        <header class="s-head">
+          <h2>RQ3：如何解决 - Plan C</h2>
+          <span class="tag">Hybrid Architecture</span>
+        </header>
+
+        <div style="padding:56px 0;">
+          <div class="brace-row" style="gap:36px;">
+            <span style="font-size:52px;font-weight:800;color:var(--forest);border-bottom:4px solid var(--forest);padding-bottom:4px;">
+              Hybrid
+            </span>
+            <svg width="42" height="176" viewBox="0 0 42 176">
+              <path d="M 36 8 C 16 8, 20 88, 4 88 C 20 88, 16 168, 36 168" fill="none" stroke="#245B56" stroke-width="3.2"/>
+            </svg>
+            <div class="brace-items" style="gap:38px;font-size:36px;">
+              <div>
+                <span>Always-in-State</span>
+                <small>高风险核心约束常驻</small>
+              </div>
+              <div>
+                <span>External Retrieval</span>
+                <small>细粒度历史效用检索</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P30: 总结 (Booktabs Academic Summary — Zero Slogans)
+         ========================================================= -->
+    <section class="slide" data-chap="outro" data-title="总结">
+      <div class="in">
+        <header class="s-head">
+          <h2>总结</h2>
+          <span class="tag">RQ1 · RQ2 · RQ3</span>
+        </header>
+
+        <div class="summary-ledger">
+          <div class="sum-row">
+            <div class="sum-rq">
+              <b>RQ1</b>
+              <span>Bench Bias</span>
+            </div>
+            <div class="sum-body">
+              <span class="sum-tok">dialog ──▶ query</span>
+              <span class="sum-sub">（词面共享，Δ &gt; 0）</span>
+              <span class="sum-arr">⟶</span>
+              <b style="color:var(--forest);">InMind</b>
+              <span class="sum-sub">32 KBs 反向构造</span>
+              <span class="sum-tok">fact / query</span>
+              <span class="sum-sub">（125 题，Δ = +0.001）</span>
+            </div>
+          </div>
+
+          <div class="sum-row">
+            <div class="sum-rq">
+              <b>RQ2</b>
+              <span>问题定位</span>
+            </div>
+            <div class="sum-body">
+              <span class="sum-chip ok">extract / storage &ensp;Direct 76%–99% ✓</span>
+              <span class="sum-chip bad">retriever &ensp;Indirect 3.2%–16.0% ✗</span>
+              <span class="sum-chip ok">LLM &ensp;In-Context 84.0% ✓</span>
+            </div>
+          </div>
+
+          <div class="sum-row">
+            <div class="sum-rq">
+              <b>RQ3</b>
+              <span>解决探索</span>
+            </div>
+            <div class="sum-body sum-plans">
+              <div><b>Plan A</b> &ensp;World Knowledge 全量打分 <span class="sum-sub">（Jev · 76.0%）</span></div>
+              <div><b>Plan B</b> &ensp;Always-in-State 常驻摘要 <span class="sum-sub">（68.8%）</span> / 参数记忆？</div>
+              <div><b>Plan C</b> &ensp;Hybrid <span class="sum-sub">（Always-in-State + External Retrieval）</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rel-footer" style="border-top:none;margin-top:28px;padding-top:0;">
+          <div class="rel-item" style="font-family:var(--sans);font-weight:700;color:var(--forest);font-size:23px;">
+            Similarity &ne; Utility
+          </div>
+          <div class="rel-item">
+            <span>target fact</span>
+            <span style="font-family:var(--mono);font-size:15px;color:var(--forest);font-weight:700;">═══ world knowledge ═══▶</span>
+            <span>query</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P31: Keep It InMind (Single Paper Header Screenshot)
+         ========================================================= -->
+    <section class="slide" data-chap="outro" data-title="Keep It InMind">
+      <div class="in">
+        <header class="s-head">
+          <h2>Keep It InMind</h2>
+          <span class="tag">arXiv:2607.24368</span>
+        </header>
+
+        <div class="paper-hero zoomable">
+          <img src="assets/paper_inmind.png" alt="Keep It InMind 论文截图">
+        </div>
+
+        <div class="fig-cap" style="margin-top:18px;font-family:var(--mono);font-size:13.5px;">
+          <a href="https://keep-it-inmind.github.io/" target="_blank" rel="noopener" style="color:var(--forest);text-decoration:none;border-bottom:1px solid var(--forest);">keep-it-inmind.github.io</a>
+          &emsp;·&emsp;
+          <a href="https://github.com/imlrz/InMind" target="_blank" rel="noopener" style="color:var(--forest);text-decoration:none;border-bottom:1px solid var(--forest);">github.com/imlrz/InMind</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         P32: Thanks & QR Placeholders
+         ========================================================= -->
+    <section class="slide divider" data-chap="outro" data-title="Thanks!">
+      <div class="in cover-center">
+        <h2 style="font-family:var(--sans);font-size:70px;font-weight:700;color:var(--forest);">Thanks!</h2>
+
+        <div class="qr-pair">
+          <div>
+            <div class="qr-box" id="qr-github">GitHub 二维码</div>
+            <div class="qr-label">GitHub</div>
+          </div>
+          <div>
+            <div class="qr-box" id="qr-xhs">小红书二维码</div>
+            <div class="qr-label">小红书</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="rail" id="rail" aria-label="页码圆点"></div>
+
+  <div class="hud">
+    <button type="button" id="prev" aria-label="上一页">↑</button>
+    <div class="ctr">
+      <span><b id="cur">1</b> / <span id="tot">32</span></span>
+      <span class="sec" id="secname">封面</span>
+    </div>
+    <button type="button" id="next" aria-label="下一页">↓</button>
+  </div>
+
+  <div class="lb" id="lb"><img alt="放大预览"></div>
+
+  <div class="sorter" id="sorter">
+    <div style="max-width:1320px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;">
+      <b style="color:var(--forest);font-size:18px;">幻灯片目录（共 32 页 · 点击跳转）</b>
+      <button type="button" class="chrome-btn" id="sorter-close">关闭 (Esc)</button>
+    </div>
+    <div class="sorter-grid" id="sorter-grid"></div>
+  </div>
+
+  <dialog id="notes-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <b id="nm-title" style="color:var(--forest);font-size:16px;"></b>
+      <button type="button" class="chrome-btn" id="nm-close">关闭</button>
+    </div>
+    <div id="nm-body" style="font-size:15.5px;line-height:1.65;"></div>
+  </dialog>
+</body>
+</html>
