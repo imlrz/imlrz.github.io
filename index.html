@@ -6,6 +6,21 @@
 <meta name="theme-color" content="#f4efe6" id="meta-theme">
 <meta name="description" content="Ruizhe Li (李睿哲) — master's student at USTC researching LLM agents, agent memory, and long-context language models.">
 <title>Ruizhe Li (李睿哲)</title>
+<script>
+/* Apply saved preferences before the first paint, including existing theme IDs. */
+function readPreference(key){try{return localStorage.getItem(key);}catch{return null;}}
+function savePreference(key,value){try{localStorage.setItem(key,value);}catch{}}
+(function(){
+  const themes=['editorial','terminal','academic','starry','lemmon'];
+  const saved=readPreference('rl-theme');
+  const theme=themes.includes(saved)?saved:'editorial';
+  const language=readPreference('rl-lang')==='zh'?'zh':'en';
+  document.documentElement.dataset.theme=theme;
+  document.documentElement.dataset.lang=language;
+  document.documentElement.lang=language==='zh'?'zh-CN':'en';
+  document.getElementById('meta-theme').content={editorial:'#f4efe6',terminal:'#0a0d0b',academic:'#fbfbfc',starry:'#0a1628',lemmon:'#f7faf8'}[theme];
+})();
+</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,14 +28,14 @@
 
 <style>
 /* ════════════════════════════════════════════════════════════════
-   THEME TOKENS  ·  four self-contained palettes
+   THEME TOKENS  ·  five celestial palettes
    ════════════════════════════════════════════════════════════════ */
 :root{
   --maxw: 760px;
   --ease: cubic-bezier(.22,1,.36,1);
 }
 
-/* ── 1 · EDITORIAL ── warm ivory, ink, terracotta ── */
+/* ── 1 · EUROPA (editorial) ── warm ivory, ink, terracotta ── */
 [data-theme="editorial"]{
   --bg:#f4efe6; --bg-2:#ece4d6; --surface:#faf6ee;
   --ink:#241f1a; --ink-2:#5c5347; --ink-3:#8a7e6d; --ink-4:#b3a795;
@@ -29,7 +44,7 @@
   --font-body:"Newsreader", Georgia, serif;
   --font-mono:"JetBrains Mono", monospace;
 }
-/* ── 2 · TERMINAL ── near-black, phosphor green ── */
+/* ── 2 · URANUS (terminal) ── near-black, phosphor green ── */
 [data-theme="terminal"]{
   --bg:#0a0d0b; --bg-2:#0f1411; --surface:#10160f;
   --ink:#cdd6cd; --ink-2:#8b9a89; --ink-3:#5f6e5e; --ink-4:#42513f;
@@ -38,7 +53,7 @@
   --font-body:"JetBrains Mono", monospace;
   --font-mono:"JetBrains Mono", monospace;
 }
-/* ── 3 · MODERN ACADEMIC ── crisp white, indigo ── */
+/* ── 3 · NEPTUNE (academic) ── crisp white, indigo ── */
 [data-theme="academic"]{
   --bg:#fbfbfc; --bg-2:#f1f2f6; --surface:#ffffff;
   --ink:#15181f; --ink-2:#4a5160; --ink-3:#79808f; --ink-4:#aab0bd;
@@ -47,7 +62,7 @@
   --font-body:"Source Serif 4", Georgia, serif;
   --font-mono:"JetBrains Mono", monospace;
 }
-/* ── 4 · STARRY NIGHT ── deep blue, gold ── */
+/* ── 4 · EARTH (starry) ── deep blue, gold ── */
 [data-theme="starry"]{
   --bg:#0a1628; --bg-2:#0e1d34; --surface:rgba(22,38,70,.5);
   --ink:#ece4d2; --ink-2:#c3bca8; --ink-3:#9a937f; --ink-4:#6f6857;
@@ -56,12 +71,21 @@
   --font-body:"Newsreader", Georgia, serif;
   --font-mono:"JetBrains Mono", monospace;
 }
+/* ── 5 · LEMMON ── Jetriever's forest teal and pale green ── */
+[data-theme="lemmon"]{
+  --bg:#f7faf8; --bg-2:#edf4f1; --surface:#ffffff;
+  --ink:#1d302c; --ink-2:#5b6763; --ink-3:#637770; --ink-4:#81958c;
+  --accent:#245b56; --accent-2:#368295; --rule:#d6e4dd;
+  --font-display:"Bricolage Grotesque", system-ui, sans-serif;
+  --font-body:"Source Serif 4", Georgia, serif;
+  --font-mono:"JetBrains Mono", monospace;
+}
 
 /* ════════════════════════════════════════════════════════════════
    RESET / BASE
    ════════════════════════════════════════════════════════════════ */
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scrollbar-gutter:stable}
 body{
   background:var(--bg); color:var(--ink);
   font-family:var(--font-body);
@@ -137,40 +161,74 @@ body[data-active="editorial"]::before{}
 }
 .ctrl:hover{transform:translateY(-2px); border-color:var(--accent); color:var(--accent)}
 .ctrl:active{transform:translateY(0)}
-.ctrl .dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--bg) inset}
-
-.theme-wrap{position:relative}
-.theme-menu{
-  position:absolute; top:48px; right:0; width:226px;
-  background:var(--surface); border:1px solid var(--rule); border-radius:13px;
-  padding:7px; box-shadow:0 18px 50px rgba(0,0,0,.22);
-  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
-  opacity:0; transform:translateY(-8px) scale(.97); pointer-events:none;
-  transition:opacity .22s var(--ease), transform .22s var(--ease);
+.ctrl-photo{width:24px;height:24px;object-fit:cover;border-radius:50%;background:#05090f}
+.ctrl-chevron{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.5;transition:transform .25s}
+.ctrl[aria-expanded="true"] .ctrl-chevron{transform:rotate(180deg)}
+.ctrl:focus-visible,.theme-opt:focus-visible,.theme-close:focus-visible,.theme-credits a:focus-visible{outline:2px solid currentColor;outline-offset:5px}
+body.theme-dialog-open{overflow:hidden}
+.theme-dialog{
+  --gallery-ink:#eef1f5; --gallery-muted:#a9b4c3;
+  position:fixed;inset:0;margin:auto;width:min(1080px,calc(100% - 48px));max-height:calc(100svh - 48px);
+  padding:30px;border:1px solid #2c3748;border-radius:24px;
+  background:#101722;color:var(--gallery-ink);box-shadow:0 30px 100px #0009;
+  overflow:auto;font-family:"Bricolage Grotesque",system-ui,sans-serif;
 }
-.theme-menu.open{opacity:1; transform:none; pointer-events:auto}
+.theme-dialog::backdrop{background:#040811aa;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.theme-dialog[open]{animation:orbitIn .28s var(--ease) both}
+@keyframes orbitIn{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.theme-dialog-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:28px}
+.theme-dialog-eyebrow{font:500 .75rem "JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--gallery-muted);margin-bottom:9px}
+.theme-dialog h2{font-size:clamp(1.6rem,3vw,2.1rem);font-weight:500;line-height:1.15;letter-spacing:-.035em}
+.theme-dialog-subtitle{color:var(--gallery-muted);font-size:.9rem;line-height:1.5;margin-top:10px}
+.theme-close{display:grid;place-items:center;flex:none;width:44px;height:44px;border:1px solid #354153;border-radius:50%;background:transparent;color:var(--gallery-ink);cursor:pointer;transition:background .2s,transform .2s}
+.theme-close:hover{background:#243044;transform:rotate(90deg)}
+.theme-close svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5}
+.theme-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 .theme-opt{
-  display:flex; align-items:center; gap:12px; width:100%;
-  padding:10px 11px; border-radius:9px; cursor:pointer; border:0; background:transparent;
-  color:var(--ink); font-family:var(--font-mono); font-size:.78rem; text-align:left;
-  transition:background-color .18s;
+  --choice-bg:#f4efe6;--choice-ink:#241f1a;--choice-accent:#a8430f;--choice-secondary:#7a5a1e;
+  position:relative;min-width:0;display:flex;flex-direction:column;isolation:isolate;
+  border:1px solid #354153;border-radius:14px;overflow:hidden;text-align:left;cursor:pointer;
+  background:var(--choice-bg);color:var(--choice-ink);font:inherit;
+  transition:transform .28s var(--ease),border-color .25s,box-shadow .25s;
 }
-.theme-opt:hover{background:var(--bg-2)}
-.theme-opt .sw{width:30px;height:30px;border-radius:8px;flex:none;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,.12)}
-.theme-opt .sw i{position:absolute;inset:0}
-.theme-opt .sw i:nth-child(2){left:62%}
-.theme-opt b{display:block;font-weight:600;font-size:.82rem}
-.theme-opt small{color:var(--ink-3);font-size:.68rem}
-.theme-opt[aria-checked="true"]{background:var(--bg-2)}
-.theme-opt[aria-checked="true"] .check{margin-left:auto;color:var(--accent);font-weight:700}
-.theme-opt .check{margin-left:auto;opacity:0}
-.theme-opt[aria-checked="true"] .check{opacity:1}
-
-/* swatches */
-.sw.ed i:first-child{background:#f4efe6} .sw.ed i:last-child{background:#a8430f}
-.sw.te i:first-child{background:#0a0d0b} .sw.te i:last-child{background:#7ee787}
-.sw.ac i:first-child{background:#ffffff} .sw.ac i:last-child{background:#2f4af0}
-.sw.st i:first-child{background:#0a1628} .sw.st i:last-child{background:#fbe08a}
+.theme-opt[data-set="terminal"]{--choice-bg:#0a0d0b;--choice-ink:#cdd6cd;--choice-accent:#7ee787;--choice-secondary:#e3b341}
+.theme-opt[data-set="academic"]{--choice-bg:#fbfbfc;--choice-ink:#15181f;--choice-accent:#2f4af0;--choice-secondary:#0b7d6b}
+.theme-opt[data-set="starry"]{--choice-bg:#0a1628;--choice-ink:#ece4d2;--choice-accent:#fbe08a;--choice-secondary:#7b9cc4}
+.theme-opt[data-set="lemmon"]{--choice-bg:#f7faf8;--choice-ink:#1d302c;--choice-accent:#245b56;--choice-secondary:#368295}
+.theme-opt:hover{transform:translateY(-5px);border-color:#afbed2;box-shadow:0 12px 28px #0005}
+.theme-opt[aria-pressed="true"]{border-color:#e6edf8;box-shadow:0 0 0 2px #e6edf84d}
+.theme-photo{display:block;position:relative;aspect-ratio:1/1;width:100%;overflow:hidden;background:#05090f}
+.theme-photo img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .65s var(--ease)}
+.theme-opt:hover .theme-photo img{transform:scale(1.07)}
+.theme-opt[data-set="lemmon"] .theme-photo img{object-fit:cover}
+.theme-check{position:absolute;right:10px;top:10px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#edf3fb;color:#101722;font:600 .85rem system-ui,sans-serif;opacity:0;transform:scale(.7);transition:opacity .2s,transform .2s}
+.theme-opt[aria-pressed="true"] .theme-check{opacity:1;transform:scale(1)}
+.theme-card-body{display:flex;flex-direction:column;flex:1;gap:7px;padding:17px 14px}
+.theme-card-name{font-size:1.12rem;font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.theme-card-subtitle{font-size:.8rem;line-height:1.4;opacity:.78;min-height:2.8em}
+.theme-palette{display:flex;height:10px;gap:4px;margin-top:9px}
+.theme-palette i{flex:1;border-radius:2px;background:var(--choice-accent)}
+.theme-palette i:nth-child(2){background:var(--choice-secondary)}
+.theme-palette i:nth-child(3){background:var(--choice-ink)}
+.theme-dialog-footer{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:24px;padding-top:18px;border-top:1px solid #2c3748}
+.theme-status{font-size:.85rem;color:var(--gallery-muted)}
+.theme-status output{color:var(--gallery-ink)}
+.theme-credits{font-size:.75rem;color:var(--gallery-muted)}
+.theme-credits a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:940px){.theme-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.theme-photo{aspect-ratio:1.35/1}}
+@media(max-width:620px){
+  .theme-dialog{width:calc(100% - 24px);max-height:calc(100svh - 24px);padding:20px;border-radius:20px}
+  .theme-dialog-header{gap:12px;margin-bottom:20px}
+  .theme-dialog-subtitle{font-size:.85rem}
+  .theme-grid{grid-template-columns:1fr;gap:10px}
+  .theme-opt{flex-direction:row;min-height:100px}
+  .theme-photo{width:110px;flex:none;aspect-ratio:1/1}
+  .theme-card-body{padding:13px 14px;gap:4px;justify-content:center}
+  .theme-card-subtitle{min-height:0;font-size:.85rem}
+  .theme-palette{margin-top:5px;max-width:150px;height:7px}
+  .theme-check{right:auto;left:8px;top:8px;width:21px;height:21px}
+  .theme-dialog-footer{margin-top:18px}
+}
 
 /* ════════════════════════════════════════════════════════════════
    LAYOUT SHELL
@@ -443,6 +501,19 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 [data-theme="starry"] .pub-badge{color:var(--accent)}
 [data-theme="starry"] ::selection{color:#0a1628}
 
+/* — LEMMON — the forest-green reading palette from the Jetriever paper */
+[data-theme="lemmon"]{--maxw:900px}
+[data-theme="lemmon"] .name{color:var(--accent);font-weight:600;letter-spacing:-.04em}
+[data-theme="lemmon"] .masthead{gap:46px;margin-bottom:34px}
+[data-theme="lemmon"] .portrait{transform:none;border-radius:8px;box-shadow:12px 12px 0 var(--bg-2)}
+[data-theme="lemmon"] .section-title{color:var(--accent)}
+[data-theme="lemmon"] .pub{background:var(--bg-2);border-radius:6px;border-left:3px solid var(--accent)}
+[data-theme="lemmon"] .pub-title{color:var(--accent)}
+[data-theme="lemmon"] .pub-badge{border:0;padding:0;font-weight:600}
+[data-theme="lemmon"] .pub-tldr{border-color:#a8c9bc}
+[data-theme="lemmon"] .proj,[data-theme="lemmon"] .timeline-entry{border-radius:6px}
+[data-theme="lemmon"] .chip{background:var(--bg-2);border-color:transparent}
+
 /* ════════════════════════════════════════════════════════════════
    RESPONSIVE
    ════════════════════════════════════════════════════════════════ */
@@ -488,26 +559,78 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 <!-- ── controls ── -->
 <div class="controls">
   <div class="theme-wrap">
-    <button class="ctrl" id="theme-btn" aria-haspopup="true" aria-expanded="false">
-      <span class="dot"></span><span id="theme-name">Editorial</span>
+    <button class="ctrl" id="theme-btn" type="button" aria-label="Choose a theme" aria-haspopup="dialog" aria-controls="theme-dialog" aria-expanded="false">
+      <img class="ctrl-photo" id="theme-photo" src="assets/themes/europa.webp" alt="" width="24" height="24">
+      <span id="theme-name">Europa</span>
+      <svg class="ctrl-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
     </button>
-    <div class="theme-menu" id="theme-menu" role="menu">
-      <button class="theme-opt" role="menuitemradio" data-set="editorial">
-        <span class="sw ed"><i></i><i></i></span><span><b>Editorial</b><small data-i18n="thEd">Ivory · serif</small></span><span class="check">✓</span>
-      </button>
-      <button class="theme-opt" role="menuitemradio" data-set="terminal">
-        <span class="sw te"><i></i><i></i></span><span><b>Terminal</b><small data-i18n="thTe">Mono · phosphor</small></span><span class="check">✓</span>
-      </button>
-      <button class="theme-opt" role="menuitemradio" data-set="academic">
-        <span class="sw ac"><i></i><i></i></span><span><b>Academic</b><small data-i18n="thAc">Light · sidebar</small></span><span class="check">✓</span>
-      </button>
-      <button class="theme-opt" role="menuitemradio" data-set="starry">
-        <span class="sw st"><i></i><i></i></span><span><b>Starry Night</b><small data-i18n="thSt">Van Gogh · canvas</small></span><span class="check">✓</span>
-      </button>
-    </div>
   </div>
   <button class="ctrl" id="lang-btn" aria-label="Switch language"><span id="lang-label">中</span></button>
 </div>
+
+<dialog class="theme-dialog" id="theme-dialog" aria-labelledby="theme-dialog-title" aria-describedby="theme-dialog-description">
+  <div class="theme-dialog-header">
+    <div>
+      <p class="theme-dialog-eyebrow" data-i18n="themeEyebrow">A change of atmosphere</p>
+      <h2 id="theme-dialog-title" data-i18n="themeTitle">Choose your world.</h2>
+      <p class="theme-dialog-subtitle" id="theme-dialog-description" data-i18n="themeDescription">Five celestial palettes, each with its own typography and rhythm.</p>
+    </div>
+    <button class="theme-close" id="theme-close" type="button" aria-label="Close theme picker">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg>
+    </button>
+  </div>
+  <div class="theme-grid" role="group" aria-label="Themes" id="theme-options">
+    <button class="theme-opt" type="button" data-set="editorial" aria-pressed="true" aria-labelledby="theme-europa-name" aria-describedby="theme-europa-description">
+      <span class="theme-photo"><img src="assets/themes/europa.webp" alt="Europa photographed by Galileo, with pale ice and reddish-brown markings; enhanced color" width="480" height="480" decoding="async"></span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+      <span class="theme-card-body">
+        <span class="theme-card-name" id="theme-europa-name">Europa</span>
+        <span class="theme-card-subtitle" id="theme-europa-description" data-i18n="thEd">Ivory &amp; terracotta<br>Editorial serif</span>
+        <span class="theme-palette" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </button>
+    <button class="theme-opt" type="button" data-set="terminal" aria-pressed="false" aria-labelledby="theme-uranus-name" aria-describedby="theme-uranus-description">
+      <span class="theme-photo"><img src="assets/themes/uranus.webp" alt="Pale blue-green Uranus photographed by Voyager 2" width="480" height="480" decoding="async"></span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+      <span class="theme-card-body">
+        <span class="theme-card-name" id="theme-uranus-name">Uranus</span>
+        <span class="theme-card-subtitle" id="theme-uranus-description" data-i18n="thTe">Phosphor on black<br>Monospace terminal</span>
+        <span class="theme-palette" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </button>
+    <button class="theme-opt" type="button" data-set="academic" aria-pressed="false" aria-labelledby="theme-neptune-name" aria-describedby="theme-neptune-description">
+      <span class="theme-photo"><img src="assets/themes/neptune.webp" alt="Neptune photographed by Voyager 2; blue color enhanced to reveal atmospheric features" width="480" height="480" decoding="async"></span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+      <span class="theme-card-body">
+        <span class="theme-card-name" id="theme-neptune-name">Neptune</span>
+        <span class="theme-card-subtitle" id="theme-neptune-description" data-i18n="thAc">Cobalt &amp; white<br>Modern academic</span>
+        <span class="theme-palette" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </button>
+    <button class="theme-opt" type="button" data-set="starry" aria-pressed="false" aria-labelledby="theme-earth-name" aria-describedby="theme-earth-description">
+      <span class="theme-photo"><img src="assets/themes/earth.webp" alt="The Blue Marble photograph of Earth taken by the Apollo 17 crew" width="480" height="480" decoding="async"></span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+      <span class="theme-card-body">
+        <span class="theme-card-name" id="theme-earth-name">Earth</span>
+        <span class="theme-card-subtitle" id="theme-earth-description" data-i18n="thSt">Midnight &amp; gold<br>A sky in motion</span>
+        <span class="theme-palette" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </button>
+    <button class="theme-opt" type="button" data-set="lemmon" aria-pressed="false" aria-labelledby="theme-lemmon-name" aria-describedby="theme-lemmon-description">
+      <span class="theme-photo"><img src="assets/themes/lemmon.webp" alt="Comet C/2025 A6 (Lemmon), photographed by Chuck Ayoub with a green coma and a long tail" width="480" height="480" decoding="async"></span>
+      <span class="theme-check" aria-hidden="true">✓</span>
+      <span class="theme-card-body">
+        <span class="theme-card-name" id="theme-lemmon-name">Lemmon</span>
+        <span class="theme-card-subtitle" id="theme-lemmon-description" data-i18n="thLe">Forest teal &amp; mint<br>The Jetriever palette</span>
+        <span class="theme-palette" aria-hidden="true"><i></i><i></i><i></i></span>
+      </span>
+    </button>
+  </div>
+  <div class="theme-dialog-footer">
+    <p class="theme-status"><span data-i18n="themeCurrent">Current world:</span> <output id="theme-current" aria-live="polite">Europa</output></p>
+    <p class="theme-credits"><a href="assets/themes/credits.html" target="_blank" rel="noopener" data-i18n="themeCredits">Photographs &amp; credits</a><span aria-hidden="true"> · </span><span data-i18n="themePhotoNote">Europa &amp; Neptune: enhanced color</span></p>
+  </div>
+</dialog>
 
 <!-- ── page ── -->
 <div class="page">
@@ -713,15 +836,6 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 </footer>
 
 <script>
-/* ─────────── early-saved prefs (applied inline above via attrs) ─────────── */
-(function(){
-  var t=localStorage.getItem('rl-theme');
-  if(['editorial','terminal','academic','starry'].indexOf(t)<0) t='editorial';
-  document.documentElement.setAttribute('data-theme',t);
-  var l=localStorage.getItem('rl-lang'); if(l!=='zh'&&l!=='en') l='en';
-  document.documentElement.setAttribute('data-lang',l);
-})();
-
 /* ─────────── i18n ─────────── */
 const T={
   en:{}, // English is the in-HTML default; keys below override for ZH only
@@ -773,7 +887,15 @@ const T={
     sv2:'助教，DS4001 <span>数据科学课程 · 2025 春</span>',
     sv3:'唐仲英爱心社 成员 <span>志愿服务</span>',
     foot:'© 2026 李睿哲 · Ruizhe Li',
-    thEd:'米白 · 衬线', thTe:'等宽 · 荧光', thAc:'浅色 · 侧栏', thSt:'梵高 · 画布',
+    themeEyebrow:'换一种氛围', themeTitle:'选择你的星球。',
+    themeDescription:'五种天体配色，各有自己的字体与阅读节奏。',
+    themeCurrent:'当前主题：', themeCredits:'照片来源与署名',
+    themePhotoNote:'木卫二与海王星：增强色影像',
+    thEd:'木卫二 · 米白与红陶<br>衬线书页',
+    thTe:'天王星 · 深底荧光绿<br>等宽终端',
+    thAc:'海王星 · 钴蓝与白<br>现代学术',
+    thSt:'地球 · 午夜蓝与金<br>流动星空',
+    thLe:'莱蒙彗星 · 深青绿与薄荷<br>Jetriever 论文配色',
   }
 };
 /* snapshot English defaults from DOM so we can toggle back */
@@ -791,35 +913,69 @@ function applyLang(l){
   document.documentElement.setAttribute('data-lang',l);
   document.documentElement.lang = l==='zh'?'zh-CN':'en';
   document.getElementById('lang-label').textContent = l==='en'?'中':'EN';
-  localStorage.setItem('rl-lang',l);
+  document.getElementById('theme-btn').setAttribute('aria-label',l==='zh'?'选择主题':'Choose a theme');
+  document.getElementById('theme-close').setAttribute('aria-label',l==='zh'?'关闭主题选择':'Close theme picker');
+  document.getElementById('theme-options').setAttribute('aria-label',l==='zh'?'主题':'Themes');
+  document.getElementById('lang-btn').setAttribute('aria-label',l==='zh'?'Switch to English':'切换到中文');
+  savePreference('rl-lang',l);
 }
 document.getElementById('lang-btn').addEventListener('click',()=>applyLang(lang==='en'?'zh':'en'));
 
 /* ─────────── theme picker ─────────── */
-const THEME_NAMES={editorial:'Editorial',terminal:'Terminal',academic:'Academic',starry:'Starry Night'};
-const META={editorial:'#f4efe6',terminal:'#0a0d0b',academic:'#fbfbfc',starry:'#0a1628'};
+const THEME_NAMES={editorial:'Europa',terminal:'Uranus',academic:'Neptune',starry:'Earth',lemmon:'Lemmon'};
+const THEME_PHOTOS={editorial:'europa',terminal:'uranus',academic:'neptune',starry:'earth',lemmon:'lemmon'};
+const META={editorial:'#f4efe6',terminal:'#0a0d0b',academic:'#fbfbfc',starry:'#0a1628',lemmon:'#f7faf8'};
 let starryLoaded=false;
-const btn=document.getElementById('theme-btn'), menu=document.getElementById('theme-menu');
+const btn=document.getElementById('theme-btn'), themeDialog=document.getElementById('theme-dialog');
+const themeOptions=[...document.querySelectorAll('.theme-opt')];
 
 function setTheme(t){
+  if(!Object.hasOwn(THEME_NAMES,t)) t='editorial';
   document.documentElement.setAttribute('data-theme',t);
   document.getElementById('theme-name').textContent=THEME_NAMES[t];
+  document.getElementById('theme-current').textContent=THEME_NAMES[t];
+  document.getElementById('theme-photo').src='assets/themes/'+THEME_PHOTOS[t]+'.webp';
   document.getElementById('meta-theme').content=META[t];
-  document.querySelectorAll('.theme-opt').forEach(o=>o.setAttribute('aria-checked', o.dataset.set===t?'true':'false'));
-  localStorage.setItem('rl-theme',t);
+  themeOptions.forEach(o=>o.setAttribute('aria-pressed', o.dataset.set===t?'true':'false'));
+  savePreference('rl-theme',t);
   if(t==='starry' && !starryLoaded){
     const s=document.createElement('script'); s.src='starry-night.js'; document.body.appendChild(s); starryLoaded=true;
   }
 }
-btn.addEventListener('click',e=>{
-  e.stopPropagation();
-  const open=menu.classList.toggle('open'); btn.setAttribute('aria-expanded',open);
+btn.addEventListener('click',()=>{
+  themeDialog.showModal();
+  btn.setAttribute('aria-expanded','true');
+  document.body.classList.add('theme-dialog-open');
+  themeOptions.find(o=>o.getAttribute('aria-pressed')==='true').focus({preventScroll:true});
 });
-document.querySelectorAll('.theme-opt').forEach(o=>{
-  o.addEventListener('click',()=>{ setTheme(o.dataset.set); menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+themeOptions.forEach((o,i)=>{
+  o.addEventListener('click',()=>{setTheme(o.dataset.set);themeDialog.close();});
+  o.addEventListener('keydown',e=>{
+    let next;
+    if(e.key==='ArrowRight'||e.key==='ArrowDown') next=(i+1)%themeOptions.length;
+    if(e.key==='ArrowLeft'||e.key==='ArrowUp') next=(i-1+themeOptions.length)%themeOptions.length;
+    if(e.key==='Home') next=0;
+    if(e.key==='End') next=themeOptions.length-1;
+    if(next!==undefined){e.preventDefault();themeOptions[next].focus();}
+  });
 });
-document.addEventListener('click',()=>{ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){menu.classList.remove('open'); btn.setAttribute('aria-expanded','false');} });
+document.getElementById('theme-close').addEventListener('click',()=>themeDialog.close());
+themeDialog.addEventListener('close',()=>{
+  btn.setAttribute('aria-expanded','false');
+  document.body.classList.remove('theme-dialog-open');
+  btn.focus({preventScroll:true});
+});
+/* Both ends of a backdrop click must be outside, so dragging out doesn't dismiss. */
+let backdropPointer=false;
+function isOutsideDialog(e){
+  const r=themeDialog.getBoundingClientRect();
+  return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;
+}
+themeDialog.addEventListener('pointerdown',e=>{backdropPointer=e.target===themeDialog&&isOutsideDialog(e);});
+themeDialog.addEventListener('click',e=>{
+  if(backdropPointer&&e.target===themeDialog&&isOutsideDialog(e)) themeDialog.close();
+  backdropPointer=false;
+});
 
 /* ─────────── reveal on scroll ─────────── */
 const io=new IntersectionObserver(es=>{

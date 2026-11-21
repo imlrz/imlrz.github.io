@@ -1,22 +1,25 @@
 # imlrz.github.io
 
-李睿哲 (Ruizhe Li) 的个人主页 —— 单页、零依赖、可在四种视觉主题间实时切换。
+李睿哲 (Ruizhe Li) 的个人主页 —— 单页、零依赖、可在五种天体主题间实时切换。
 
 > 本科生 @ 中国科学技术大学 · 人工智能与数据科学学院 · 数据科学
 > 研究方向：深度研究系统（Deep Research）与智能体记忆（Agent Memory）
 
-## ✨ 四套主题，一键切换
+## ✨ 五套天体主题，一键切换
 
-右上角的主题按钮可在四种完全不同的设计语言之间切换，选择保存在 `localStorage`：
+右上角的主题按钮打开照片选卡：真实天体影像、配色色条与字体说明放在同一张卡片中，选择保存在 `localStorage`。支持手机、键盘、Escape 和点击遮罩关闭：
 
 | 主题 | 风格 | 说明 |
 |------|------|------|
-| **Editorial** | 米白 · 衬线 | 暖米色纸张质感 + Fraunces/Newsreader 衬线排版，学术、克制、隽永（默认） |
-| **Terminal** | 等宽 · 荧光 | 近黑底 + 磷光绿，命令行美学：`$` 提示符、闪烁光标、扫描线纹理 |
-| **Academic** | 浅色 · 侧栏 | 仿顶尖 ML 研究者主页的左侧固定栏布局，头像 + 链接 + 卡片化论文列表 |
-| **Starry Night** | 梵高 · 画布 | 保留原《星月夜》Canvas 粒子动画（漩涡星辰 / 弯月 / 流星）+ 玻璃拟态卡片 |
+| **Europa · 木卫二** | 米白 · 红陶 | 原 Editorial；暖米色纸张质感 + Fraunces/Newsreader 衬线排版（默认） |
+| **Uranus · 天王星** | 等宽 · 荧光 | 原 Terminal；近黑底 + 磷光绿，保留 `$` 提示符、闪烁光标、扫描线纹理 |
+| **Neptune · 海王星** | 钴蓝 · 侧栏 | 原 Academic；白底、蓝色强调与左侧固定栏布局 |
+| **Earth · 地球** | 午夜蓝 · 金 | 原 Starry Night；保留 Canvas 粒子动画（漩涡星辰 / 弯月 / 流星）+ 玻璃拟态卡片 |
+| **Lemmon · 莱蒙彗星** | 深青绿 · 浅绿 | 新主题；取自 Jetriever 论文的 `#245B56`、`#5B6763`、`#EDF4F1`，配青蓝辅助色 |
 
-每个主题拥有独立的配色、字体与版式——不是简单换肤，而是四种排版结构。
+每个主题拥有独立的配色、字体与版式。现有内部 ID `editorial`、`terminal`、`academic`、`starry` 保留以兼容已保存的偏好，新主题 ID 为 `lemmon`。浏览器禁用本地存储时也可正常切换。
+
+照片保存在 `assets/themes/`，署名与原始链接见 [照片来源](assets/themes/credits.html)。木卫二与海王星使用增强色观测影像；主题色是设计解释，不是天体颜色的精确测量。图片仅缩小为 WebP，不作额外染色。
 
 ## 🌐 中英双语
 
@@ -39,14 +42,15 @@
 - Google Fonts：Fraunces · Newsreader · JetBrains Mono · Bricolage Grotesque · Source Serif 4 · Cormorant Garamond
 - 遵循前端设计规范：**UI 元素一律纯色 + 阴影 / 描边，不使用渐变**；噪点 / 扫描线 / 点阵仅作纹理
 - `IntersectionObserver` 滚动渐入；`prefers-reduced-motion` 降级
-- 《星月夜》画布动画见 `starry-night.js`，仅在切到 Starry 主题时按需懒加载
+- 《星月夜》画布动画见 `starry-night.js`，仅在切到 Earth 主题时按需懒加载
 
 ## 📁 文件
 
 | 文件 | 说明 |
 |------|------|
-| `index.html` | 全部页面、四套主题样式、i18n 字典与交互逻辑 |
+| `index.html` | 全部页面、五套主题样式、i18n 字典与交互逻辑 |
 | `starry-night.js` | 星月夜 Canvas 粒子系统（按需加载） |
+| `assets/themes/` | 五张天体照片缩略图与署名页 |
 
 ## 🚀 本地预览
 
