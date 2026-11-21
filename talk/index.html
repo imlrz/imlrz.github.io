@@ -28,6 +28,8 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
       border-bottom: 1.5px solid var(--forest);
       padding-bottom: 12px;
       margin-bottom: 28px;
@@ -35,6 +37,8 @@
     h1 { font-size: 28px; color: var(--forest); }
     header a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; }
     header a:hover { color: var(--forest); }
+    .page-nav { display: flex; flex-wrap: wrap; gap: 16px; }
+    .page-nav a { font-size: 14px; }
     .list { border-top: 1.8px solid var(--ink); border-bottom: 1.8px solid var(--ink); }
     .item {
       display: grid;
@@ -65,7 +69,7 @@
 <body>
   <header>
     <h1>Talks</h1>
-    <a href="/">← imlrz.github.io</a>
+    <nav class="page-nav" aria-label="站点导航"><a href="/">主页</a><a href="/group-meeting/">组会</a></nav>
   </header>
   <div class="list">
     <article class="item">

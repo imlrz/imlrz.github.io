@@ -800,7 +800,7 @@ window.JEV_SLIDES = String.raw`
 <section class="slide divider" data-rq="open" data-sec="结束">
   <div class="in" style="text-align:center">
     <div class="kick" style="justify-content:center">谢谢 <span class="dim">· 组会 0923 · Jev</span></div>
-    <p class="muted"><a href="../../index.html">← 返回主页</a></p>
+    <p class="muted"><a href="/group-meeting/">返回组会目录</a> · <a href="/">主页</a></p>
   </div>
 </section>
 `;

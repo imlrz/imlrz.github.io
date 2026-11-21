@@ -126,6 +126,18 @@ html, body {
   color: var(--forest);
   border-color: var(--forest);
 }
+a.chrome-btn { display: inline-flex; align-items: center; text-decoration: none; white-space: nowrap; }
+.deck-return { margin-top: 24px; font: 500 15px/1.5 var(--sans); color: var(--muted); }
+.deck-return a { color: var(--forest); text-underline-offset: 4px; }
+.chrome a:focus-visible, .deck-return a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
+@media (max-width: 1000px) {
+  .chrome { flex-wrap: wrap; gap: 8px; padding: 10px 18px; background: rgba(255,255,255,.96); }
+  .chrome-left { display: none; }
+  .chrome-right { order: -1; flex-basis: 100%; justify-content: flex-end; }
+  .rqnav { flex-wrap: wrap; }
+  .rqnav button { padding-inline: 8px; }
+  .deck .slide { padding-top: 128px; }
+}
 
 .cover-recording {
   display: inline-flex;

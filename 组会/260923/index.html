@@ -78,6 +78,14 @@ figure{margin:13px 0 4px}figure .frame{border:1px solid var(--rule);border-radiu
 @media(max-width:820px){.mechanism,.training-loop{grid-template-columns:1fr;gap:5px}.mech-arrow{transform:rotate(90deg);min-height:17px}.slide.is-active .mech-arrow{animation:none}.readout-map,.mech-caption,.training-foot{grid-template-columns:1fr}.readout-bridge{transform:rotate(90deg)}.gradient-line{flex-wrap:wrap}.mech-step{padding:9px 11px}.slide[data-sec="Kev-4B"],.slide[data-sec="Kev-4B：训练与 loss"],.slide[data-sec="Nimble-9B"],.slide[data-sec="Nimble-9B：数据构造与训练"]{justify-content:flex-start}}
 @media(max-height:850px) and (min-width:821px){.slide{padding-top:58px;padding-bottom:68px}.kick{margin-bottom:9px}.cards{margin-top:9px}.card{padding:11px 14px}.card p{font-size:.84rem}.pipe{margin:10px 0}.kv{margin:10px 0}.callout{margin-top:9px;padding:10px 14px}h2.head{margin-bottom:8px}.sourcebox{margin-top:8px}.visual-triptych .frame{height:104px}}
 @media(prefers-reduced-motion:reduce){.deck{scroll-behavior:auto}.slide.is-active .mech-step,.slide.is-active .readout-panel,.slide.is-active .gradient-line,.slide.is-active .mech-arrow{animation:none}}
+.slide-links{display:flex;align-items:center;gap:14px;flex:none;pointer-events:auto}
+.chrome .slide-links .home{position:static;display:inline-flex;align-items:center;min-height:32px;font-size:14px;white-space:nowrap}
+.slide-links a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+@media(max-width:820px){
+  .chrome{flex-wrap:wrap;justify-content:space-between;padding:10px 18px;gap:8px;background:var(--bg)}
+  .slide-links{order:-1;flex-basis:100%;justify-content:flex-end}
+  .deck .slide{padding-top:108px}
+}
 </style>
 <link rel="stylesheet" href="kev-viz.css">
 <link rel="stylesheet" href="nimble-viz.css">
@@ -87,7 +95,7 @@ figure{margin:13px 0 4px}figure .frame{border:1px solid var(--rule);border-radiu
 <div class="chrome">
   <div class="l">组会 0923 · <b>Jev / System One</b></div>
   <nav class="rqnav"><a data-go="rq1">RQ1</a><a data-go="discussion1">D1</a><a data-go="rq2">RQ2</a><a data-go="discussion2">D2</a><a data-go="rq3">RQ3</a></nav>
-  <a class="home" href="../../index.html">← 主页</a>
+  <nav class="slide-links" aria-label="站点导航"><a class="home" href="/group-meeting/">组会目录</a><a class="home" href="/">主页</a></nav>
 </div>
 
 <main class="deck" id="deck">
@@ -662,7 +670,7 @@ figure{margin:13px 0 4px}figure .frame{border:1px solid var(--rule);border-radiu
   <div class="in" style="text-align:center">
     <div class="kick" style="justify-content:center">谢谢 <span class="dim">· 组会 0923 · Jev</span></div>
     <h2 class="head">机器真正需要的，<br>也许不是更好的文字，而是更可靠的决策。</h2>
-    <p class="muted"><a href="../../index.html">← 返回主页</a></p>
+    <p class="muted"><a href="/group-meeting/">返回组会目录</a> · <a href="/">主页</a></p>
   </div>
 </section>
 

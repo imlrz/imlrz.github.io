@@ -58,4 +58,6 @@
 
 `/talk/` 中的 2026.11.18 讲座提供 Slides 与 Bilibili 视频链接，slides 封面也可直接打开录像。
 
+主页的 Talks / Group meetings 链接通往两个目录，目录提供主页与另一目录的导航。每份 slides 的顶部和末页均可返回对应目录。
+
 直接用浏览器打开 `index.html` 即可，无需服务器。
