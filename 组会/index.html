@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Group meetings · 组会 · Ruizhe Li</title>
+  <style>
+    :root { color-scheme: light; --forest: #245b56; --pale: #edf4f1; --ink: #161a19; --muted: #5b6763; --line: #cfd8d4; }
+    * { box-sizing: border-box; margin: 0; }
+    body { max-width: 860px; margin: auto; padding: 84px 28px; background: #fff; color: var(--ink); font: 16px/1.6 "Helvetica Neue", Arial, "PingFang SC", sans-serif; }
+    header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-bottom: 12px; border-bottom: 1.5px solid var(--forest); margin-bottom: 28px; }
+    h1 { color: var(--forest); font-size: 28px; }
+    header a { color: var(--muted); font-size: 14px; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
+    ul { list-style: none; padding: 0; border-block: 1.8px solid var(--ink); }
+    li + li { border-top: 1px solid var(--line); }
+    .item { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 20px; padding: 24px 8px; }
+    .item:hover { background: var(--pale); }
+    time { color: var(--forest); font: 500 14px ui-monospace, monospace; }
+    h2 { font-size: 18px; margin-bottom: 4px; }
+    p { color: var(--muted); font-size: 14px; }
+    @media (max-width: 640px) { body { padding: 48px 20px; } .item { grid-template-columns: 1fr; gap: 8px; } }
+  </style>
+</head>
+<body>
+  <header><h1>组会 · Group meetings</h1><a href="/">imlrz.github.io</a></header>
+  <main>
+    <ul>
+      <li><a class="item" href="./260923/"><time datetime="2026-09-23">2026.09.23</time><div><h2>Jev / System One Models</h2><p>输入输出、实测、架构、RLCD 与开源复现</p></div></a></li>
+      <li><a class="item" href="./260624/"><time datetime="2026-06-23">2026.06.23</time><div><h2>用户建模 · User Modeling</h2><p>真实与模拟用户、Bridge the Gap 与下一步</p></div></a></li>
+    </ul>
+  </main>
+</body>
+</html>

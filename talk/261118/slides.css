@@ -127,6 +127,20 @@ html, body {
   border-color: var(--forest);
 }
 
+.cover-recording {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 24px;
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  color: var(--forest);
+  font: 500 15px/1.4 var(--sans);
+  text-decoration: none;
+}
+.cover-recording:hover { background: var(--pale); border-color: var(--forest); }
+.cover-recording:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
+
 /* Full-bleed Scroll-Snap Deck */
 .deck {
   height: 100vh;

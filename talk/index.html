@@ -50,7 +50,16 @@
     .date { font-family: var(--mono); font-size: 14px; color: var(--forest); font-weight: 600; }
     .title b { display: block; font-size: 18px; margin-bottom: 3px; }
     .title span { font-size: 14px; color: var(--muted); }
-    .go { font-family: var(--mono); font-size: 13px; color: var(--forest); }
+    .title { color: inherit; text-decoration: none; }
+    .title:hover b { color: var(--forest); }
+    .item-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .go { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border: 1px solid var(--line); font-family: var(--mono); font-size: 14px; color: var(--forest); text-decoration: none; white-space: nowrap; }
+    .go:hover { background: var(--pale); border-color: var(--forest); }
+    a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
+    @media (max-width: 640px) {
+      body { padding: 48px 20px; }
+      .item { grid-template-columns: 1fr; gap: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -59,14 +68,17 @@
     <a href="/">← imlrz.github.io</a>
   </header>
   <div class="list">
-    <a class="item" href="./261118/">
+    <article class="item">
       <span class="date">2026.11.18</span>
-      <div class="title">
+      <a class="title" href="./261118/">
         <b>Similarity ≠ Utility：智能体长期记忆系统与测试基准中的盲点</b>
         <span>EvoAgentX Invited Talk · Keep It InMind</span>
-      </div>
-      <span class="go">Slides →</span>
-    </a>
+      </a>
+      <nav class="item-links" aria-label="讲座资源">
+        <a class="go" href="./261118/">Slides</a>
+        <a class="go" href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">视频 · Bilibili</a>
+      </nav>
+    </article>
   </div>
 </body>
 </html>
