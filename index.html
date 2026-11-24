@@ -320,9 +320,12 @@ body.theme-dialog-open{overflow:hidden}
 .chip:hover{transform:translateY(-2px); color:var(--accent); border-color:var(--accent)}
 
 /* NEWS */
+.news-heading{display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px 16px; margin-bottom:24px}
+.news-heading .section-title{margin-bottom:0}
 .news{list-style:none; display:flex; flex-direction:column; gap:2px}
-.news li{display:flex; gap:18px; padding:11px 0; border-bottom:1px solid var(--rule); font-size:.98rem; color:var(--ink-2); line-height:1.5}
-.news li:last-child{border-bottom:0}
+.news li{display:flex; gap:18px; padding:11px 0; font-size:.98rem; color:var(--ink-2); line-height:1.5}
+.news li+li{border-top:1px solid var(--rule)}
+.news li[hidden]{display:none}
 .news .date{font-family:var(--font-mono); font-size:.76rem; color:var(--accent); flex:none; width:74px; padding-top:3px}
 .news a{color:var(--ink); border-bottom:1px solid var(--rule)}
 .news a:hover{color:var(--accent); border-color:var(--accent)}
@@ -332,14 +335,15 @@ body.theme-dialog-open{overflow:hidden}
 
 /* DISCLOSURES */
 .section-more{margin-top:12px}
-.section-more summary{
+.section-more summary,.news-toggle{
   width:fit-content; cursor:pointer; padding:8px 11px;
   border:1px solid var(--rule); border-radius:7px; background:var(--surface); color:var(--accent);
   font-family:var(--font-mono); font-size:.76rem;
 }
-.section-more summary:hover{border-color:var(--accent)}
+.section-more summary:hover,.news-toggle:hover{border-color:var(--accent)}
 .section-more[open] summary{margin-bottom:16px}
-.section-more .when-open,.section-more[open] .when-closed{display:none}
+.section-more .when-open,.section-more[open] .when-closed,
+.news-toggle[aria-expanded="false"] .when-open,.news-toggle[aria-expanded="true"] .when-closed{display:none}
 .section-more[open] .when-open{display:inline}
 
 /* PUBLICATIONS */
@@ -693,9 +697,18 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- NEWS -->
     <section class="section reveal" id="news">
-      <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">Selected and Recent News</span></div>
-      <ul class="news">
-        <li>
+      <div class="news-heading">
+        <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">Selected and Recent News</span></div>
+        <button class="news-toggle" id="news-toggle" type="button" aria-controls="news-list" aria-expanded="false" hidden>
+          <span class="when-closed" data-i18n="newsShowAll">Show all news</span>
+          <span class="when-open" data-i18n="newsShowLess">Show less news</span>
+        </button>
+      </div>
+      <!-- Keep entries newest first. Mark featured entries with data-selected. -->
+      <ul class="news" id="news-list">
+        <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk at EvoAgentX on our <a href="#pub-inmind">InMind</a> benchmark and the blind spots of long-term agent memory. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
+        <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released our <a href="#pub-jetriever">Jetriever</a> system, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
+        <li data-selected>
           <span class="date">2026.11</span>
           <span>
             <span class="news-brand"><img class="news-logo" src="assets/news/anthropic.png" alt="" width="16" height="16">Anthropic</span>
@@ -703,15 +716,8 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
             <a href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort" target="_blank" rel="noopener" data-i18n="nClaudeDocs">Claude Platform docs</a>
           </span>
         </li>
-        <li>
-          <span class="date">2026.03</span>
-          <span>
-            <span class="news-brand"><img class="news-logo" src="assets/news/nvidia.png" alt="" width="16" height="16">NVIDIA</span>
-            <span data-i18n="nNvidia">used our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark to evaluate its AI-Q research agent and published its approach and results.</span>
-            <a href="https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench" target="_blank" rel="noopener" data-i18n="nNvidiaBlog">NVIDIA blog</a>
-          </span>
-        </li>
-        <li>
+        <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
+        <li data-selected>
           <span class="date">2026.09</span>
           <span>
             <span class="news-brand"><img class="news-logo" src="assets/news/hermes-agent.png" alt="" width="16" height="16">Hermes Agent</span>
@@ -719,24 +725,21 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
             <a href="https://github.com/NousResearch/hermes-agent/issues/86021" target="_blank" rel="noopener" data-i18n="nHermesIssue">GitHub issue</a>
           </span>
         </li>
+        <li data-selected><span class="date">2026.08</span><span data-i18n="nAml">Our <a href="#pub-refind">ReFind</a> memory system placed second in the <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">Academic Textual track</a> of the 2026 Agent Memory Leaderboard.</span></li>
+        <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="#pub-refind">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
+        <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="#pub-inmind">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
+        <li data-selected>
+          <span class="date">2026.03</span>
+          <span>
+            <span class="news-brand"><img class="news-logo" src="assets/news/nvidia.png" alt="" width="16" height="16">NVIDIA</span>
+            <span data-i18n="nNvidia">used our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark to evaluate its AI-Q research agent and published its approach and results.</span>
+            <a href="https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench" target="_blank" rel="noopener" data-i18n="nNvidiaBlog">NVIDIA blog</a>
+          </span>
+        </li>
+        <li><span class="date">2026.01</span><span data-i18n="n1">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark is out on arXiv.</span></li>
+        <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
+        <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="#pub-creativity-evaluation">Automated Creativity Evaluation for LLMs</a> was accepted to Findings of EMNLP 2025.</span></li>
       </ul>
-      <details class="section-more">
-        <summary>
-          <span class="when-closed" data-i18n="newsShowAll">Show all news</span>
-          <span class="when-open" data-i18n="newsShowLess">Show less news</span>
-        </summary>
-        <ul class="news">
-          <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk at EvoAgentX on our <a href="#pub-inmind">InMind</a> benchmark and the blind spots of long-term agent memory. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
-          <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released our <a href="#pub-jetriever">Jetriever</a> system, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
-          <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
-          <li><span class="date">2026.08</span><span data-i18n="nAml">Our <a href="#pub-refind">ReFind</a> memory system placed second in the <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">Academic Textual track</a> of the 2026 Agent Memory Leaderboard.</span></li>
-          <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="#pub-refind">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
-          <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="#pub-inmind">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
-          <li><span class="date">2026.01</span><span data-i18n="n1">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark is out on arXiv.</span></li>
-          <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
-          <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="#pub-creativity-evaluation">Automated Creativity Evaluation for LLMs</a> was accepted to Findings of EMNLP 2025.</span></li>
-        </ul>
-      </details>
     </section>
 
     <!-- EDUCATION -->
@@ -1013,6 +1016,20 @@ function applyLang(l){
   savePreference('rl-lang',l);
 }
 document.getElementById('lang-btn').addEventListener('click',()=>applyLang(lang==='en'?'zh':'en'));
+
+/* ─────────── news disclosure ─────────── */
+const newsToggle = document.getElementById('news-toggle');
+const olderNews = [...document.querySelectorAll('#news-list > li:not([data-selected])')].slice(2);
+
+if (olderNews.length) {
+  olderNews.forEach(item => { item.hidden = true; });
+  newsToggle.hidden = false;
+  newsToggle.addEventListener('click', () => {
+    const expanded = newsToggle.getAttribute('aria-expanded') === 'false';
+    newsToggle.setAttribute('aria-expanded', String(expanded));
+    olderNews.forEach(item => { item.hidden = !expanded; });
+  });
+}
 
 /* ─────────── theme picker ─────────── */
 const THEME_NAMES={editorial:'Europa',terminal:'Uranus',academic:'Neptune',starry:'Earth',lemmon:'Lemmon'};
