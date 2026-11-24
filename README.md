@@ -23,7 +23,7 @@
 
 ## 🌐 中英双语
 
-右上角语言按钮在中 / EN 间切换；所有正文通过 `data-i18n` 标记，英文为 DOM 默认、中文由 JS 字典覆盖，切换即时且保存偏好。
+右上角语言按钮在中 / EN 间切换，英文为默认语言。主页、讲座目录和组会目录共享主题与语言偏好。
 
 ## 📄 内容板块
 
@@ -38,7 +38,7 @@
 
 - 纯 HTML / CSS / JavaScript，**零构建、零依赖**
 - 主题与语言均通过根元素 `data-theme` / `data-lang` 属性 + CSS 自定义属性驱动
-- `<head>` 内联脚本预读 `localStorage`，避免主题闪烁（FOUC）
+- `assets/site.js` 在页面绘制前读取 `localStorage` 中的主题和语言设置
 - Google Fonts：Fraunces · Newsreader · JetBrains Mono · Bricolage Grotesque · Source Serif 4 · Cormorant Garamond
 - 遵循前端设计规范：**UI 元素一律纯色 + 阴影 / 描边，不使用渐变**；噪点 / 扫描线 / 点阵仅作纹理
 - `IntersectionObserver` 滚动渐入；`prefers-reduced-motion` 降级
@@ -48,7 +48,8 @@
 
 | 文件 | 说明 |
 |------|------|
-| `index.html` | 全部页面、五套主题样式、i18n 字典与交互逻辑 |
+| `index.html` | 个人主页和主页内容的中文翻译 |
+| `assets/site.css` · `assets/site.js` | 主页和目录共用的主题、语言切换和页面样式 |
 | `starry-night.js` | 星月夜 Canvas 粒子系统（按需加载） |
 | `assets/themes/` | 五张天体照片缩略图与署名页 |
 

@@ -1,88 +1,46 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!doctype html>
+<html lang="en" data-theme="editorial" data-lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4efe6" id="meta-theme">
   <title>Talks · Ruizhe Li</title>
-  <style>
-    :root {
-      --forest: #245B56;
-      --pale: #EDF4F1;
-      --ink: #161A19;
-      --muted: #5B6763;
-      --line: #CFD8D4;
-      --sans: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", sans-serif;
-      --mono: "SF Mono", "JetBrains Mono", ui-monospace, Menlo, monospace;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #ffffff;
-      color: var(--ink);
-      font-family: var(--sans);
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 84px 28px;
-      line-height: 1.6;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 12px;
-      border-bottom: 1.5px solid var(--forest);
-      padding-bottom: 12px;
-      margin-bottom: 28px;
-    }
-    h1 { font-size: 28px; color: var(--forest); }
-    header a { font-family: var(--mono); font-size: 13px; color: var(--muted); text-decoration: none; }
-    header a:hover { color: var(--forest); }
-    .page-nav { display: flex; flex-wrap: wrap; gap: 16px; }
-    .page-nav a { font-size: 14px; }
-    .list { border-top: 1.8px solid var(--ink); border-bottom: 1.8px solid var(--ink); }
-    .item {
-      display: grid;
-      grid-template-columns: 110px 1fr auto;
-      gap: 20px;
-      align-items: center;
-      padding: 20px 8px;
-      text-decoration: none;
-      color: inherit;
-      transition: background 0.15s;
-    }
-    .item:hover { background: var(--pale); }
-    .date { font-family: var(--mono); font-size: 14px; color: var(--forest); font-weight: 600; }
-    .title b { display: block; font-size: 18px; margin-bottom: 3px; }
-    .title span { font-size: 14px; color: var(--muted); }
-    .title { color: inherit; text-decoration: none; }
-    .title:hover b { color: var(--forest); }
-    .item-links { display: flex; flex-wrap: wrap; gap: 8px; }
-    .go { display: inline-flex; align-items: center; min-height: 40px; padding: 8px 12px; border: 1px solid var(--line); font-family: var(--mono); font-size: 14px; color: var(--forest); text-decoration: none; white-space: nowrap; }
-    .go:hover { background: var(--pale); border-color: var(--forest); }
-    a:focus-visible { outline: 2px solid var(--forest); outline-offset: 4px; }
-    @media (max-width: 640px) {
-      body { padding: 48px 20px; }
-      .item { grid-template-columns: 1fr; gap: 10px; }
-    }
-  </style>
+  <script src="../assets/site.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/site.css">
 </head>
 <body>
-  <header>
-    <h1>Talks</h1>
-    <nav class="page-nav" aria-label="站点导航"><a href="/">主页</a><a href="/group-meeting/">组会</a></nav>
-  </header>
-  <div class="list">
-    <article class="item">
-      <span class="date">2026.11.18</span>
-      <a class="title" href="./261118/">
-        <b>Similarity ≠ Utility：智能体长期记忆系统与测试基准中的盲点</b>
-        <span>EvoAgentX Invited Talk · Keep It InMind</span>
-      </a>
-      <nav class="item-links" aria-label="讲座资源">
-        <a class="go" href="./261118/">Slides</a>
-        <a class="go" href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">视频 · Bilibili</a>
+  <div class="page directory-page">
+    <header class="directory-header">
+      <h1 class="name" data-i18n="navTalks">Talks</h1>
+      <nav class="links">
+        <a class="link" href="/" data-i18n="navHome">Home</a>
+        <a class="link" href="/group-meeting/" data-i18n="navMeetings">Group meetings</a>
       </nav>
-    </article>
+    </header>
+    <main>
+      <article class="timeline-entry directory-entry">
+        <time class="timeline-period" datetime="2026-11-18">2026.11.18</time>
+        <div>
+          <h2><a href="./261118/" data-i18n="evoTitle">Similarity ≠ Utility: Blind Spots in Long-Term Agent Memory Systems and Benchmarks</a></h2>
+          <p class="timeline-org" data-i18n="evoTalk">EvoAgentX Invited Talk · Keep It InMind</p>
+          <div class="links directory-actions">
+            <a class="link" href="./261118/" data-i18n="slides">Slides</a>
+            <a class="link" href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener" data-i18n="bilibili">Recording · Bilibili</a>
+          </div>
+        </div>
+      </article>
+    </main>
   </div>
+  <script>
+    initializeSite({
+      evoTitle: 'Similarity ≠ Utility：智能体长期记忆系统与测试基准中的盲点',
+      evoTalk: 'EvoAgentX 邀请报告 · Keep It InMind',
+      slides: '幻灯片',
+      bilibili: '录像 · Bilibili',
+    });
+  </script>
 </body>
 </html>
