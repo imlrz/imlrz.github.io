@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#f4efe6" id="meta-theme">
-<meta name="description" content="Ruizhe Li (李睿哲) — master's student at USTC researching LLM agents, agent memory, and long-context language models.">
+<meta name="description" content="Ruizhe Li (李睿哲) is a master's student at USTC researching LLM agents, agent memory, long-context language models, and world models.">
 <title>Ruizhe Li (李睿哲)</title>
 <script>
 /* Apply saved preferences before the first paint, including existing theme IDs. */
@@ -327,6 +327,18 @@ body.theme-dialog-open{overflow:hidden}
 .news a{color:var(--ink); border-bottom:1px solid var(--rule)}
 .news a:hover{color:var(--accent); border-color:var(--accent)}
 
+/* INDUSTRY IMPACT */
+#industry-impact{scroll-margin-top:64px}
+.impact-list{list-style:none}
+.impact-list li{
+  display:grid; grid-template-columns:144px minmax(0,1fr); gap:20px;
+  padding:15px 0; border-top:1px solid var(--rule);
+}
+.impact-name{font-family:var(--font-display); font-size:1.1rem; font-weight:600; color:var(--ink); line-height:1.4}
+.impact-detail{font-size:.96rem; line-height:1.55; color:var(--ink-2)}
+.impact-sources{display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:7px; font-family:var(--font-mono); font-size:.74rem}
+.impact-sources a{color:var(--accent); text-decoration:underline; text-underline-offset:3px}
+
 /* PUBLICATIONS */
 .pub{
   position:relative; padding:22px; margin-bottom:16px;
@@ -539,6 +551,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
   .ctrl{height:36px;padding:0 11px;font-size:.7rem}
   .news li{flex-direction:column;gap:3px}
   .news .date{width:auto}
+  .impact-list li{grid-template-columns:1fr; gap:5px}
   [data-theme="starry"] .masthead{min-height:80vh}
 }
 @media(prefers-reduced-motion:reduce){
@@ -638,7 +651,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       <div class="eyebrow" data-i18n="eyebrow">USTC · Cyber Science</div>
       <h1 class="name">Ruizhe Li</h1>
       <div class="name-cn">李睿哲</div>
-      <p class="tagline" data-i18n="tagline">Master's student researching <b>LLM agents</b>, <b>agent memory</b>, and <b>long-context language models</b> — how agents retrieve, retain, and use information over long horizons.</p>
+      <p class="tagline" data-i18n="tagline">Master's student researching <b>LLM agents</b>, <b>agent memory</b>, <b>long-context language models</b>, and <b>world models</b>.</p>
       <div class="affil" data-i18n="affil">
         <b>University of Science and Technology of China</b> · Hefei<br>
         School of Cyber Science<br>
@@ -655,6 +668,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18"/></svg>Lab</a>
         <a class="link" href="/talk/" data-i18n="navTalks">Talks</a>
         <a class="link" href="/group-meeting/" data-i18n="navMeetings">Group meetings</a>
+        <a class="link" href="#industry-impact" data-i18n="industryT">Industry Impact</a>
       </div>
     </div>
     <figure class="portrait">
@@ -666,11 +680,12 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- ABOUT -->
     <section class="section reveal" id="about">
       <div class="section-title"><span class="idx">01</span><span data-i18n="aboutT">About</span></div>
-      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), a master's student at <b>USTC</b>. My research focuses on <b>LLM agents</b>, <b>agent memory</b>, and <b>long-context language models</b>.</p>
+      <p class="lede" data-i18n="aboutBody">I'm Ruizhe Li (李睿哲), a master's student at <b>USTC</b>. I study how agents retrieve and use information over long horizons, and I’m interested in <b>world models</b> that predict how environments change in response to actions.</p>
       <div class="chips">
         <span class="chip" data-i18n="i1">LLM Agents</span>
         <span class="chip" data-i18n="i2">Agent Memory</span>
         <span class="chip" data-i18n="i3">Long-Context LLMs</span>
+        <span class="chip" data-i18n="i4">World Models</span>
       </div>
     </section>
 
@@ -681,7 +696,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
         <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk on InMind and the blind spots of long-term agent memory at EvoAgentX. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
         <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
         <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">DeepResearch Bench II now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
-        <li><span class="date">2026.08</span><span data-i18n="nAml">Our agent memory system <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> ranked #2 globally on the Academic Textual track of the <a href="https://agentmemories.ai/competition/" target="_blank" rel="noopener">2026 Agent Memory Challenge (AML)</a>.</span></li>
+        <li><span class="date">2026.08</span><span data-i18n="nAml">Our agent memory system <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> placed second in the <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">Academic Textual track</a> of the 2026 Agent Memory Leaderboard.</span></li>
         <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
         <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
         <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv.</span></li>
@@ -690,9 +705,57 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       </ul>
     </section>
 
+    <!-- INDUSTRY IMPACT -->
+    <section class="section reveal" id="industry-impact" aria-labelledby="impact-heading">
+      <h2 class="section-title" id="impact-heading"><span class="idx" aria-hidden="true">03</span><span data-i18n="industryT">Industry Impact</span></h2>
+      <ul class="impact-list">
+        <li>
+          <h3 class="impact-name">Anthropic</h3>
+          <div class="impact-detail">
+            <p data-i18n="impactAnthropic">Used a 50-task subset of DeepResearch Bench II to measure how model choice and reasoning effort affect Claude’s report quality and cost per task.</p>
+            <div class="impact-sources"><a href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort" target="_blank" rel="noopener" data-i18n="impactClaudeDocs">Claude Platform docs</a></div>
+          </div>
+        </li>
+        <li>
+          <h3 class="impact-name">NVIDIA</h3>
+          <div class="impact-detail">
+            <p data-i18n="impactNvidia">Used DeepResearch Bench II to evaluate its AI-Q research agent and published a dedicated evaluation branch with instructions to reproduce the runs.</p>
+            <div class="impact-sources">
+              <a href="https://huggingface.co/blog/nvidia/how-nvidia-won-deepresearch-bench" target="_blank" rel="noopener" data-i18n="impactNvidiaReport">NVIDIA write-up</a>
+              <a href="https://github.com/NVIDIA-AI-Blueprints/deep-researcher-agent/blob/drb2/README.md#running-evaluation" target="_blank" rel="noopener" data-i18n="impactNvidiaCode">AI-Q evaluation branch</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <h3 class="impact-name">Nous Research</h3>
+          <div class="impact-detail">
+            <p data-i18n="impactNous">Hermes Agent incorporated two search controls inspired by ReFind. Its <code>session_search</code> tool can filter by time range and skip previously inspected sessions.</p>
+            <div class="impact-sources">
+              <a href="https://github.com/NousResearch/hermes-agent/issues/86021" target="_blank" rel="noopener" data-i18n="impactHermesProposal">Hermes feature proposal</a>
+              <a href="https://github.com/NousResearch/hermes-agent/pull/88101" target="_blank" rel="noopener" data-i18n="impactHermesMerge">Merged implementation</a>
+            </div>
+          </div>
+        </li>
+        <li>
+          <h3 class="impact-name" data-i18n="impactBaiduName">Baidu AI Cloud</h3>
+          <div class="impact-detail">
+            <p data-i18n="impactBaidu">Benchmarked DuMate-DeepResearch, its multi-agent research system built on Qianfan, on DeepResearch Bench II and reported results in its technical report.</p>
+            <div class="impact-sources"><a href="https://arxiv.org/abs/2606.07299" target="_blank" rel="noopener" data-i18n="impactBaiduReport">DuMate technical report</a></div>
+          </div>
+        </li>
+        <li>
+          <h3 class="impact-name">Dalpha</h3>
+          <div class="impact-detail">
+            <p data-i18n="impactDalpha">Evaluated Dalpha DeepResearch on DeepResearch Bench II and published its results following verification by the benchmark team.</p>
+            <div class="impact-sources"><a href="https://github.com/dalphakr/Dalpha-DeepResearch/blob/main/eval_results/deepresearch_bench_ii/official_results.md" target="_blank" rel="noopener" data-i18n="impactDalphaResults">Verified results</a></div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
     <!-- EDUCATION -->
     <section class="section reveal" id="education">
-      <div class="section-title"><span class="idx">03</span><span data-i18n="eduT">Education</span></div>
+      <div class="section-title"><span class="idx">04</span><span data-i18n="eduT">Education</span></div>
       <div class="timeline-list">
         <article class="timeline-entry">
           <div class="timeline-period">2026.09 — Present</div>
@@ -700,7 +763,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
             <h3 data-i18n="eduMsDegree">Master's Student</h3>
             <p class="timeline-org" data-i18n="eduMsSchool"><b>University of Science and Technology of China</b> · School of Cyber Science</p>
             <p class="timeline-meta" data-i18n="eduMsMeta">USTC-CMI · Hefei, China</p>
-            <p class="timeline-note" data-i18n="eduMsFocus">Research interests: LLM agents, agent memory, and long-context language models.</p>
+            <p class="timeline-note" data-i18n="eduMsFocus">Research interests include LLM agents, agent memory, long-context language models, and world models.</p>
           </div>
         </article>
         <article class="timeline-entry">
@@ -716,7 +779,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- PUBLICATIONS -->
     <section class="section reveal" id="pub">
-      <div class="section-title"><span class="idx">04</span><span data-i18n="pubT">Publications</span></div>
+      <div class="section-title"><span class="idx">05</span><span data-i18n="pubT">Publications</span></div>
       <article class="pub">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="pJetrieverTitle">Jetriever: Shifting Agent Memory Retrieval from Similarity to Utility</h3>
@@ -737,7 +800,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
         <div class="pub-links">
           <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">arXiv</a>
           <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">Code</a>
-          <a href="https://agentmemories.ai/leaderboard/academic/textual" target="_blank" rel="noopener">Leaderboard</a>
+          <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener" data-i18n="refindLeaderboard">Leaderboard</a>
         </div>
       </article>
       <article class="pub">
@@ -792,7 +855,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- PROJECTS -->
     <section class="section reveal" id="proj">
-      <div class="section-title"><span class="idx">05</span><span data-i18n="projT">Projects</span></div>
+      <div class="section-title"><span class="idx">06</span><span data-i18n="projT">Projects</span></div>
       <div class="proj-grid">
         <div class="proj">
           <div class="proj-head"><span class="proj-name">Jetriever</span><span class="proj-star">★ 7</span></div>
@@ -819,7 +882,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- EXPERIENCE -->
     <section class="section reveal" id="experience">
-      <div class="section-title"><span class="idx">06</span><span data-i18n="expT">Experience</span></div>
+      <div class="section-title"><span class="idx">07</span><span data-i18n="expT">Experience</span></div>
       <div class="timeline-list">
         <article class="timeline-entry">
           <div class="timeline-period">2025.02 — 2025.08</div>
@@ -835,7 +898,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
 
     <!-- SERVICE + SKILLS -->
     <section class="section reveal" id="more">
-      <div class="section-title"><span class="idx">07</span><span data-i18n="moreT">Service · Skills</span></div>
+      <div class="section-title"><span class="idx">08</span><span data-i18n="moreT">Service · Skills</span></div>
       <div class="two-col">
         <ul class="minilist">
           <li><b data-i18n="sv1">President, Student Union <span>School of AI &amp; Data Science, USTC</span></b></li>
@@ -863,27 +926,42 @@ const T={
   zh:{
     eyebrow:'中国科学技术大学 · 网络空间安全',
     navTalks:'讲座', navMeetings:'组会',
-    tagline:'硕士研究生，研究 <b>LLM Agent</b>、<b>Agent Memory</b> 与 <b>Long-Context LLM</b>——探索智能体如何在长时程交互中检索、保留并运用信息。',
+    tagline:'硕士研究生，研究 <b>大语言模型智能体</b>、<b>智能体记忆</b>、<b>长上下文语言模型</b>和<b>世界模型</b>。',
     affil:'<b>中国科学技术大学</b> · 合肥<br>网络空间安全学院<br>跨媒体智能课题组（USTC-CMI）',
     aboutT:'关于',
-    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>硕士研究生。我的研究方向包括 <b>LLM Agent</b>、<b>Agent Memory</b> 与 <b>Long-Context LLM</b>。',
-    i1:'LLM Agents', i2:'Agent Memory', i3:'Long-Context LLMs',
+    aboutBody:'我是李睿哲，<b>中国科学技术大学</b>硕士研究生。我研究智能体如何在长时程交互中检索和运用信息，也关注如何用<b>世界模型</b>预测环境在行动后会怎样变化。',
+    i1:'LLM Agents', i2:'Agent Memory', i3:'Long-Context LLMs', i4:'世界模型',
     newsT:'近况',
     nEvoTalk:'受 EvoAgentX 邀请，我分享了 InMind 和智能体长期记忆中的盲点。<a href="/talk/261118/">幻灯片</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">录像</a>',
     nJetriever:'我们发布了 <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>，它根据每条记忆对当前问题的帮助程度进行排序。<a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">代码</a>',
     nDrbLeaderboard:'DeepResearch Bench II 的<a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">公开榜单</a>现已使用 GPT-5.5 评估新提交。',
-    nAml:'我们设计的智能体记忆系统 <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> 在 <a href="https://agentmemories.ai/competition/" target="_blank" rel="noopener">2026 Agent 记忆挑战赛（AML）</a>文本记忆学术方法赛道中获得全球第二名。',
+    nAml:'我们的智能体记忆系统 <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> 在 2026 Agent Memory Leaderboard 的<a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">学术文本记忆赛道</a>获得第二名。',
     nRefind:'我们的论文 <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> 提出 ReFind：无需构建语义索引，由智能体直接在原始聊天记录上进行可控检索。',
     nInmind:'我们的论文 <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> 提出了用于评测智能体记忆“隐式关联盲区”的基准。',
     n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
     n3:'我们的论文 <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> 被 Findings of EMNLP 2025 接收。',
+    industryT:'产业影响',
+    impactAnthropic:'使用 DeepResearch Bench II 的 50 道任务，比较 Claude 的模型选择和推理强度对报告质量与单任务成本的影响。',
+    impactClaudeDocs:'Claude 平台文档',
+    impactNvidia:'使用 DeepResearch Bench II 评估 AI-Q 深度研究智能体，并公开了专用评测分支和复现说明。',
+    impactNvidiaReport:'NVIDIA 技术博客',
+    impactNvidiaCode:'AI-Q 评测分支',
+    impactNous:'Hermes Agent 将 ReFind 启发的两项检索功能合入 <code>session_search</code>，可以按时间范围筛选，并排除已经查看的会话。',
+    impactHermesProposal:'Hermes 功能提案',
+    impactHermesMerge:'已合并的实现',
+    impactBaiduName:'百度智能云',
+    impactBaidu:'使用 DeepResearch Bench II 评估基于千帆平台构建的多智能体系统 DuMate-DeepResearch，并在技术报告中公布结果。',
+    impactBaiduReport:'DuMate 技术报告',
+    impactDalpha:'使用 DeepResearch Bench II 评估 Dalpha DeepResearch，并公布了经基准团队核验的结果。',
+    impactDalphaResults:'核验结果',
     pubT:'论文',
     pubBadge:'预印本 · 2026',
     pJetrieverTitle:'Jetriever：从相似度到效用的智能体记忆检索',
     pJetrieverTldr:'Jetriever 用 Jev 估计每条已存记忆对回答当前问题的帮助程度。在 InMind 的 125 个间接问题上，Jetriever 将目标对话排在首位的比例为 84.8%，端到端应用得分为 76.0%。',
     pRefindTitle:'当智能体打开聊天应用：对原始聊天记录的智能体可控检索媲美结构化记忆',
     pRefindTldr:'ReFind 让智能体在未经改写的聊天记录上进行迭代式可控搜索，将词法检索与会话感知排序、局部上下文扩展和时间范围缩窄相结合。它无需构建摘要、树或知识图谱，即在 MemoryAgentBench 上取得所比较系统中的最高平均准确率。',
+    refindLeaderboard:'比赛榜单',
     pInmindTitle:'Keep It InMind：评测智能体记忆中的隐式关联盲区',
     pInmindTldr:'InMind 是一个包含 125 项任务的基准，揭示即使某条记忆与当前问题在文本上并不相似，它仍可能至关重要。成对的诊断控制可以区分失败究竟来自存储、世界知识缺失，还是检索与路由。',
     p1title:'DeepResearch Bench II：以专家报告衍生的细粒度评分标准诊断深度研究智能体',
@@ -907,7 +985,7 @@ const T={
     eduMsDegree:'硕士研究生',
     eduMsSchool:'<b>中国科学技术大学</b> · 网络空间安全学院',
     eduMsMeta:'跨媒体智能课题组（USTC-CMI）· 中国合肥',
-    eduMsFocus:'研究方向：LLM Agent、Agent Memory 与 Long-Context LLM。',
+    eduMsFocus:'研究方向包括大语言模型智能体、智能体记忆、长上下文语言模型和世界模型。',
     eduBsDegree:'数据科学专业 · 理学学士',
     eduBsSchool:'<b>中国科学技术大学</b> · 人工智能与数据科学学院',
     eduBsMeta:'中国合肥 · 前 10%',
