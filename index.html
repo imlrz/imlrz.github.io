@@ -355,7 +355,6 @@ body.theme-dialog-open{overflow:hidden}
 
 /* PROJECTS */
 .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px}
-.proj-wide{grid-column:1/-1}
 .proj{
   padding:20px; border:1px solid var(--rule); border-radius:13px; background:var(--surface);
   transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
@@ -679,10 +678,13 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <section class="section reveal" id="news">
       <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">News</span></div>
       <ul class="news">
+        <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk on InMind and the blind spots of long-term agent memory at EvoAgentX. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
+        <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
+        <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">DeepResearch Bench II now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
         <li><span class="date">2026.08</span><span data-i18n="nAml">Our agent memory system <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> ranked #2 globally on the Academic Textual track of the <a href="https://agentmemories.ai/competition/" target="_blank" rel="noopener">2026 Agent Memory Challenge (AML)</a>.</span></li>
         <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
         <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
-        <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv; the public leaderboard is live at agentresearchlab.com.</span></li>
+        <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv.</span></li>
         <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
         <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> is accepted to Findings of EMNLP 2025.</span></li>
       </ul>
@@ -715,6 +717,17 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- PUBLICATIONS -->
     <section class="section reveal" id="pub">
       <div class="section-title"><span class="idx">04</span><span data-i18n="pubT">Publications</span></div>
+      <article class="pub">
+        <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
+        <h3 class="pub-title" data-i18n="pJetrieverTitle">Jetriever: Shifting Agent Memory Retrieval from Similarity to Utility</h3>
+        <p class="pub-authors"><span class="me">Ruizhe Li</span>, Licheng Zhang, Mingxuan Du, Zhendong Mao</p>
+        <p class="pub-venue">arXiv:2611.21478 · 2026</p>
+        <p class="pub-tldr" data-i18n="pJetrieverTldr">Jetriever uses Jev to estimate how useful each stored memory is for answering the current question. It ranks the target exchange first on 84.8% of InMind’s 125 indirect queries and reaches 76.0% on InMind’s end-to-end Application task.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">arXiv</a>
+          <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a>
+        </div>
+      </article>
       <article class="pub">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="pRefindTitle">When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory</h3>
@@ -751,6 +764,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener">Code</a>
           <a href="https://agentresearchlab.com/benchmarks/deepresearch-bench-ii/index.html" target="_blank" rel="noopener">Website</a>
           <a href="https://huggingface.co/datasets/muset-ai/DeepResearch-Bench-II-Dataset" target="_blank" rel="noopener">Dataset</a>
+          <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener" data-i18n="drbLeaderboard">Leaderboard</a>
         </div>
       </article>
       <article class="pub">
@@ -781,17 +795,22 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       <div class="section-title"><span class="idx">05</span><span data-i18n="projT">Projects</span></div>
       <div class="proj-grid">
         <div class="proj">
-          <div class="proj-head"><span class="proj-name">ReFind</span><span class="proj-star">★ 9</span></div>
+          <div class="proj-head"><span class="proj-name">Jetriever</span><span class="proj-star">★ 7</span></div>
+          <p data-i18n="prJetriever">An open-source service that uses Jev to score every candidate memory and returns the highest-scoring evidence for the current question.</p>
+          <div class="proj-foot"><span>Python · Agent Memory</span><a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
+        </div>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">ReFind</span><span class="proj-star">★ 19</span></div>
           <p data-i18n="prRefind">Agent-controlled search over raw chat logs for long-term memory. ReFind combines iterative lexical retrieval with chat-native controls and rivals structured memory systems without building summaries, trees, or knowledge graphs.</p>
           <div class="proj-foot"><span>Python · Agent Memory</span><a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
         <div class="proj">
-          <div class="proj-head"><span class="proj-name">InMind</span><span class="proj-star">★ 17</span></div>
+          <div class="proj-head"><span class="proj-name">InMind</span><span class="proj-star">★ 19</span></div>
           <p data-i18n="prInmind">A 125-task benchmark for the implicit-association blind spot in long-term agent memory, with paired controls that isolate storage, world-knowledge, retrieval, and application failures.</p>
           <div class="proj-foot"><span>Benchmark · Dataset</span><a href="https://github.com/imlrz/InMind" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
-        <div class="proj proj-wide">
-          <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 83</span></div>
+        <div class="proj">
+          <div class="proj-head"><span class="proj-name">DeepResearch-Bench-II</span><span class="proj-star">★ 102</span></div>
           <p data-i18n="pr1">Evaluation suite and leaderboard for deep-research agents, grounded in expert-written reports. Rubric extraction, batched LLM-as-judge scoring, and token accounting.</p>
           <div class="proj-foot"><span>Python</span><a href="https://github.com/imlrz/DeepResearch-Bench-II" target="_blank" rel="noopener" data-i18n="repo">Repo ↗</a></div>
         </div>
@@ -850,14 +869,19 @@ const T={
     aboutBody:'我是李睿哲，<b>中国科学技术大学</b>硕士研究生。我的研究方向包括 <b>LLM Agent</b>、<b>Agent Memory</b> 与 <b>Long-Context LLM</b>。',
     i1:'LLM Agents', i2:'Agent Memory', i3:'Long-Context LLMs',
     newsT:'近况',
+    nEvoTalk:'受 EvoAgentX 邀请，我分享了 InMind 和智能体长期记忆中的盲点。<a href="/talk/261118/">幻灯片</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">录像</a>',
+    nJetriever:'我们发布了 <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>，它根据每条记忆对当前问题的帮助程度进行排序。<a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">代码</a>',
+    nDrbLeaderboard:'DeepResearch Bench II 的<a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">公开榜单</a>现已使用 GPT-5.5 评估新提交。',
     nAml:'我们设计的智能体记忆系统 <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> 在 <a href="https://agentmemories.ai/competition/" target="_blank" rel="noopener">2026 Agent 记忆挑战赛（AML）</a>文本记忆学术方法赛道中获得全球第二名。',
     nRefind:'我们的论文 <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> 提出 ReFind：无需构建语义索引，由智能体直接在原始聊天记录上进行可控检索。',
     nInmind:'我们的论文 <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> 提出了用于评测智能体记忆“隐式关联盲区”的基准。',
-    n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv，公开榜单上线 agentresearchlab.com。',
+    n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
     n3:'我们的论文 <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> 被 Findings of EMNLP 2025 接收。',
     pubT:'论文',
     pubBadge:'预印本 · 2026',
+    pJetrieverTitle:'Jetriever：从相似度到效用的智能体记忆检索',
+    pJetrieverTldr:'Jetriever 用 Jev 估计每条已存记忆对回答当前问题的帮助程度。在 InMind 的 125 个间接问题上，Jetriever 将目标对话排在首位的比例为 84.8%，端到端应用得分为 76.0%。',
     pRefindTitle:'当智能体打开聊天应用：对原始聊天记录的智能体可控检索媲美结构化记忆',
     pRefindTldr:'ReFind 让智能体在未经改写的聊天记录上进行迭代式可控搜索，将词法检索与会话感知排序、局部上下文扩展和时间范围缩窄相结合。它无需构建摘要、树或知识图谱，即在 MemoryAgentBench 上取得所比较系统中的最高平均准确率。',
     pInmindTitle:'Keep It InMind：评测智能体记忆中的隐式关联盲区',
@@ -865,9 +889,11 @@ const T={
     p1title:'DeepResearch Bench II：以专家报告衍生的细粒度评分标准诊断深度研究智能体',
     eqNote:' · *共同一作',
     p1tldr:'一个涵盖 22 个领域、132 个以专家报告为依据的任务、共 9,430 条完全可验证二元评分标准的基准，从信息召回、分析、表达三个维度评测深度研究报告。采用四阶段「大模型+人工」流程、超过 400 专家工时构建——即便最强系统也只满足不到 50% 的评分项。',
+    drbLeaderboard:'榜单',
     p2tldr:'一种基于参考的创造力自动评测方法，将大模型输出的创造力与人类参考对照打分，为昂贵的人工创造力评分提供更可靠、可自动化的替代。',
     p3tldr:'将对话式推荐重新表述为三阶段离线策略学习问题，把交互策略学习与昂贵的在线探索解耦。',
     projT:'项目',
+    prJetriever:'开源智能体记忆检索服务，用 Jev 逐条为候选记忆打分，并返回对当前问题最有帮助的证据。',
     prRefind:'面向长期记忆的原始聊天记录智能体可控检索。ReFind 将迭代式词法检索与聊天原生控制相结合，无需构建摘要、树或知识图谱，即可媲美结构化记忆系统。',
     prInmind:'一个包含 125 项任务的长期智能体记忆“隐式关联盲区”基准，通过成对控制分别诊断存储、世界知识、检索与应用环节的失败。',
     pr1:'面向深度研究智能体的评测套件与榜单，以专家撰写的报告为基准。包含评分标准抽取、批量「大模型评审」打分与 token 统计。',
