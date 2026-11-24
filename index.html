@@ -327,9 +327,8 @@ body.theme-dialog-open{overflow:hidden}
 .news a{color:var(--ink); border-bottom:1px solid var(--rule)}
 .news a:hover{color:var(--accent); border-color:var(--accent)}
 
-.news-brand{display:flex; align-items:center; align-self:flex-start; gap:9px; flex:0 0 152px; color:var(--ink); font-weight:600; white-space:nowrap}
-.news-logo{display:block; flex:none; width:24px; height:24px; padding:2px; object-fit:contain; background:#fff; border-radius:5px}
-.news .news-source{color:var(--accent); font-family:var(--font-mono); font-size:.74rem}
+.news-brand{display:inline-flex; align-items:center; gap:.28em; color:var(--ink); font-weight:600; white-space:nowrap}
+.news-logo{width:1.05em; height:1.05em; padding:1px; object-fit:contain; background:#fff; border-radius:4px}
 
 /* DISCLOSURES */
 .section-more{margin-top:12px}
@@ -349,6 +348,7 @@ body.theme-dialog-open{overflow:hidden}
   border:1px solid var(--rule); border-radius:14px; background:var(--surface);
   transition:transform .3s var(--ease), border-color .3s, box-shadow .3s;
 }
+.pub[id]{scroll-margin-top:72px}
 .pub:hover{transform:translateY(-3px); border-color:var(--accent); box-shadow:0 14px 36px rgba(0,0,0,.08)}
 .pub-badge{
   display:inline-block; font-family:var(--font-mono); font-size:.66rem; letter-spacing:.12em;
@@ -555,7 +555,6 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
   .ctrl{height:36px;padding:0 11px;font-size:.7rem}
   .news li{flex-direction:column;gap:3px}
   .news .date{width:auto}
-  .news-brand{flex-basis:auto}
   [data-theme="starry"] .masthead{min-height:80vh}
 }
 @media(prefers-reduced-motion:reduce){
@@ -697,25 +696,28 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
       <div class="section-title"><span class="idx">02</span><span data-i18n="newsT">Selected and Recent News</span></div>
       <ul class="news">
         <li>
-          <div class="news-brand"><img class="news-logo" src="assets/news/anthropic.png" alt="" width="24" height="24">Anthropic</div>
-          <div>
-            <span data-i18n="nAnthropic">Used DeepResearch Bench II to evaluate Claude’s research performance and compare cost per task.</span>
-            <a class="news-source" href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort" target="_blank" rel="noopener" data-i18n="nClaudeDocs">Claude Platform docs</a>
-          </div>
+          <span class="date">2026.11</span>
+          <span>
+            <span class="news-brand"><img class="news-logo" src="assets/news/anthropic.png" alt="" width="16" height="16">Anthropic</span>
+            <span data-i18n="nAnthropic">used our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark to evaluate Claude’s research performance and compare cost per task.</span>
+            <a href="https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence#tune-effort" target="_blank" rel="noopener" data-i18n="nClaudeDocs">Claude Platform docs</a>
+          </span>
         </li>
         <li>
-          <div class="news-brand"><img class="news-logo" src="assets/news/nvidia.png" alt="" width="24" height="24">NVIDIA</div>
-          <div>
-            <span data-i18n="nNvidia">Used DeepResearch Bench II to evaluate its AI-Q research agent and highlighted the results in its GTC 2026 announcement.</span>
-            <a class="news-source" href="https://nvidianews.nvidia.com/news/ai-agents" target="_blank" rel="noopener" data-i18n="nNvidiaNewsroom">NVIDIA Newsroom</a>
-          </div>
+          <span class="date">2026.03</span>
+          <span>
+            <span class="news-brand"><img class="news-logo" src="assets/news/nvidia.png" alt="" width="16" height="16">NVIDIA</span>
+            <span data-i18n="nNvidia">used our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark to evaluate its AI-Q research agent and highlighted the results at GTC 2026.</span>
+            <a href="https://nvidianews.nvidia.com/news/ai-agents" target="_blank" rel="noopener" data-i18n="nNvidiaNewsroom">NVIDIA Newsroom</a>
+          </span>
         </li>
         <li>
-          <div class="news-brand"><img class="news-logo" src="assets/news/hermes-agent.png" alt="" width="24" height="24">Hermes Agent</div>
-          <div>
-            <span data-i18n="nHermes">Added two ReFind-inspired controls to session search, letting agents filter by time range and skip sessions they’ve already checked.</span>
-            <a class="news-source" href="https://github.com/NousResearch/hermes-agent/issues/86021" target="_blank" rel="noopener" data-i18n="nHermesIssue">GitHub issue</a>
-          </div>
+          <span class="date">2026.09</span>
+          <span>
+            <span class="news-brand"><img class="news-logo" src="assets/news/hermes-agent.png" alt="" width="16" height="16">Hermes Agent</span>
+            <span data-i18n="nHermes">adopted two ideas from our <a href="#pub-refind">ReFind</a> work. Agents can now filter session searches by time range and skip sessions they’ve already checked.</span>
+            <a href="https://github.com/NousResearch/hermes-agent/issues/86021" target="_blank" rel="noopener" data-i18n="nHermesIssue">GitHub issue</a>
+          </span>
         </li>
       </ul>
       <details class="section-more">
@@ -724,15 +726,15 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <span class="when-open" data-i18n="newsShowLess">Show less news</span>
         </summary>
         <ul class="news">
-          <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk on InMind and the blind spots of long-term agent memory at EvoAgentX. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
-          <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
-          <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">DeepResearch Bench II now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
-          <li><span class="date">2026.08</span><span data-i18n="nAml">Our agent memory system <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> placed second in the <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">Academic Textual track</a> of the 2026 Agent Memory Leaderboard.</span></li>
-          <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
-          <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
-          <li><span class="date">2026.01</span><span data-i18n="n1">Our benchmark <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> is out on arXiv.</span></li>
+          <li><span class="date">2026.11</span><span data-i18n="nEvoTalk">I gave an invited talk at EvoAgentX on our <a href="#pub-inmind">InMind</a> benchmark and the blind spots of long-term agent memory. <a href="/talk/261118/">Slides</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">Recording</a></span></li>
+          <li><span class="date">2026.11</span><span data-i18n="nJetriever">We released our <a href="#pub-jetriever">Jetriever</a> system, which ranks agent memories by their usefulness to the current question. <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a></span></li>
+          <li><span class="date">2026.10</span><span data-i18n="nDrbLeaderboard">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark now uses GPT-5.5 to score new submissions to its <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">public leaderboard</a>.</span></li>
+          <li><span class="date">2026.08</span><span data-i18n="nAml">Our <a href="#pub-refind">ReFind</a> memory system placed second in the <a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">Academic Textual track</a> of the 2026 Agent Memory Leaderboard.</span></li>
+          <li><span class="date">2026.08</span><span data-i18n="nRefind">Our paper <a href="#pub-refind">When Your Agent Opens the Chat App</a> introduces ReFind, agent-controlled search over raw chat logs without semantic index construction.</span></li>
+          <li><span class="date">2026.07</span><span data-i18n="nInmind">Our paper <a href="#pub-inmind">Keep It InMind</a> introduces a benchmark for the implicit-association blind spot in agent memory.</span></li>
+          <li><span class="date">2026.01</span><span data-i18n="n1">Our <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> benchmark is out on arXiv.</span></li>
           <li><span class="date">2025.09</span><span data-i18n="n2">Started research on agent memory and long-horizon retrieval for LLM agents.</span></li>
-          <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> is accepted to Findings of EMNLP 2025.</span></li>
+          <li><span class="date">2025.08</span><span data-i18n="n3">Our paper <a href="#pub-creativity-evaluation">Automated Creativity Evaluation for LLMs</a> was accepted to Findings of EMNLP 2025.</span></li>
         </ul>
       </details>
     </section>
@@ -764,7 +766,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
     <!-- PUBLICATIONS -->
     <section class="section reveal" id="pub">
       <div class="section-title"><span class="idx">04</span><span data-i18n="pubT">Selected Publications</span></div>
-      <article class="pub">
+      <article class="pub" id="pub-deepresearch-bench-ii">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="p1title">DeepResearch Bench II: Diagnosing Deep Research Agents via Rubrics from Expert Reports</h3>
         <p class="pub-authors"><span class="me">Ruizhe Li</span><span class="eq">*</span>, Mingxuan Du<span class="eq">*</span>, Benfeng Xu, Chiwei Zhu, Xiaorui Wang, Zhendong Mao<span class="eq" data-i18n="eqNote"> · *equal contribution</span></p>
@@ -778,7 +780,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener" data-i18n="drbLeaderboard">Leaderboard</a>
         </div>
       </article>
-      <article class="pub">
+      <article class="pub" id="pub-inmind">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="pInmindTitle">Keep It InMind: Benchmarking the Implicit-Association Blind Spot in Agent Memory</h3>
         <p class="pub-authors"><span class="me">Ruizhe Li</span><span class="eq">*</span>, Mingxuan Du<span class="eq">*</span>, Benfeng Xu, Zhendong Mao<span class="eq" data-i18n="eqNote"> · *equal contribution</span></p>
@@ -791,7 +793,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <a href="https://github.com/imlrz/InMind/blob/main/benchmark/dataset/inmind.jsonl" target="_blank" rel="noopener">Dataset</a>
         </div>
       </article>
-      <article class="pub">
+      <article class="pub" id="pub-refind">
         <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
         <h3 class="pub-title" data-i18n="pRefindTitle">When Your Agent Opens the Chat App: Agent-Controlled Search over Raw Chat Logs Rivals Structured Memory</h3>
         <p class="pub-authors"><span class="me">Ruizhe Li</span>, Licheng Zhang, Benfeng Xu, Mingxuan Du, Zheren Fu, Weidong Chen</p>
@@ -808,7 +810,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
           <span class="when-closed" data-i18n="pubShowAll">Show all publications</span>
           <span class="when-open" data-i18n="pubShowLess">Show fewer publications</span>
         </summary>
-        <article class="pub">
+        <article class="pub" id="pub-jetriever">
           <span class="pub-badge" data-i18n="pubBadge">Preprint · 2026</span>
           <h3 class="pub-title" data-i18n="pJetrieverTitle">Jetriever: Shifting Agent Memory Retrieval from Similarity to Utility</h3>
           <p class="pub-authors"><span class="me">Ruizhe Li</span>, Licheng Zhang, Mingxuan Du, Zhendong Mao</p>
@@ -819,7 +821,7 @@ footer a{color:var(--ink-3)} footer a:hover{color:var(--accent)}
             <a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">Code</a>
           </div>
         </article>
-        <article class="pub">
+        <article class="pub" id="pub-creativity-evaluation">
           <span class="pub-badge">Findings of EMNLP 2025</span>
           <h3 class="pub-title">Automated Creativity Evaluation for Large Language Models: A Reference-Based Approach</h3>
           <p class="pub-authors"><span class="me">Ruizhe Li</span>, Chiwei Zhu, Benfeng Xu, Xiaorui Wang, Zhendong Mao</p>
@@ -922,22 +924,22 @@ const T={
     aboutBody:'我是李睿哲，<b>中国科学技术大学</b>硕士研究生。我研究智能体如何在长时程交互中检索和运用信息，也关注如何用<b>世界模型</b>预测环境在行动后会怎样变化。',
     i1:'LLM Agents', i2:'Agent Memory', i3:'Long-Context LLMs', i4:'世界模型',
     newsT:'精选与近期动态',
-    nAnthropic:'使用 DeepResearch Bench II 评估 Claude 的研究表现，并比较单任务成本。',
+    nAnthropic:'使用我们的 <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> 评估 Claude 的研究表现，并比较单任务成本。',
     nClaudeDocs:'Claude 平台文档',
-    nNvidia:'使用 DeepResearch Bench II 评估 AI-Q 深度研究智能体，并在 GTC 2026 的官方新闻中公布结果。',
+    nNvidia:'使用我们的 <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> 评估 AI-Q 深度研究智能体，并在 GTC 2026 上介绍了评测结果。',
     nNvidiaNewsroom:'NVIDIA 官方新闻',
-    nHermes:'在会话搜索中加入两项受 ReFind 启发的功能，可以按时间范围筛选，并跳过已经查看的会话。',
+    nHermes:'从我们的 <a href="#pub-refind">ReFind</a> 工作中引入两项会话搜索功能，支持按时间范围筛选，并跳过已经查看的会话。',
     nHermesIssue:'GitHub 讨论',
     newsShowAll:'展开全部动态', newsShowLess:'收起其他动态',
-    nEvoTalk:'受 EvoAgentX 邀请，我分享了 InMind 和智能体长期记忆中的盲点。<a href="/talk/261118/">幻灯片</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">录像</a>',
-    nJetriever:'我们发布了 <a href="https://arxiv.org/abs/2611.21478" target="_blank" rel="noopener">Jetriever</a>，它根据每条记忆对当前问题的帮助程度进行排序。<a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">代码</a>',
-    nDrbLeaderboard:'DeepResearch Bench II 的<a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">公开榜单</a>现已使用 GPT-5.5 评估新提交。',
-    nAml:'我们的智能体记忆系统 <a href="https://github.com/imlrz/ReFind" target="_blank" rel="noopener">ReFind</a> 在 2026 Agent Memory Leaderboard 的<a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">学术文本记忆赛道</a>获得第二名。',
-    nRefind:'我们的论文 <a href="https://arxiv.org/abs/2608.12888" target="_blank" rel="noopener">When Your Agent Opens the Chat App</a> 提出 ReFind：无需构建语义索引，由智能体直接在原始聊天记录上进行可控检索。',
-    nInmind:'我们的论文 <a href="https://arxiv.org/abs/2607.24368" target="_blank" rel="noopener">Keep It InMind</a> 提出了用于评测智能体记忆“隐式关联盲区”的基准。',
-    n1:'我们的基准 <a href="https://arxiv.org/abs/2601.08536" target="_blank" rel="noopener">DeepResearch Bench II</a> 已发布于 arXiv。',
+    nEvoTalk:'受 EvoAgentX 邀请，我分享了我们的 <a href="#pub-inmind">InMind</a> 基准和智能体长期记忆中的盲点。<a href="/talk/261118/">幻灯片</a> · <a href="https://www.bilibili.com/video/BV1CjsB6GEuc/" target="_blank" rel="noopener">录像</a>',
+    nJetriever:'我们的 <a href="#pub-jetriever">Jetriever</a> 已发布。它根据每条记忆对当前问题的帮助程度进行排序。<a href="https://github.com/imlrz/Jetriever" target="_blank" rel="noopener">代码</a>',
+    nDrbLeaderboard:'我们的 <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> 的<a href="https://huggingface.co/spaces/muset-ai/DeepResearch-Bench-Leaderboard" target="_blank" rel="noopener">公开榜单</a>现已使用 GPT-5.5 评估新提交。',
+    nAml:'我们的 <a href="#pub-refind">ReFind</a> 记忆系统在 2026 Agent Memory Leaderboard 的<a href="https://agentmemories.ai/results/cycle-1/#academic-textual" target="_blank" rel="noopener">学术文本记忆赛道</a>获得第二名。',
+    nRefind:'我们的论文 <a href="#pub-refind">When Your Agent Opens the Chat App</a> 提出 ReFind，让智能体直接在原始聊天记录上进行可控检索，无需构建语义索引。',
+    nInmind:'我们的论文 <a href="#pub-inmind">Keep It InMind</a> 提出了用于评测智能体记忆隐式关联盲区的基准。',
+    n1:'我们的 <a href="#pub-deepresearch-bench-ii">DeepResearch Bench II</a> 基准已发布于 arXiv。',
     n2:'开始研究智能体记忆与大模型智能体的长时程检索。',
-    n3:'我们的论文 <a href="https://arxiv.org/abs/2504.15784" target="_blank" rel="noopener">Automated Creativity Evaluation for LLMs</a> 被 Findings of EMNLP 2025 接收。',
+    n3:'我们的论文 <a href="#pub-creativity-evaluation">Automated Creativity Evaluation for LLMs</a> 被 Findings of EMNLP 2025 接收。',
     pubT:'精选论文',
     pubShowAll:'展开全部论文', pubShowLess:'收起其他论文',
     pubBadge:'预印本 · 2026',
