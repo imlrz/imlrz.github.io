@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="laser-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#aebfb5">
+  <title>Introduction to Agentic World Model · 组会 261125</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="slides.css">
+  <script defer src="slides.js"></script>
+</head>
+<body>
+  <div id="laser-dot" aria-hidden="true"></div>
+  <div id="bar"></div>
+
+  <header class="chrome">
+    <div class="chrome-left">
+      <span>组会 261125 · <b>Introduction to Agentic World Model</b></span>
+      <a href="../index.html">← 组会</a>
+      <a href="../../index.html">主页</a>
+    </div>
+    <nav class="rqnav" aria-label="章节跳转">
+      <button type="button" data-go="cover" class="on">封面</button>
+      <button type="button" data-go="agenda">目录</button>
+      <button type="button" data-go="rq1">RQ1</button>
+      <button type="button" data-go="rq2">RQ2</button>
+      <button type="button" data-go="d1">D1</button>
+      <button type="button" data-go="rq3">RQ3</button>
+      <button type="button" data-go="rq4">RQ4</button>
+      <button type="button" data-go="d2">D2</button>
+    </nav>
+    <div class="chrome-right">
+      <button type="button" class="chrome-btn" id="btn-grid">G 总览</button>
+      <button type="button" class="chrome-btn" id="btn-notes">N 讲稿</button>
+    </div>
+  </header>
+
+  <main class="deck" id="deck">
+
+    <!-- P01 · Framed Split Cover -->
+    <section class="slide cover-bleed" data-chap="cover" data-title="封面">
+      <div class="cover-card">
+        <div class="cover-art">
+          <img class="cover-bg" src="assets/cover-world-model.jpg" alt="Introduction to Agentic World Model Cover">
+        </div>
+        <div class="cover-band">
+          <div class="cover-band-in">
+            <div class="cover-main">
+              <h1><span class="title-pre">Introduction to</span> Agentic World Model</h1>
+              <p class="sub">技术路线 · 评测基准 · 空间重访实测</p>
+            </div>
+            <div class="cover-meta">
+              <div><b>李睿哲</b> · 中国科学技术大学 (USTC)</div>
+              <div class="cover-date">Group Meeting · 2026.11.25</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>封面插图直观对应全场的三个核心角色：右侧齿轮流体沙盘是维护世界状态的 Simulator，墙上发光的画框是投影观测画面的 Renderer，左侧观察思考的人则是发出动作与视角的 Planner。</p>
+      </aside>
+    </section>
+
+    <!-- P02 · Agenda -->
+    <section class="slide" data-chap="agenda" data-title="目录">
+      <div class="in">
+        <div class="kick">Agenda · 组会 2026.11.25</div>
+        <h2 class="head">目录</h2>
+        <ul class="agenda-list">
+          <li><span class="code">RQ1</span><span>什么是 World Model</span><span class="type">文献定义</span></li>
+          <li><span class="code">RQ2</span><span>目前 World Model 有哪些技术路线</span><span class="type">路线 0–3 综述</span></li>
+          <li class="is-disc"><span class="code">D1</span><span>Agentic Coding 路线</span><span class="type">Discussion</span></li>
+          <li><span class="code">RQ3</span><span>如何衡量一个好的 World Model</span><span class="type">基准与算子</span></li>
+          <li><span class="code">RQ4</span><span>Agentic 路线的代表工作</span><span class="type">前沿论文</span></li>
+          <li class="is-disc"><span class="code">D2</span><span>现有工作的缺点与未来方向</span><span class="type">实测与讨论</span></li>
+        </ul>
+      </div>
+      <aside class="speaker-note">
+        <p>今天组会按 RQ（调研他人的定义、流派、基准与论文）和 Discussion（我自己的构想、实测结果与待讨论方向）交替展开。</p>
+      </aside>
+    </section>
+
+    <!-- P03 · RQ1 Divider -->
+    <section class="slide divider" data-chap="rq1" data-title="RQ1 · 什么是 World Model">
+      <div class="in">
+        <div class="rqbig">RQ1</div>
+        <h2>什么是 World Model？</h2>
+        <table class="idx">
+          <thead>
+            <tr><th>标题</th><th>信源</th><th>时间</th><th>研究视角</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A Functional Taxonomy of World Models</td>
+              <td class="src">World Labs · Fei-Fei Li</td>
+              <td class="tm">2026 Jun</td>
+              <td>三功能器闭环定义</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>RQ1 直接采用李飞飞团队 World Labs 2026 年 6 月发布的分类学博客报告作为定义基石：先通过 Seedance 2.5 与 Genie 4 的直观对比看清视频生成与世界模型的边界，再展开三功能器闭环定义。</p>
+      </aside>
+    </section>
+
+    <!-- P04 · RQ1 Video Gen vs World Model (Seedance 2.5 vs Genie 4) -->
+    <section class="slide" data-chap="rq1" data-title="RQ1 · 视频生成 vs 世界模型">
+      <div class="in" data-sync-group>
+        <div class="vid-bar">
+          <div class="kick" style="margin:0;">RQ1 · 核心辨析</div>
+          <button type="button" class="sync-btn" data-sync-play>▶ 同步播放对比</button>
+        </div>
+        <h2 class="head" style="margin-bottom:14px;">视频生成 ≠ 世界模型：Seedance 2.5 vs. Genie 4</h2>
+        <div class="cols top">
+          <div class="card" style="padding:14px 18px;">
+            <div class="tag-top">VIDEO GENERATOR · Seedance 2.5</div>
+            <h4>一次写死整段「观测画面序列」</h4>
+            <figure style="margin:4px 0 12px;">
+              <div class="frame">
+                <video src="assets/rq2-seedance25.mp4" style="max-height:31vh;" autoplay loop muted playsinline controls></video>
+              </div>
+              <figcaption>官方演示：片头提交 <code>@图1–18</code> → 一次性生成固定 30s 成片</figcaption>
+            </figure>
+            <ul class="kw">
+              <li><b>建模对象</b> · 直接拟合像素序列 <span class="m"><i>o</i><sub>0:<i>T</i></sub></span>，无持久状态 <span class="m"><i>s<sub>t</sub></i></span></li>
+              <li class="bad"><b>控制时机</b> · 仅在 <span class="m"><i>t</i> = 0</span> 给条件，开跑后只读播片</li>
+              <li class="bad"><b>反事实性</b> · 问“若中途左转会怎样”只能全片重抽</li>
+            </ul>
+          </div>
+
+          <div class="card pine" style="padding:14px 18px;">
+            <div class="tag-top">WORLD MODEL · Genie 4</div>
+            <h4>持续维护「世界状态」并响应每步动作</h4>
+            <figure style="margin:4px 0 12px;">
+              <div class="frame">
+                <video src="assets/rq2-genie4.mp4" style="max-height:31vh;" autoplay loop muted playsinline controls></video>
+              </div>
+              <figcaption>官方实机：<code>WASD</code> 实时控移动 + 底部随时打字改世界</figcaption>
+            </figure>
+            <ul class="kw">
+              <li class="ok"><b>建模对象</b> · 维护瞬时状态 <span class="m"><i>s<sub>t</sub></i></span> 与演化 <span class="m">(<i>s<sub>t</sub></i>, <i>a<sub>t</sub></i>) → <i>s</i><sub><i>t</i>+1</sub></span></li>
+              <li class="ok"><b>控制时机</b> · 每一时刻 <span class="m"><i>t</i></span> 持续接键鼠与事件实时闭环</li>
+              <li class="ok"><b>反事实性</b> · 同一起点施加不同 <span class="m"><i>a<sub>t</sub></i></span> 实时走出不同未来</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>先用两段官方视频把概念立住：左边 Seedance 2.5 再惊艳，本质也是在 <span class="m"><i>t</i> = 0</span> 一次性把整卷胶片洗出来，播片时世界已经定死；右边 Genie 4 在背后维护瞬时状态 <span class="m"><i>s<sub>t</sub></i></span>，每一步都在等你的动作 <span class="m"><i>a<sub>t</sub></i></span>、视角 <span class="m"><i>c<sub>t</sub></i></span> 和突发事件来推演下一状态 <span class="m"><i>s</i><sub><i>t</i>+1</sub></span>——能否维护状态并支持运行中反事实交互，正是视频生成与世界模型的分水岭。</p>
+      </aside>
+    </section>
+
+    <!-- P05 · RQ1 Circular Loop + streams.mp4 -->
+    <section class="slide" data-chap="rq1" data-title="RQ1 · 三种功能角色闭环">
+      <div class="in">
+        <div class="kick">RQ1 · World Labs 功能定义</div>
+        <h2 class="head">三种功能角色构成闭环</h2>
+        <div class="cols">
+          <div class="svg-card">
+            <svg viewBox="0 0 460 390" role="img" aria-label="Circular Simulator Renderer Planner Loop">
+              <defs>
+                <marker id="c-pine" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#245b56"/></marker>
+                <marker id="c-brass" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#84693a"/></marker>
+              </defs>
+
+              <!-- Outer guide ring -->
+              <circle cx="230" cy="205" r="126" fill="none" stroke="#dce7e2" stroke-width="2"/>
+
+              <!-- Clockwise circular arcs along R=126 -->
+              <!-- Planner (150°) -> Simulator (270°) -->
+              <path d="M 104.4 214.9 A 126 126 0 0 1 172.8 92.7" fill="none" stroke="#245b56" stroke-width="2.5" marker-end="url(#c-pine)"/>
+              <text x="112" y="138" text-anchor="end" font-size="13" font-weight="600" fill="#245b56">动作 <tspan class="sm">a</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+              <!-- Simulator (-90°) -> Renderer (30°) -->
+              <path d="M 284.2 91.3 A 126 126 0 0 1 355.8 211.6" fill="none" stroke="#245b56" stroke-width="2.5" marker-end="url(#c-pine)"/>
+              <text x="348" y="138" text-anchor="start" font-size="13" font-weight="600" fill="#245b56">状态 <tspan class="sm">s</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+              <!-- Renderer (30°) -> Planner (150°) -->
+              <path d="M 301.4 308.8 A 126 126 0 0 1 161.4 310.7" fill="none" stroke="#84693a" stroke-width="2.5" marker-end="url(#c-brass)"/>
+              <text x="230" y="356" text-anchor="middle" font-size="13" font-weight="600" fill="#84693a">观测 <tspan class="sm">o</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+              <!-- Inner circular camera control arc Planner -> Renderer -->
+              <path d="M 173 251 A 105 105 0 0 1 283 251" fill="none" stroke="#84693a" stroke-width="1.8" stroke-dasharray="4 3" marker-end="url(#c-brass)"/>
+              <text x="230" y="226" text-anchor="middle" font-size="12" font-weight="600" fill="#84693a">视角 <tspan class="sm">c</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+              <!-- Node 1: Top Circle (Simulator) -->
+              <circle cx="230" cy="79" r="54" fill="#e7f1ee" stroke="#245b56" stroke-width="2.2"/>
+              <text x="230" y="73" text-anchor="middle" font-family="JetBrains Mono" font-size="13.5" font-weight="600" fill="#245b56">Simulator</text>
+              <text x="230" y="95" text-anchor="middle" font-size="13" fill="#19211f">状态演化</text>
+
+              <!-- Node 2: Bottom-Right Circle (Renderer) -->
+              <circle cx="339" cy="268" r="54" fill="#faf4e6" stroke="#84693a" stroke-width="2.2"/>
+              <text x="339" y="262" text-anchor="middle" font-family="JetBrains Mono" font-size="13.5" font-weight="600" fill="#84693a">Renderer</text>
+              <text x="339" y="284" text-anchor="middle" font-size="13" fill="#19211f">观测合成</text>
+
+              <!-- Node 3: Bottom-Left Circle (Planner) -->
+              <circle cx="121" cy="268" r="54" fill="#eef4f2" stroke="#43645f" stroke-width="2.2"/>
+              <text x="121" y="262" text-anchor="middle" font-family="JetBrains Mono" font-size="13.5" font-weight="600" fill="#43645f">Planner</text>
+              <text x="121" y="284" text-anchor="middle" font-size="13" fill="#19211f">能动决策</text>
+            </svg>
+          </div>
+
+          <div>
+            <figure>
+              <div class="frame light">
+                <video src="assets/streams.mp4" autoplay loop muted playsinline controls></video>
+              </div>
+              <figcaption>World Labs · State vs. Observation vs. Action 数据流</figcaption>
+            </figure>
+            <div class="pill-row">
+              <span class="pill pine"><b class="m"><i>s<sub>t</sub></i> ≠ <i>o<sub>t</sub></i></b> 瞬时状态 ≠ 投影画面</span>
+              <span class="pill">功能角色可合可分</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>配合右侧动画口播：1）观测画面 <span class="m"><i>o<sub>t</sub></i></span> 不等于背后的瞬时世界状态 <span class="m"><i>s<sub>t</sub></i></span>（一段视频只是连续投影序列，不是一个状态）；2）Simulator 管状态转移，Renderer 管视角投影，Planner 管动作与运镜；3）三者是功能职责，可以拆开做，也可以端到端合在一个网络里。</p>
+      </aside>
+    </section>
+
+    <!-- P05 · RQ2 Divider -->
+    <section class="slide divider" data-chap="rq2" data-title="RQ2 · 主流技术路线">
+      <div class="in">
+        <div class="rqbig">RQ2</div>
+        <h2>目前 World Model 有哪些技术路线？</h2>
+        <table class="idx">
+          <thead>
+            <tr><th>标题</th><th>信源</th><th>时间</th><th>研究视角</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Video generation models as world simulators (Sora)</td>
+              <td class="src">OpenAI</td>
+              <td class="tm">2024 Feb</td>
+              <td>路线 0 · 视频基线（非严格 WM）</td>
+            </tr>
+            <tr>
+              <td>One-Take Creation &amp; Flexible Referencing: Seedance 2.5</td>
+              <td class="src">ByteDance Seed</td>
+              <td class="tm">2026</td>
+              <td>路线 0 · 多模态单次视频生成</td>
+            </tr>
+            <tr>
+              <td>Genie 3 &amp; Genie 4: A New Generation of World Simulation</td>
+              <td class="src">Google DeepMind</td>
+              <td class="tm">2026</td>
+              <td>路线 1 · 流式像素实时交互</td>
+            </tr>
+            <tr>
+              <td>Atlas: A Foundation Model for Spatial Intelligence</td>
+              <td class="src">World Labs · Fei-Fei Li</td>
+              <td class="tm">2026</td>
+              <td>路线 2 · 显式 3D 空间上下文</td>
+            </tr>
+            <tr>
+              <td>V-JEPA 2: Self-Supervised Video Models Enable Planning</td>
+              <td class="src">Meta FAIR · Yann LeCun</td>
+              <td class="tm">2025 Jun</td>
+              <td>路线 3 · 无像素潜空间闭环</td>
+            </tr>
+            <tr>
+              <td>Mastering Diverse Domains through World Models (Dreamer)</td>
+              <td class="src">Nature 2025</td>
+              <td class="tm">2025–2026</td>
+              <td>路线 3 · 潜空间想象训练</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>单次视频生成因为缺乏运行中状态演化与交互闭环，不算严格意义上的世界模型，编号记为路线 0；其余三条真正维护世界状态的路线编号为路线 1、2、3。</p>
+      </aside>
+    </section>
+
+    <!-- P06 · RQ2 Routes 0-3 Master Table -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 0–3 总览">
+      <div class="in">
+        <div class="kick">RQ2 · 路线 0–3 总览</div>
+        <h2 class="head">状态 <span class="m"><i>s<sub>t</sub></i></span> 存在哪？画不画像素？</h2>
+        <table class="mat">
+          <thead>
+            <tr>
+              <th style="width:18%">技术路线</th>
+              <th style="width:38%">核心机制（状态与交互）</th>
+              <th style="width:21%">代表人物</th>
+              <th style="width:23%">代表工作 / 系统</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>0. 单次视频生成</b><span class="sub-tag">非严格 WM · 基线</span></td>
+              <td>无持久状态 <span class="m"><i>s<sub>t</sub></i></span> · 整段一次去噪 · 无中途 <span class="m"><i>a<sub>t</sub></i>, <i>c<sub>t</sub></i></span> 接口</td>
+              <td>Tim Brooks · Bill Peebles · Lu Jiang</td>
+              <td><b>Seedance 2.5</b> · Sora 2 · Veo 3 · Kling 3.0</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--pine)">1. 流式像素交互派</b><span class="sub-tag">云游戏直觉</span></td>
+              <td>状态藏于 <span class="en">KV Cache</span> · 单视频网包揽 <span class="en">Sim + Ren</span> 实时响应按键</td>
+              <td>Jack Parker-Holder · Tim Rocktäschel · Shlomi Fruchter</td>
+              <td><b style="color:var(--pine)">Genie 3 / 4</b> · Oasis 3 · GWM Worlds 2 · LingBot · GAIA-4</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--brass)">2. 显式 3D 记忆派</b><span class="sub-tag">三维沙盘</span></td>
+              <td>状态固化为 <span class="en">Spatial Context / 3DGS / Mesh</span> · 自由取景</td>
+              <td>Fei-Fei Li · Justin Johnson · Ben Mildenhall</td>
+              <td><b style="color:var(--brass)">Atlas</b> · Marble · HY-World 2.0 · SANA-WM</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--slate)">3. 无像素潜空间派</b><span class="sub-tag">闭眼算棋</span></td>
+              <td>状态存为紧凑潜向量 <span class="m"><i>z<sub>t</sub></i></span> · 砍掉高清像素 <span class="en">Renderer</span> 极速规划</td>
+              <td>Yann LeCun · Danijar Hafner</td>
+              <td><b style="color:var(--slate)">V-JEPA 2-AC</b> · Dreamer 4 · TD-MPC2 · Meta CWM</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>0 号是单次电影短片基线（Seedance 2.5）；1–3 号是三类严格的世界模型：边按键边画的云游戏（Genie 4）、锚定三维坐标的空间沙盘（Atlas）、不画图的极速决策潜模型（V-JEPA 2-AC）。</p>
+      </aside>
+    </section>
+
+    <!-- P07 · Route 0 Representative: Seedance 2.5 -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 0 代表：Seedance 2.5">
+      <div class="in">
+        <div class="kick">RQ2 · 路线 0 代表（视频基线） · ByteDance Seed</div>
+        <h2 class="head">Seedance 2.5：<code>@</code> 多模态单次提交，中途零交互</h2>
+        <div class="cols w-right">
+          <div class="io-spec">
+            <div class="io-row">
+              <span class="k">输入 IN</span>
+              <span>文本提示词 + 最多 <b>50 个参考资产</b>（≤30 图 · ≤10 视频 · ≤10 音频）</span>
+            </div>
+            <div class="io-row">
+              <span class="k">接口 UI</span>
+              <span>提示框内联 <code>@图1</code> <code>@视频1</code> <code>@音频1</code> 绑定主体/场景/运镜，点一次发送键 <code>↗</code></span>
+            </div>
+            <div class="io-row">
+              <span class="k">交互 LOOP</span>
+              <span><b>开环一次性去噪</b> · 生成途中无 <span class="m"><i>a<sub>t</sub></i> / <i>c<sub>t</sub></i></span> 干预接口，改动作只能重写重抽</span>
+            </div>
+            <div class="io-row">
+              <span class="k">输出 OUT</span>
+              <span>最长 <b>30s 音画原生同步 MP4</b>（开放域画质最强，无三维持久状态 <span class="m"><i>s<sub>t</sub></i></span>）</span>
+            </div>
+          </div>
+
+          <figure>
+            <div class="frame">
+              <video src="assets/rq2-seedance25.mp4" autoplay loop muted playsinline controls></video>
+            </div>
+            <figcaption>官方演示：片头展示多张角色与场地 <code>@图1–18</code> 输入框 → 一次性输出 30s 音乐厅音画成片</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>注意看片头前 3 秒的官方输入框：用户把音乐厅、钢琴家、大提琴、主唱等十几张参考图塞进同一个输入框，用 @图一、@图二 引用后点一次发送，模型离线一次性算出整段 30 秒音画同步视频。（注：我们对 Seedance 2.5 喂入城市深度图的重访实测将在 D2 章节详细对比展示。）</p>
+      </aside>
+    </section>
+
+    <!-- P08 · Route 1 Representative: Genie 4 (Official) -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 1 代表：Genie 4">
+      <div class="in">
+        <div class="kick">RQ2 · 路线 1 代表 · Google DeepMind (Genie 3 → Genie 4)</div>
+        <h2 class="head">Genie 4：键鼠实时控位姿 + 中途打字改世界</h2>
+        <div class="cols w-right">
+          <div class="io-spec pine">
+            <div class="io-row">
+              <span class="k">输入 IN</span>
+              <span>开局文本 / 首帧图 + <b>每帧键鼠动作 <span class="m"><i>a<sub>t</sub></i>, <i>c<sub>t</sub></i></span></b> + 中途自然语言事件</span>
+            </div>
+            <div class="io-row">
+              <span class="k">接口 UI</span>
+              <span>云游戏视口：左下 <code>WASD</code> 移动 + 右下 <code>↑↓←→</code> 视角 + 底部实时 <code>Rewrite</code> 输入框</span>
+            </div>
+            <div class="io-row">
+              <span class="k">交互 LOOP</span>
+              <span><b>流式逐帧闭环</b> · 边按键边生成下一块帧，可中途随时打字刷出新角色或改天气</span>
+            </div>
+            <div class="io-row">
+              <span class="k">输出 OUT</span>
+              <span><b>720p · 24 FPS 实时视频流 + 同步环境音/语音</b>（隐式 <span class="en">KV Cache</span> 记忆，超窗口易遗忘）</span>
+            </div>
+          </div>
+
+          <figure>
+            <div class="frame">
+              <video src="assets/rq2-genie4.mp4" autoplay loop muted playsinline controls></video>
+            </div>
+            <figcaption>官方实机录屏：左下 <code>WASD</code> 行走 + 右下转视角 + 底部实时输入刷出“提行李箱老人”</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- P10 · Route 1 My Try: Genie 4 on Office Photo -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 1 实测：Genie 4">
+      <div class="in">
+        <div class="kick">RQ2 · 路线 1 亲手实测 (My Try) · Project Genie</div>
+        <h2 class="head">Genie 4 实测：工位单图 → 实时键鼠漫游（4× 快放 · 30s）</h2>
+        <div class="cols w-right">
+          <div>
+            <figure style="margin-bottom:14px;">
+              <div class="frame light zoomable">
+                <img src="assets/try-office-input.jpg" style="max-height:24vh;" alt="Office desk input photo">
+              </div>
+              <figcaption>输入：我的工位单张实拍图（点击放大）</figcaption>
+            </figure>
+            <ul class="kw">
+              <li class="ok"><b>丝滑推演</b> · 按 <code>WASD</code> 退离工位、穿门走进外间与侧室</li>
+              <li class="ok"><b>开放脑补</b> · 连贯生出饮水机、绿植、白板与窗外楼群</li>
+              <li class="bad"><b>隐式漂移</b> · 中后段突然冒出手持纸张又消失，无三维几何锁死</li>
+            </ul>
+          </div>
+
+          <figure>
+            <div class="frame">
+              <video src="assets/try-genie4-office.mp4" autoplay loop muted playsinline controls></video>
+            </div>
+            <figcaption>实测录屏（原长 2min，4× 快放至 30s）：右下角实时显示 <code>WASD</code> + 方向键</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>这是我直接拿工位随手拍的一张照片丢进 Genie 4 跑出来的两分钟实测（这里 4 倍速压成 30 秒方便演示）：按 S 后退走出玻璃门，外面的饮水机、绿植、工位乃至转身后的白板和大窗户全是模型边按键边实时脑补出来的，交互感极强；但也能看到纯流式视频没有显式 3D 骨架，中途会突然冒出一只拿纸的手随后又凭空消失。</p>
+      </aside>
+    </section>
+
+    <!-- P10 · Route 2 Representative: World Labs Atlas (Official) -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 2 代表：World Labs Atlas">
+      <div class="in" data-sync-group>
+        <div class="vid-bar">
+          <div class="kick" style="margin:0;">RQ2 · 路线 2 代表 · World Labs (Atlas)</div>
+          <button type="button" class="sync-btn" data-sync-play>▶ 同步播放</button>
+        </div>
+        <h2 class="head" style="margin-bottom:16px;">Atlas：三维坐标上下文锚定，自由漫游零漂移</h2>
+        <div class="cols w-right">
+          <div class="io-spec brass">
+            <div class="io-row">
+              <span class="k">输入 IN</span>
+              <span>单图 / 多图 / 文本 + <b>精确 3D 相机几何</b>（写入 <code>Spatial Context</code>）</span>
+            </div>
+            <div class="io-row">
+              <span class="k">接口 UI</span>
+              <span><code>Viewfinder</code> 三维取景器（框选空白视角点 <code>Render</code> 扩建）+ <code>Chisel</code> 灰盒</span>
+            </div>
+            <div class="io-row">
+              <span class="k">交互 LOOP</span>
+              <span><b>先锚定空间 → 再自由取景</b> · 支持 <code>Frameboy</code>（15 FPS）实时流或引擎漫游</span>
+            </div>
+            <div class="io-row">
+              <span class="k">输出 OUT</span>
+              <span>持久 <b>3D 高斯 (<code>.spz/.ply</code>) + 网格 (<code>.glb</code>)</b>（重访零漂移，但场景凝固静态）</span>
+            </div>
+          </div>
+
+          <div class="vid-pair">
+            <figure>
+              <div class="frame"><video src="assets/rq2-atlas-viewfinder.mp4" autoplay loop muted playsinline controls></video></div>
+              <figcaption>官方演示：<code>Viewfinder</code> 三维视锥扩建与漫游</figcaption>
+            </figure>
+            <figure>
+              <div class="frame"><video src="assets/rq2-atlas-splats.mp4" autoplay loop muted playsinline controls></video></div>
+              <figcaption>官方演示：<code>Splats → Mesh</code> 显式几何导出</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>李飞飞团队最新旗舰 Atlas 的核心机制叫 Spatial Context：每一张输入图和新生成帧都严格绑定三维相机位姿。在 Viewfinder 界面里对准未知区域点 Render 逐块扩建空间，最后可导出 3D 高斯点云、碰撞网格或进 Frameboy 实时漫游。</p>
+      </aside>
+    </section>
+
+    <!-- P12 · Route 2 My Try: World Labs Atlas on Same Office Photo -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 2 实测：Atlas Viewfinder">
+      <div class="in" data-step-gallery>
+        <div class="kick">RQ2 · 路线 2 亲手实测 (My Try) · 同一张工位图跑 Atlas</div>
+        <h2 class="head" style="margin-bottom:14px;">Atlas 实测：摆三维取景框 → 指哪补哪、钉入显式三维壳</h2>
+        <div class="cols top">
+          <div>
+            <figure style="margin-bottom:12px;">
+              <div class="frame light">
+                <video src="assets/try-atlas-record.mp4" style="max-height:36vh;" autoplay loop muted playsinline controls></video>
+              </div>
+              <figcaption>实测全局录屏（22s）：拉远可见 8 个三维相机视锥与显式点云几何壳</figcaption>
+            </figure>
+            <div style="display:grid;grid-template-columns:112px 1fr;gap:14px;align-items:center;">
+              <figure>
+                <div class="frame light zoomable">
+                  <img src="assets/try-office-input.jpg" style="max-height:11vh;" alt="Same office desk input">
+                </div>
+                <figcaption style="font-size:0.68rem;">同一工位原图</figcaption>
+              </figure>
+              <ul class="kw" style="font-size:0.88rem;gap:4px;">
+                <li class="ok"><b>显式三维锁死</b> · 视锥钉入 <code>Spatial Context (8/64)</code></li>
+                <li class="ok"><b>指哪补哪</b> · 框选空白点 <code>Render</code> 透视严丝合缝</li>
+                <li class="bad"><b>静态沙盘</b> · 离线补全布景，无实时动态交互</li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="step-tabs" role="tablist" aria-label="Atlas 实测步骤切换">
+              <button type="button" class="step-tab on" data-gal-src="assets/try-atlas-1.jpg" data-gal-cap="Step 1：将 77° 取景框对准棕色门左侧空白未建区（Spatial Context 6/64）">1. 门左空白</button>
+              <button type="button" class="step-tab" data-gal-src="assets/try-atlas-2.jpg" data-gal-cap="Step 2：点击 Render 后无缝补全左侧窗户、工位与条纹地毯（写入 7/64）">2. Render 左侧</button>
+              <button type="button" class="step-tab" data-gal-src="assets/try-atlas-3.jpg" data-gal-cap="Step 3：抬头将取景框对准天花板白色未生成缺口">3. 吊顶缺口</button>
+              <button type="button" class="step-tab" data-gal-src="assets/try-atlas-4.jpg" data-gal-cap="Step 4：Render 补全吊顶灯盘与方形空调风口（写入 8/64）">4. Render 吊顶</button>
+              <button type="button" class="step-tab" data-gal-src="assets/try-atlas-5.jpg" data-gal-cap="Step 5：室内三维环视固化（白桌腿、门扇、显示器位置锁死，右下可导 Video / Splats / Frameboy）">5. 三维环视</button>
+            </div>
+            <figure>
+              <div class="frame light zoomable">
+                <img data-gal-img src="assets/try-atlas-1.jpg" style="max-height:42vh;" alt="Atlas Viewfinder step">
+              </div>
+              <figcaption data-gal-cap>Step 1：将 77° 取景框对准棕色门左侧空白未建区（Spatial Context 6/64）</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>左边视频把镜头拉到房间外部，可以直观看到 Atlas 维护的世界状态本质：8 个绿色相机视锥钉在三维空间里，撑起一整套显式三维几何外壳。右边点击 1→2、3→4、5 可以逐帧回看我是怎么把门左边空白和天花板缺口一块块 Render 补全进去的——几何绝对不漂，但整个空间是静态凝固的。</p>
+      </aside>
+    </section>
+
+    <!-- P12 · Route 3 Representative: Meta V-JEPA 2-AC -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 3 代表：Meta V-JEPA 2-AC">
+      <div class="in">
+        <div class="kick">RQ2 · 路线 3 代表 · Meta FAIR (Yann LeCun 团队)</div>
+        <h2 class="head">V-JEPA 2-AC：不画任何未来像素，潜空间搜动作控真机</h2>
+        <div class="cols w-right">
+          <div class="io-spec slate">
+            <div class="io-row">
+              <span class="k">输入 IN</span>
+              <span>机械臂当前相机图 <span class="m"><i>o<sub>t</sub></i></span> + 本体位姿 + <b>一张目标完成图 <span class="m"><i>o<sub>g</sub></i></span></b></span>
+            </div>
+            <div class="io-row">
+              <span class="k">接口 UI</span>
+              <span>具身控制 API 闭环（无人类交互视口，<b>全程砍掉像素解码器</b>）</span>
+            </div>
+            <div class="io-row">
+              <span class="k">交互 LOOP</span>
+              <span><b>每步 MPC 重规划</b> · 潜空间 <span class="m"><i>z</i></span> 内并行推演多条候选动作，挑最接近 <span class="m"><i>z<sub>g</sub></i></span> 的首步执行</span>
+            </div>
+            <div class="io-row">
+              <span class="k">输出 OUT</span>
+              <span>7 维连续动作 <code>[Δx,Δy,Δz, Δr,Δp,Δy, 夹爪]</code>（未知桌面零样本抓取 <b>65%–80%</b>）</span>
+            </div>
+          </div>
+
+          <figure>
+            <div class="frame">
+              <video src="assets/rq2-vjepa2-ac.mp4" autoplay loop muted playsinline controls></video>
+            </div>
+            <figcaption>官方真机闭环：<code>Start</code> 当前图 + <code>Goal</code> 目标图 → 潜空间并行搜轨迹 → Franka 机械臂抓取</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>路线 3 走到了另一个极端：Yann LeCun 主导的 V-JEPA 2-AC 根本不生成未来视频像素，只收当前相机帧和一张目标照片，编码成潜向量后在潜空间高速搜索 7 自由度机械臂控制量，每步 0.2 秒闭环修正，在陌生实验室零样本完成抓杯放盘。</p>
+      </aside>
+    </section>
+
+    <!-- P13 · Players Map -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 代表机构与发布模型">
+      <div class="in">
+        <div class="kick">RQ2 · 行业与学界版图</div>
+        <h2 class="head">谁在发 World Model？（区分同厂视频线）</h2>
+        <div class="cards four">
+          <div class="card pine">
+            <div class="tag-top">原生独角兽</div>
+            <h4>专职 WM 创业</h4>
+            <ul class="kw">
+              <li><b>World Labs</b> · Atlas / Marble</li>
+              <li><b>AMI Labs</b> · JEPA 路线</li>
+              <li><b>Decart</b> · Oasis 3 / Lucy</li>
+              <li><b>Odyssey</b> · Odyssey-3 Pro</li>
+              <li><b>Runway</b> · GWM Worlds 2</li>
+              <li><b>极佳 / 大晓</b> · GigaWorld · 开悟</li>
+            </ul>
+          </div>
+          <div class="card pine">
+            <div class="tag-top">大厂 WM 专线</div>
+            <h4>独立于影视视频线</h4>
+            <ul class="kw">
+              <li><b>DeepMind</b> · Genie 4 / Dreamer 4 <span style="color:var(--ink-4)">(≠Veo)</span></li>
+              <li><b>NVIDIA</b> · Cosmos · SANA-WM</li>
+              <li><b>Meta</b> · V-JEPA 2-AC · CWM</li>
+              <li><b>腾讯混元</b> · HY-World 2.0</li>
+              <li><b>蚂蚁 / 阿里</b> · LingBot · HappyOyster</li>
+            </ul>
+          </div>
+          <div class="card brass">
+            <div class="tag-top">智驾与具身</div>
+            <h4>虚拟考场与合成数据</h4>
+            <ul class="kw">
+              <li><b>Wayve</b> · GAIA-1 → GAIA-4</li>
+              <li><b>Waymo</b> · Waymo WM</li>
+              <li><b>1X Tech</b> · 1XWM</li>
+              <li><b>华为 / 蔚来</b> · WEWA · NWM</li>
+              <li><b>吉利 / Momenta</b> · WAM · R7</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="tag-top">学术界开源</div>
+            <h4>机制与架构探索</h4>
+            <ul class="kw">
+              <li><b>奠基</b> · Ha &amp; Schmidhuber</li>
+              <li><b>神经游戏</b> · UniSim · DIAMOND · GameNGen</li>
+              <li><b>分层潜规划</b> · MBZUAI PAN 2</li>
+              <li><b>漫游记忆</b> · YUME · Aether · WorldMem</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P14 · Bottleneck Matrix -->
+    <section class="slide" data-chap="rq2" data-title="RQ2 · 路线 0–3 能力偏科">
+      <div class="in">
+        <div class="kick">RQ2 · 小结对比</div>
+        <h2 class="head">路线 0–3 无一能同时守住五项要求</h2>
+        <table class="mat">
+          <thead>
+            <tr>
+              <th>主流路线</th>
+              <th>视觉画质</th>
+              <th>3D 空间持久</th>
+              <th>物理因果动态</th>
+              <th>局部可编辑</th>
+              <th>推演速度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>0. 单次视频生成（基线）</b></td>
+              <td class="cell-ok">✓✓ 最高</td>
+              <td class="cell-no">✗ 易失忆</td>
+              <td class="cell-no">✗ 无动作接口</td>
+              <td class="cell-no">✗ 难局部改</td>
+              <td class="cell-na">— 离线整段</td>
+            </tr>
+            <tr>
+              <td><b>1. 流式像素交互派</b></td>
+              <td class="cell-ok">✓ 高动态</td>
+              <td class="cell-mid">△ 窗口受限</td>
+              <td class="cell-mid">△ 守恒易漂</td>
+              <td class="cell-no">✗ 隐式黑盒</td>
+              <td class="cell-mid">△ 算力极重</td>
+            </tr>
+            <tr>
+              <td><b>2. 显式 3D 记忆派</b></td>
+              <td class="cell-ok">✓ 视角稳</td>
+              <td class="cell-ok">✓✓ 零漂移</td>
+              <td class="cell-no">✗ 凝固静态</td>
+              <td class="cell-ok">✓ 可导资产</td>
+              <td class="cell-ok">✓ 实时渲染</td>
+            </tr>
+            <tr>
+              <td><b>3. 无像素潜空间派</b></td>
+              <td class="cell-na">— 无画面</td>
+              <td class="cell-mid">△ 压缩丢细节</td>
+              <td class="cell-ok">✓ 聚焦决策</td>
+              <td class="cell-no">✗ 潜向量黑盒</td>
+              <td class="cell-ok">✓✓ 快数十倍</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- P16 · Discussion 1 Divider -->
+    <section class="slide divider" data-chap="d1" data-title="D1 · Agentic Coding 路线">
+      <div class="in">
+        <div class="kick">Discussion 1 · 我们的视角</div>
+        <div class="rqbig">D1</div>
+        <h2>Agentic Coding 路线</h2>
+        <div class="pill-row">
+          <span class="pill pine"><b>01 · Sora</b> 扩增纯视频即可涌现世界模拟</span>
+          <span class="pill brass"><b>02 · Fei-Fei Li</b> The World Is Not Made of Words</span>
+          <span class="pill"><b>03 · GPT-6-Astra</b> 代码已能构建动画 · 3D 资产 · 3D 视频</span>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>进入第一个 Discussion 章节，我们不急着抛框图，只摆出三个非常有张力的行业观点与最新事实，看看为什么我们会走向 Agentic Coding 路线。</p>
+      </aside>
+    </section>
+
+    <!-- P17 · D1 Point 1: OpenAI Sora Quote -->
+    <section class="slide" data-chap="d1" data-title="D1 · 观点 1：Sora 视频涌现论">
+      <div class="in">
+        <div class="kick">Discussion 1 · 01 / 03 · OpenAI Sora (2024.02)</div>
+        <h2 class="head">观点一：扩增纯视频生成，就能涌现世界模型智能</h2>
+        <div class="cols w-right">
+          <div>
+            <div class="q-box" style="margin:0 0 14px;">
+              <b>OpenAI 原话：</b><br>
+              “Scaling video generation models is a promising path towards building general purpose simulators of the physical world... <b>without any explicit inductive biases for 3D, objects, etc.—they are purely phenomena of scale.</b>”
+            </div>
+            <ul class="kw">
+              <li><b>核心信仰</b> · 无需任何显式 3D 或物理引擎偏置</li>
+              <li><b>路径假设</b> · 把所有视觉数据压成时空 Patch，靠规模涌现三维一致性与物理规律</li>
+            </ul>
+          </div>
+
+          <figure>
+            <div class="frame light zoomable">
+              <img src="assets/d1-sora-quote.jpg" alt="OpenAI Sora World Simulators Report Quote">
+            </div>
+            <figcaption>OpenAI《Video generation models as world simulators》原文摘录（点击放大）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- P18 · D1 Point 2: Fei-Fei Li "The World Is Not Made of Words" -->
+    <section class="slide" data-chap="d1" data-title="D1 · 观点 2：The World Is Not Made of Words">
+      <div class="in">
+        <div class="kick">Discussion 1 · 02 / 03 · World Labs · Fei-Fei Li (2026.06)</div>
+        <h2 class="head">观点二：<i>The World Is Not Made of Words</i></h2>
+        <div class="cols w-right">
+          <div>
+            <div class="q-box" style="margin:0 0 14px;border-left-color:var(--brass);background:var(--brass-soft);">
+              <b>李飞飞原话：</b><br>
+              “Language models have given machines an extraordinary command of concepts, vocabulary, and reasoning, <b>but the physical world, virtual or real, runs on a different substrate.</b>”
+            </div>
+            <ul class="kw">
+              <li><b>核心判断</b> · 语言模型学文本统计结构，世界模型学<b>空间与时间</b>结构</li>
+              <li><b>直指局限</b> · 纯自然语言（Words）无法精确承载三维几何、遮挡透视与物理受力</li>
+            </ul>
+            <div class="pill-row">
+              <a class="pill brass" href="https://worldlabs.ai/blog/taxonomy-of-world-models" target="_blank">↗ worldlabs.ai/blog/taxonomy-of-world-models</a>
+            </div>
+          </div>
+
+          <figure>
+            <div class="frame light zoomable">
+              <img src="assets/d1-worldlabs-words.jpg" alt="World Labs The World Is Not Made of Words">
+            </div>
+            <figcaption>World Labs《A Functional Taxonomy of World Models》开篇截图（点击放大）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- P19 · D1 Point 3: GPT-6-Astra Code -> Animation, 3D Assets, 3D Video -->
+    <section class="slide" data-chap="d1" data-title="D1 · 信号 3：GPT-6-Astra 写码造 3D">
+      <div class="in" data-step-gallery>
+        <div class="kick">Discussion 1 · 03 / 03 · OpenAI GPT-6-Astra / 6.2-Astra (2026)</div>
+        <h2 class="head" style="margin-bottom:14px;">转折信号：<code>GPT-6-Astra</code> 已能通过代码构建 3D 世界</h2>
+        <div class="cols w-right">
+          <div>
+            <ul class="kw" style="gap:10px;">
+              <li class="ok"><b>3D 资产与机械结构</b> · 写 CAD / Python 代码重建五速变速箱（<code>BenchCAD 95.9%</code>）</li>
+              <li class="ok"><b>建筑建模与漫游动画</b> · 自主操作 <code>Blender</code> 建庭院住宅与 250 帧关键帧动画，导入 <code>UE5</code> 漫游</li>
+              <li class="ok"><b>3D 视频与交互世界</b> · 直写 <code>Three.js / Unity</code> 输出 <code>1080p 24fps</code> 可交互三维场景（与 Seedance 2.5 同镜对比）</li>
+            </ul>
+            <div class="q-box" style="margin-top:14px;">
+              <b>我们的切入点：</b> 用 <b>Agent 写可执行 3D 代码</b>守住几何与物理，再结合神经渲染补齐真实世界质感。
+            </div>
+          </div>
+
+          <div>
+            <div class="step-tabs" role="tablist" aria-label="GPT-6-Astra 3D 代码案例">
+              <button type="button" class="step-tab on" data-gal-src="assets/d1-astra-blender.jpg" data-gal-cap="GPT-6-Astra 官方案例：在 Blender 5.2 中建模庭院住宅并编排 250 帧动画（点击放大）">1. Blender 建模与动画</button>
+              <button type="button" class="step-tab" data-gal-src="assets/d1-astra-freecad.jpg" data-gal-cap="GPT-6-Astra 官方案例：通过 FreeCAD Python 控制台构建五速齿轮传动 3D 机械资产">2. FreeCAD 机械资产</button>
+              <button type="button" class="step-tab" data-gal-src="assets/d1-astra-unity.jpg" data-gal-cap="GPT-6-Astra 官方案例：自动组装完整 Unity 三维城市街区与道路交通场景">3. Unity 3D 城市视频场景</button>
+            </div>
+            <figure>
+              <div class="frame zoomable">
+                <img data-gal-img src="assets/d1-astra-blender.jpg" style="max-height:44vh;" alt="GPT-6 Astra Blender 3D Scene">
+              </div>
+              <figcaption data-gal-cap>GPT-6-Astra 官方案例：在 Blender 5.2 中建模庭院住宅并编排 250 帧动画（点击放大）</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P14 · RQ3 Divider -->
+    <section class="slide divider" data-chap="rq3" data-title="RQ3 · 如何衡量一个好的 World Model">
+      <div class="in">
+        <div class="rqbig">RQ3</div>
+        <h2>如何衡量一个好的 World Model？</h2>
+        <table class="idx">
+          <thead>
+            <tr><th>标题</th><th>信源</th><th>时间</th><th>研究视角</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A Survey of World Model Benchmarks</td>
+              <td class="src">NTU · Dacheng Tao</td>
+              <td class="tm">2026 Sep</td>
+              <td>102 个基准全景分类</td>
+            </tr>
+            <tr>
+              <td>Towards Interactive Video World Modeling</td>
+              <td class="src">Univ. of Cambridge</td>
+              <td class="tm">2026</td>
+              <td>开环 → 闭环四关协议</td>
+            </tr>
+            <tr>
+              <td>Physics-IQ: Benchmarking Physical Understanding</td>
+              <td class="src">CVPR 2025</td>
+              <td class="tm">2025 Jun</td>
+              <td>第 1 关 · 实拍物理续写</td>
+            </tr>
+            <tr>
+              <td>WorldScore: A Unified Evaluation Benchmark</td>
+              <td class="src">ICCV 2025</td>
+              <td class="tm">2025 Oct</td>
+              <td>第 2 关 · 空间与动静分离</td>
+            </tr>
+            <tr>
+              <td>WorldModelBench: Judging Video World Models</td>
+              <td class="src">NeurIPS 2025</td>
+              <td class="tm">2025 Dec</td>
+              <td>第 1 关 · 物理违规判别</td>
+            </tr>
+            <tr>
+              <td>World-in-World: World Models in a Closed-Loop World</td>
+              <td class="src">ICLR 2026 Oral</td>
+              <td class="tm">2026 Apr</td>
+              <td>第 4 关 · 闭环规划效用</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>RQ3 依据两篇权威综述及 CVPR / ICCV / NeurIPS / ICLR 顶会代表基准，梳理世界模型的四关能力层级与四类自动打分算子。</p>
+      </aside>
+    </section>
+
+    <!-- P15 · RQ3 4 Levels & Route Mapping -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 四关递进与路线覆盖">
+      <div class="in">
+        <div class="kick">RQ3 · 评测结构</div>
+        <h2 class="head">按控制信号递进为「四关」</h2>
+        <div class="svg-card">
+          <svg viewBox="0 0 960 195" role="img" aria-label="4 benchmark levels">
+            <rect x="16" y="16" width="216" height="86" rx="10" fill="#fff" stroke="#cedad4"/>
+            <text x="34" y="44" font-size="12.5" font-weight="600" fill="#245b56">第 1 关 · 无控制</text>
+            <text x="34" y="74" font-size="15" font-weight="600" fill="#19211f">表观与物理常识</text>
+
+            <rect x="254" y="16" width="216" height="86" rx="10" fill="#fff" stroke="#d9c396" stroke-width="1.6"/>
+            <text x="272" y="44" font-size="12.5" font-weight="600" fill="#84693a">第 2 关 · 给相机 <tspan class="sm">c</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <text x="272" y="74" font-size="15" font-weight="600" fill="#19211f">视角与空间持久</text>
+
+            <rect x="492" y="16" width="216" height="86" rx="10" fill="#fff" stroke="#245b56" stroke-width="1.6"/>
+            <text x="510" y="44" font-size="12.5" font-weight="600" fill="#245b56">第 3 关 · 给动作 <tspan class="sm">a</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <text x="510" y="74" font-size="15" font-weight="600" fill="#19211f">动作与反事实分叉</text>
+
+            <rect x="730" y="16" width="214" height="86" rx="10" fill="#e7f1ee" stroke="#245b56" stroke-width="1.8"/>
+            <text x="748" y="44" font-size="12.5" font-weight="600" fill="#245b56">第 4 关 · 自主选 <tspan class="sm">a</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <text x="748" y="74" font-size="15" font-weight="600" fill="#19211f">闭环任务成功率</text>
+
+            <rect x="16" y="122" width="692" height="54" rx="8" fill="#eef4f2" stroke="#43645f" stroke-dasharray="4 3"/>
+            <text x="36" y="154" font-size="13.5" font-weight="600" fill="#19211f">开环像素考卷（收视频 <tspan class="sm">o</tspan><tspan class="sm-sub">0:<tspan font-style="italic">T</tspan></tspan>）→ 只测带渲染器的路线 0 · 1 · 2 · Agentic</text>
+
+            <rect x="730" y="122" width="214" height="54" rx="8" fill="#faf4e6" stroke="#d9c396"/>
+            <text x="748" y="154" font-size="13.5" font-weight="600" fill="#84693a">路线 3 主战场 · 全派汇合</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- P21 · Level 1 Benchmark Table -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 1 关：表观与物理基准">
+      <div class="in">
+        <div class="kick">RQ3 · 第 1 关（无外部控制）</div>
+        <h2 class="head" style="margin-bottom:16px;">表观与物理合理性：代表评测集与考题</h2>
+        <table class="mat" style="font-size:0.88rem;">
+          <thead>
+            <tr>
+              <th style="width:21%">评测集（信源）</th>
+              <th style="width:18%">输入 → 输出</th>
+              <th style="width:31%">在评什么？（判分机制）</th>
+              <th style="width:30%">典型考题示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>VBench 2.0</b><span class="sub-tag">NTU S-Lab</span></td>
+              <td>文本 / 首帧 → 视频</td>
+              <td>物理常识、光学与人体结构忠实度（<code>VLM + 检测</code>）</td>
+              <td>热锅化冰 · 对着镜子挥右手（查对称）</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--pine)">PAI-Bench</b><span class="sub-tag">CVPR Oral · NVIDIA</span></td>
+              <td>实拍首帧 + 文本 → 视频</td>
+              <td>真实场景重力、碰撞因果与交规（<code>Rubric 裁判</code>）</td>
+              <td>雨夜路口电动车横穿 → 减速与溅水花</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--warn)">Physics-IQ</b><span class="sub-tag">CVPR 2025 · DeepMind</span></td>
+              <td><b>前 3s 实拍</b> → 后 5s 视频</td>
+              <td>对比真实后续录像的运动掩码 <code>时空 IoU / MSE</code></td>
+              <td>骨牌刚倒首块，<b>正中放橡皮鸭挡路</b>看停不停</td>
+            </tr>
+            <tr>
+              <td><b>VideoPhy-2</b><span class="sub-tag">ICLR 2026 · UCLA</span></td>
+              <td>动作物理文本 → 视频</td>
+              <td>语义与物理常识<b>双项同时 ≥4 分</b>合格率（<code>微调裁判</code>）</td>
+              <td>球拍大力击网球形变反弹 · 踩踏板起跳</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--brass)">WorldModelBench</b><span class="sub-tag">NeurIPS 2025 · UCB/MIT</span></td>
+              <td>首帧 + 文本 → 视频</td>
+              <td>逐项扣查质量守恒、重力与穿模违规（<code>6.7万标注微调</code>）</td>
+              <td>半杯水倾斜倒进空碗 → <b>查杯内水位是否同步降</b></td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--pine)">Last Exam</b><span class="sub-tag">Peking Univ.</span></td>
+              <td>实验首帧 + 条件 → 视频</td>
+              <td>算子从画面<b>直接量周期 / 液面高度核对物理公式</b></td>
+              <td>等长但一重一轻双单摆同时释放（测等时性）</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- P17 · Level 1 Scores -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 1 关：初版分布 vs SOTA">
+      <div class="in">
+        <div class="kick">RQ3 · 第 1 关跑分</div>
+        <h2 class="head">画质已饱和，定量物理仍是硬伤</h2>
+        <div class="span-chart">
+          <div class="span-row">
+            <div class="span-name"><b>VBench 1.0</b><span>表观画质 (0–100)</span></div>
+            <div class="span-track"><div class="span-init" style="left:63%;width:17%"></div><div class="span-sota" style="left:86.5%"></div></div>
+            <div class="span-val">63–80 → <b>86+ 饱和</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>VBench 2.0</b><span>内在常识 (%)</span></div>
+            <div class="span-track"><div class="span-init" style="left:38%;width:21%"></div><div class="span-sota" style="left:66.7%"></div></div>
+            <div class="span-val">38–59% → <b>66.7%</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>PAI-Bench</b><span>物理合理性 (上界 89.8)</span></div>
+            <div class="span-track"><div class="span-init" style="left:60%;width:27.1%"></div><div class="span-sota" style="left:87.1%"></div></div>
+            <div class="span-val"><b>60.0 – 87.1</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>Physics-IQ</b><span>实拍续写 (%)</span></div>
+            <div class="span-track"><div class="span-init" style="left:10%;width:14.1%"></div><div class="span-sota" style="left:50%"></div><div class="span-sota brass" style="left:66.1%"></div></div>
+            <div class="span-val">&lt;24% → <b>50%</b> / <b class="brass">66%*</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>VideoPhy-2</b><span>双达标率 (%)</span></div>
+            <div class="span-track"><div class="span-init" style="left:17.2%;width:15.4%"></div><div class="span-sota" style="left:47.7%"></div></div>
+            <div class="span-val">17–33% → <b>47.7%</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>Last Exam</b><span>公式核验 (0–100)</span></div>
+            <div class="span-track"><div class="span-init" style="left:20%;width:37.8%"></div><div class="span-sota" style="left:57.8%"></div><div class="span-sota brass" style="left:65.5%"></div></div>
+            <div class="span-val">≤57.8 → <b class="brass">65.5 (3D代码)</b></div>
+          </div>
+          <div class="chart-legend">
+            <span><i style="background:#b8c8c1;border-radius:3px"></i>原论文初版区间</span>
+            <span><i style="background:var(--pine)"></i>纯神经网络 SOTA</span>
+            <span><i style="background:var(--brass)"></i>多采样验证* / 接入 3D 代码仿真</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P23 · Level 2 Spatial Consistency Table -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 2 关：视角与空间持久基准">
+      <div class="in">
+        <div class="kick">RQ3 · 第 2 关（给相机轨迹 <span class="m"><i>c<sub>t</sub></i></span>）</div>
+        <h2 class="head" style="margin-bottom:16px;">视角控制与空间持久：各基准到底在评什么？</h2>
+        <table class="mat" style="font-size:0.87rem;">
+          <thead>
+            <tr>
+              <th style="width:20%">评测集（信源）</th>
+              <th style="width:20%">输入 → 输出</th>
+              <th style="width:34%">到底在评什么？（核心指标）</th>
+              <th style="width:26%">典型考题示例</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b style="color:var(--pine)">SANA-WM-Bench</b><span class="sub-tag">NVIDIA Research</span></td>
+              <td>首帧 + <b>60s 6-DoF 轨迹</b> → 长视频</td>
+              <td><code>SLAM</code> 相机轨迹误差 + 长程画质退化 + <b>同位姿重访像素一致度</b></td>
+              <td>街口右转绕小巷一圈，第 55s 转回原街口朝向</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--brass)">WorldScore</b><span class="sub-tag">ICCV 2025 · Stanford</span></td>
+              <td>首帧 + <b>分段运镜指令 + 下一空间文本</b> → 连贯视频</td>
+              <td>① 镜头走准没 + 新房间生成没；② <b>跨镜 3D 重投影几何</b>变形没；③ <b>拆静/动两榜测物体光流</b>（防静态模型靠定格刷分）</td>
+              <td>从客厅右移穿拱门进餐厅，再推近餐桌果盘</td>
+            </tr>
+            <tr>
+              <td><b>R2M-Bench</b><span class="sub-tag">Tongji × Ant Group</span></td>
+              <td>首帧 + <b>离开再折返轨迹</b> → 重访视频</td>
+              <td>用片内非重访段校准的<b>归一化重访记忆比 <code>NMR</code></b>（防镜头原地不动刷分）</td>
+              <td>背离展厅雕像走远 → 转 180° 走回再正对雕像</td>
+            </tr>
+            <tr>
+              <td><b>WorldMemBench</b><span class="sub-tag">ZJU × Fudan × Ant</span></td>
+              <td>首帧 + <b>多轮往返轨迹</b>（含屏外事件）→ 视频</td>
+              <td>人物/物体身份保持（<code>SAM2/DINO</code>）+ <b>移开镜头期间屏外状态是否继续演化</b></td>
+              <td>左→右→左往返看人；移开镜头期间蜡烛燃尽</td>
+            </tr>
+            <tr>
+              <td><b style="color:var(--pine)">Invoker 140</b><span class="sub-tag">InclusionAI</span></td>
+              <td>外观参考图 + <b>73 帧三维深度流</b> → 视频</td>
+              <td>流式神经渲染对给定三维几何骨架的<b>结构贴合度与跨帧纹理稳定度</b></td>
+              <td>夜间路口首帧 + 73 帧车流深度序列渲染</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>重点解释 WorldScore 在评什么：它不是只看原地转圈，而是要求模型按分段相机指令“边走边扩建下一个房间”（比如从客厅穿拱门进餐厅），同时用 SLAM 和三维重投影检查旧家具歪没歪，并且专门把静态布景题（Static）和带运动主体的题（Dynamic）拆成两个榜——这样纯静态 3D 模型就没法靠“画面里所有东西一动不动”在动态榜里混高分。</p>
+      </aside>
+    </section>
+
+    <!-- P24 · Level 2 Scores (Span Chart aligned with P22) -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 2 关：初版分布 vs SOTA">
+      <div class="in">
+        <div class="kick">RQ3 · 第 2 关跑分</div>
+        <h2 class="head">静态记忆靠显式 3D，动态演化靠视频流（静—动跷跷板）</h2>
+        <div class="span-chart">
+          <div class="span-row">
+            <div class="span-name"><b>SANA-WM-Bench</b><span>60s 闭环综合分 (0–100)</span></div>
+            <div class="span-track"><div class="span-init" style="left:34%;width:24%"></div><div class="span-sota" style="left:74.8%"></div></div>
+            <div class="span-val">34–58 → <b>74.8</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>WorldScore · 静态</b><span>跨镜静态空间分 (0–100)</span></div>
+            <div class="span-track"><div class="span-init" style="left:45%;width:17.2%"></div><div class="span-sota" style="left:62.2%"></div><div class="span-sota brass" style="left:72.7%"></div></div>
+            <div class="span-val">≤62.2 → <b class="brass">72.7 (显式3D)</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>WorldScore · 动态</b><span>含运动物体跨镜分 (0–100)</span></div>
+            <div class="span-track"><div class="span-init" style="left:12%;width:36%"></div><div class="span-sota brass" style="left:12%"></div><div class="span-sota" style="left:59.1%"></div></div>
+            <div class="span-val"><b class="brass">3D动量归零</b> → <b>59.1</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>R2M-Bench</b><span>重访记忆比 NMR (0–1+)</span></div>
+            <div class="span-track"><div class="span-init" style="left:1.6%;width:46.9%"></div><div class="span-sota" style="left:70.6%"></div><div class="span-sota brass" style="left:94%"></div></div>
+            <div class="span-val">0.02–0.71 → <b class="brass">0.88–1.01*</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>WorldMem · 静态</b><span>多轮往返环境保持 (%)</span></div>
+            <div class="span-track"><div class="span-init" style="left:42%;width:34%"></div><div class="span-sota" style="left:76%"></div><div class="span-sota brass" style="left:94.7%"></div></div>
+            <div class="span-val">42–76% → <b class="brass">94.7% (3D记忆)</b></div>
+          </div>
+          <div class="span-row">
+            <div class="span-name"><b>WorldMem · 动态</b><span>屏外事件延续 (%)</span></div>
+            <div class="span-track"><div class="span-init" style="left:29.4%;width:33%"></div><div class="span-sota brass" style="left:29.4%"></div><div class="span-sota" style="left:80.8%"></div></div>
+            <div class="span-val"><b class="brass">29.4% (3D)</b> → <b>80.8%</b></div>
+          </div>
+          <div class="chart-legend">
+            <span><i style="background:#b8c8c1;border-radius:3px"></i>流式基线区间</span>
+            <span><i style="background:var(--pine)"></i>纯流式视频 SOTA</span>
+            <span><i style="background:var(--brass)"></i>显式 3D 记忆 / 接入 3D 代码代理*</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P20 · Level 3 Counterfactuals -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 3 关：动作与反事实分叉">
+      <div class="in">
+        <div class="kick">RQ3 · 第 3 关（给动作干预 <span class="m"><i>a<sub>t</sub></i></span>）</div>
+        <h2 class="head">同一初始状态 <span class="m"><i>s</i><sub>0</sub></span>，不同动作能否走出不同结果？</h2>
+        <div class="cols">
+          <div class="svg-card">
+            <svg viewBox="0 0 420 225" role="img" aria-label="Counterfactual fork">
+              <rect x="16" y="78" width="114" height="68" rx="8" fill="#e7f1ee" stroke="#245b56" stroke-width="1.6"/>
+              <text x="73" y="117" text-anchor="middle" font-size="13.5" font-weight="600" fill="#19211f">同一起点 <tspan class="sm">s</tspan><tspan class="sm-sub">0</tspan></text>
+
+              <path d="M130 102 L234 60" stroke="#245b56" stroke-width="2"/>
+              <text x="172" y="50" text-anchor="middle" font-size="12" font-weight="600" fill="#245b56"><tspan class="sm">a</tspan><tspan class="sm-sub">1</tspan>：右推木块</text>
+              <rect x="234" y="30" width="170" height="50" rx="8" fill="#fff" stroke="#245b56"/>
+              <text x="250" y="60" font-size="13" fill="#245b56">刚体滑行 25–37 dB ✓</text>
+
+              <path d="M130 122 L234 164" stroke="#8c483b" stroke-width="2"/>
+              <text x="172" y="186" text-anchor="middle" font-size="12" font-weight="600" fill="#8c483b"><tspan class="sm">a</tspan><tspan class="sm-sub">2</tspan>：倾倒水 / 布料</text>
+              <rect x="234" y="146" width="170" height="50" rx="8" fill="#faefed" stroke="#d7aba2"/>
+              <text x="250" y="176" font-size="13" fill="#8c483b">OoD 暴跌至 16.2 dB ✗</text>
+            </svg>
+          </div>
+          <div class="cards" style="grid-template-columns:1fr;gap:10px;">
+            <div class="card pine" style="padding:14px 18px;">
+              <h4>WBench <span class="en" style="color:var(--ink-4);font-size:0.75rem;">Fudan · 45 模型</span></h4>
+              <p>开箱点烛 → 下雪 → 切视角 · <b>Genie 3 均分 73.9</b></p>
+            </div>
+            <div class="card brass" style="padding:14px 18px;">
+              <h4>WorldMark <span class="en" style="color:var(--ink-4);font-size:0.75rem;">Univ. of Tokyo · WASD 控制论</span></h4>
+              <p>平移最高 <b>98.4</b>，但部分模型转向准确率仅 <b style="color:var(--warn)">2.7</b></p>
+            </div>
+            <div class="card warn" style="padding:14px 18px;">
+              <h4>ACWM-Phys <span class="en" style="color:var(--ink-4);font-size:0.75rem;">Georgia Tech</span></h4>
+              <p>刚体推块高分，一遇倒水与柔性布料断崖退化</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P21 · Level 4 Closed-Loop -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 第 4 关：闭环任务成功率">
+      <div class="in">
+        <div class="kick">RQ3 · 第 4 关（自主选动作闭环 · 全派同台）</div>
+        <h2 class="head">不看画面好不好看，只看任务成没成功</h2>
+        <div class="cards">
+          <div class="card warn">
+            <div class="tag-top">World-in-World · ICLR 2026 Oral</div>
+            <h4>陌生房屋找苹果（画面好 ≠ 好用）</h4>
+            <ul class="kw">
+              <li>纯 VLM 基线：<b>35.4%</b></li>
+              <li class="bad">直调未对齐视频模型：<b>倒退至 22.9%</b></li>
+              <li class="ok">动作对齐 + 修正：<b>48.6% SOTA</b></li>
+            </ul>
+          </div>
+          <div class="card pine">
+            <div class="tag-top">WorldArena 2.0 · Tsinghua / USTC</div>
+            <h4>机械臂合成轨迹训策略</h4>
+            <ul class="kw">
+              <li>通用视频模型 Wan 2.2：<b>15% / 41%</b></li>
+              <li class="ok">动作对齐具身模型 WoW：<b>45% / 71%</b></li>
+              <li>真机实采上界：77% / 66%</li>
+            </ul>
+          </div>
+          <div class="card brass">
+            <div class="tag-top">DROID 真机 · 路线 3 潜空间代表</div>
+            <h4>无像素 0.2s 实时零样本抓放</h4>
+            <ul class="kw">
+              <li>传统微调策略 Octo：<b>~15%</b></li>
+              <li class="ok">Meta <b>V-JEPA 2-AC</b>：<b>65% – 80%</b></li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="tag-top">Minecraft / SWE-bench · 路线 3 代表</div>
+            <h4>长程想象训练与代码状态推演</h4>
+            <ul class="kw">
+              <li><b>Dreamer 4</b> 全离线 2 万步挖钻：<b>0% → 0.7%</b></li>
+              <li><b>Meta CWM 32B</b> 代码解决率：<b>65.8%</b></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P22 · 4 Scoring Paradigms -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 四大自动打分范式">
+      <div class="in">
+        <div class="kick">RQ3 · 自动阅卷方式</div>
+        <h2 class="head">四大自动打分范式</h2>
+        <div class="cards four">
+          <div class="card">
+            <div class="tag-top">01 · 像素考卷</div>
+            <h4>VLM 裁判</h4>
+            <ul class="kw">
+              <li>按 Rubric 判常识因果</li>
+              <li class="ok">无需参考真值</li>
+              <li class="bad">画质偏见 · 同源刷分</li>
+            </ul>
+          </div>
+          <div class="card pine">
+            <div class="tag-top">02 · 像素考卷</div>
+            <h4>视觉 / 3D 算子</h4>
+            <ul class="kw">
+              <li>SLAM · 重建 · 跟踪</li>
+              <li class="ok">客观定量可解释</li>
+              <li class="bad">防“镜头不动”刷分</li>
+            </ul>
+          </div>
+          <div class="card brass">
+            <div class="tag-top">03 · 像素 / 3D</div>
+            <h4>真值参考对齐</h4>
+            <ul class="kw">
+              <li>比实拍/仿真 IoU · PSNR</li>
+              <li class="ok">物理几何约束最硬</li>
+              <li class="bad">易误罚合理多样性</li>
+            </ul>
+          </div>
+          <div class="card slate">
+            <div class="tag-top">04 · 全派通用</div>
+            <h4>闭环任务结算</h4>
+            <ul class="kw">
+              <li>真机/仿真环境判成败</li>
+              <li class="ok">唯一兼容无像素路线</li>
+              <li class="bad">成本高 · 耦合规划器</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P23 · 4 Rulers -->
+    <section class="slide" data-chap="rq3" data-title="RQ3 · 视觉算子：拿尺子量四件事">
+      <div class="in">
+        <div class="kick">RQ3 · 拆解视觉与 3D 算子</div>
+        <h2 class="head">所谓几何感知算子，就是去视频里<b>拿尺子量四件事</b></h2>
+        <div class="cards">
+          <div class="card pine">
+            <div class="tag-top">01 · SLAM 位姿反推</div>
+            <h4>量镜头「走没走准」</h4>
+            <p>倒推实际轨迹 vs 指令路线偏差</p>
+          </div>
+          <div class="card brass">
+            <div class="tag-top">02 · 多帧三维重建</div>
+            <h4>量结构「歪没歪」</h4>
+            <p>不同视角拼回 3D，抓墙面变形融化</p>
+          </div>
+          <div class="card">
+            <div class="tag-top">03 · 抠图跟踪比特征</div>
+            <h4>量物体「变没变样」</h4>
+            <p>遮挡或绕一圈回来，查换脸与变色</p>
+          </div>
+          <div class="card slate">
+            <div class="tag-top">04 · 点跟踪与光流</div>
+            <h4>量曲线「合不合公式」</h4>
+            <p>描出小球/液面轨迹，代物理公式算误差</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P24 · RQ4 Divider (Exact 4-column index table) -->
+    <section class="slide divider" data-chap="rq4" data-title="RQ4 · Agentic 路线的代表工作">
+      <div class="in">
+        <div class="rqbig">RQ4</div>
+        <h2>Agentic 路线的代表工作</h2>
+        <table class="idx">
+          <thead>
+            <tr><th>标题</th><th>信源</th><th>时间</th><th>研究视角</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>3DCodeVerse: Exploring 3D Worlds as Code</td>
+              <td class="src">USC · Laurent Itti</td>
+              <td class="tm">2026 Oct</td>
+              <td>训左端 LLM 写准 3D 代码</td>
+            </tr>
+            <tr>
+              <td>Code World Model 2.0 (Invoker-Render 1.0)</td>
+              <td class="src">InclusionAI (Ant Group)</td>
+              <td class="tm">2026 Nov</td>
+              <td>训右端流式 DiT 读多粒度草模</td>
+            </tr>
+            <tr>
+              <td>Coda-DaVinci: Reimagining Video Generation with Code2Video</td>
+              <td class="src">KlingAI Research</td>
+              <td class="tm">2026 Nov</td>
+              <td>顶层 Agent 路由与适度建模</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="speaker-note">
+        <p>RQ4 聚焦三篇最新代表作：一篇训左端写 3D 代码的 LLM，一篇训右端读草模视频的流式 DiT，一篇在顶层让 Agent 自主决定何时写码、Proxy 建多细。</p>
+      </aside>
+    </section>
+
+    <!-- P31 · RQ4 Paradigm Overview (Schematic + Real Visuals) -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · 范式：草模视频驱动 DiT">
+      <div class="in" data-sync-group>
+        <div class="vid-bar">
+          <div class="kick" style="margin:0;">RQ4 · 核心范式</div>
+          <button type="button" class="sync-btn" data-sync-play>▶ 同步播放示例</button>
+        </div>
+        <h2 class="head" style="margin-bottom:12px;">基本范式：Agentic Coding 输出草模视频驱动 DiT</h2>
+        <div class="svg-card" style="padding:12px 16px;margin-bottom:14px;">
+          <svg viewBox="0 0 960 146" role="img" aria-label="Agentic Coding to Proxy Video to DiT Paradigm">
+            <rect x="260" y="8" width="440" height="38" rx="8" fill="#eef4f2" stroke="#43645f" stroke-width="1.8"/>
+            <text x="480" y="32" text-anchor="middle" font-size="13.5" font-weight="600" fill="#19211f">Agent 顶层调度 · 任务路由 &amp; 建模粒度控制</text>
+            <path d="M360 46 L130 68" stroke="#43645f" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <path d="M480 46 L402 68" stroke="#43645f" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <path d="M600 46 L680 68" stroke="#43645f" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+            <rect x="16" y="68" width="220" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.8"/>
+            <text x="126" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">1. LLM 写 3D 代码</text>
+            <text x="126" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">Blender / Three.js / CAD</text>
+
+            <path d="M236 102 L274 102" stroke="#245b56" stroke-width="2.2"/>
+
+            <rect x="276" y="68" width="252" height="68" rx="9" fill="#faf4e6" stroke="#84693a" stroke-width="1.8"/>
+            <text x="402" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#84693a">2. 引擎渲染草模 Proxy 视频</text>
+            <text x="402" y="119" text-anchor="middle" font-size="11.5" fill="#64746f">白模 · 深度 · 3D 框 · 物理碰撞</text>
+
+            <path d="M528 102 L568 102" stroke="#84693a" stroke-width="2.2"/>
+            <text x="548" y="92" text-anchor="middle" font-size="10.5" fill="#64746f">+参考图</text>
+
+            <rect x="570" y="68" width="220" height="68" rx="9" fill="#fff" stroke="#245b56" stroke-width="1.8"/>
+            <text x="680" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#19211f">3. 条件视频 DiT 渲染</text>
+            <text x="680" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">贴真实材质 · 光影 · 微动态</text>
+
+            <path d="M790 102 L822 102" stroke="#245b56" stroke-width="2.2"/>
+
+            <rect x="824" y="68" width="120" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.8"/>
+            <text x="884" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">真实成片</text>
+            <text x="884" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">几何 + 画质</text>
+          </svg>
+        </div>
+
+        <div class="cards three" style="gap:14px;">
+          <figure>
+            <div class="frame light zoomable"><img src="assets/stool-sheet.png" style="max-height:25vh;" alt="3D code asset"></div>
+            <figcaption>① 代码生成精确 3D 几何资产</figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><video src="assets/leaves-proxy.mp4" style="max-height:25vh;" autoplay loop muted playsinline controls></video></div>
+            <figcaption>② Blender 导出物理/运镜草模视频</figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><video src="assets/leaves-final.mp4" style="max-height:25vh;" autoplay loop muted playsinline controls></video></div>
+            <figcaption>③ 视频 DiT 渲染真实光影质感成片</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>在逐篇讲论文前，先把这条链路的共同范式摆出来：左边大模型写可执行 3D 代码，中间由引擎跑出保证透视与物理的草模 Proxy 视频，右边送入视频 DiT 渲染成真实画面。下面三篇代表作，刚好各自攻克这条链路上的一个核心模块。</p>
+      </aside>
+    </section>
+
+    <!-- P32 · 3DCodeVerse (1/2) — Highlight Left LLM Module -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · 3DCodeVerse：写 3D 代码闭环">
+      <div class="in">
+        <div class="kick">RQ4 · 工作一 · 3DCodeVerse (USC · 2026 Oct)</div>
+        <h2 class="head" style="margin-bottom:12px;">3DCodeVerse：训左端 LLM 写准可执行 3D 代码</h2>
+        <div class="svg-card" style="padding:10px 14px;margin-bottom:14px;">
+          <svg viewBox="0 0 960 146" role="img" aria-label="Highlight 3DCodeVerse module">
+            <g opacity="0.32">
+              <rect x="260" y="8" width="440" height="38" rx="8" fill="#eef4f2" stroke="#43645f" stroke-width="1.5"/>
+              <text x="480" y="32" text-anchor="middle" font-size="13.5" font-weight="600" fill="#19211f">Agent 顶层调度 · 任务路由 &amp; 建模粒度控制</text>
+              <path d="M236 102 L274 102" stroke="#245b56" stroke-width="2"/>
+              <rect x="276" y="68" width="252" height="68" rx="9" fill="#faf4e6" stroke="#84693a" stroke-width="1.5"/>
+              <text x="402" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#84693a">2. 引擎渲染草模 Proxy 视频</text>
+              <text x="402" y="119" text-anchor="middle" font-size="11.5" fill="#64746f">白模 · 深度 · 3D 框 · 物理碰撞</text>
+              <path d="M528 102 L568 102" stroke="#84693a" stroke-width="2"/>
+              <rect x="570" y="68" width="220" height="68" rx="9" fill="#fff" stroke="#245b56" stroke-width="1.5"/>
+              <text x="680" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#19211f">3. 条件视频 DiT 渲染</text>
+              <text x="680" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">贴真实材质 · 光影 · 微动态</text>
+              <path d="M790 102 L822 102" stroke="#245b56" stroke-width="2"/>
+              <rect x="824" y="68" width="120" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.5"/>
+              <text x="884" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">真实成片</text>
+            </g>
+            <!-- Highlighted Left Module -->
+            <rect x="16" y="12" width="220" height="32" rx="16" fill="#245b56"/>
+            <text x="126" y="33" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">★ 本文核心攻关位置</text>
+            <path d="M126 44 L126 64" stroke="#245b56" stroke-width="2.4"/>
+            <rect x="16" y="68" width="220" height="68" rx="9" fill="#d5ebe4" stroke="#245b56" stroke-width="3"/>
+            <text x="126" y="96" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1a433f">1. LLM 写 3D 代码</text>
+            <text x="126" y="119" text-anchor="middle" font-size="11.5" font-weight="600" fill="#245b56">SFT + DPO + 测量修码闭环</text>
+          </svg>
+        </div>
+
+        <div class="cols">
+          <div class="cards" style="grid-template-columns:1fr;gap:10px;">
+            <div class="card pine" style="padding:14px 18px;">
+              <div class="tag-top">TASK I/O</div>
+              <h4>文本 / 参考图 → Blender · Three.js · CAD · URDF 代码</h4>
+              <p>运行导出 <code>.glb</code> 网格，供下游直接渲染草模视频</p>
+            </div>
+            <div class="card slate" style="padding:14px 18px;">
+              <div class="tag-top">RESEARCH QUESTION</div>
+              <h4>通用 LLM 直写 3D 代码极易语法报错、比例失真</h4>
+            </div>
+          </div>
+
+          <div class="svg-card" style="padding:12px 16px;">
+            <svg viewBox="0 0 420 190" role="img" aria-label="3DCodeVerse Harness Loop">
+              <rect x="18" y="14" width="172" height="58" rx="8" fill="#fff" stroke="#cedad4"/>
+              <text x="34" y="40" font-size="13.5" font-weight="600" fill="#19211f">1. 规划与写源码</text>
+              <text x="34" y="60" font-family="JetBrains Mono" font-size="11" fill="#64746f">bpy / three.js / cad</text>
+
+              <rect x="230" y="14" width="172" height="58" rx="8" fill="#e7f1ee" stroke="#245b56"/>
+              <text x="246" y="40" font-size="13.5" font-weight="600" fill="#245b56">2. 运行导出网格</text>
+              <text x="246" y="60" font-family="JetBrains Mono" font-size="11" fill="#245b56">拦截语法报错</text>
+
+              <rect x="230" y="114" width="172" height="58" rx="8" fill="#faf4e6" stroke="#d9c396"/>
+              <text x="246" y="140" font-size="13.5" font-weight="600" fill="#84693a">3. 几何测量 + VLM</text>
+              <text x="246" y="160" font-size="11.5" fill="#64746f">包围盒尺寸 · 多视角图</text>
+
+              <rect x="18" y="114" width="172" height="58" rx="8" fill="#eef4f2" stroke="#43645f"/>
+              <text x="34" y="140" font-size="13.5" font-weight="600" fill="#43645f">4. 定向迭代修码</text>
+              <text x="34" y="160" font-size="11.5" fill="#64746f">回传具体空间误差</text>
+
+              <path d="M190 43 L228 43" stroke="#245b56" stroke-width="2"/>
+              <path d="M316 72 L316 112" stroke="#245b56" stroke-width="2"/>
+              <path d="M230 143 L192 143" stroke="#84693a" stroke-width="2"/>
+              <path d="M104 114 L104 74" stroke="#43645f" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P33 · 3DCodeVerse (2/2) -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · 3DCodeVerse：算力、跑分与本地复现">
+      <div class="in">
+        <div class="kick">RQ4 · 3DCodeVerse 结果</div>
+        <h2 class="head">4 张 H100 训数小时，可执行率跃升至 85%–93%</h2>
+        <div class="kv">
+          <div><b>27 万</b><span>独立可执行 3D 程序</span></div>
+          <div><b>4 × H100</b><span>9B SFT 仅 4.8 小时</span></div>
+          <div><b>0% → 84.9%</b><span>Qwen-9B (3DCodeBench)</span></div>
+          <div><b>51.9% → 92.9%</b><span>Qwen-27B (SFT+DPO)</span></div>
+        </div>
+        <div class="cols" style="margin-top:12px;">
+          <ul class="kw" style="font-size:1.02rem;gap:12px;">
+            <li class="ok">Blender 留出集可执行率：<span class="en">1.9% → 90.3%</span></li>
+            <li class="ok">Harness 人类偏好盲测：<b>~90% 胜率</b>优于传统 Text-to-3D</li>
+            <li class="ok"><b>本组本地复现</b>：45cm 圆木凳任务，导出 GLB 实测高度 <span class="en">45.02 cm</span>（<span class="en">0.909 → 0.931</span>）</li>
+          </ul>
+          <figure>
+            <div class="frame light zoomable">
+              <img src="assets/stool-sheet.png" alt="Wooden stool multi-view sheet">
+            </div>
+            <figcaption>本组实跑 3DCodeVerse Harness 产物（点击放大）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- P34 · Code World Model 2.0 (1/2) — Highlight Right DiT & Multi-Proxy Module -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · CWM 2.0：6 类粗细 Proxy">
+      <div class="in">
+        <div class="kick">RQ4 · 工作二 · Code World Model 2.0 (InclusionAI · 2026 Nov)</div>
+        <h2 class="head" style="margin-bottom:12px;">Code World Model 2.0：训右端流式 DiT 读懂多粒度草模</h2>
+        <div class="svg-card" style="padding:10px 14px;margin-bottom:14px;">
+          <svg viewBox="0 0 960 146" role="img" aria-label="Highlight CWM 2.0 module">
+            <g opacity="0.32">
+              <rect x="260" y="8" width="160" height="38" rx="8" fill="#eef4f2" stroke="#43645f" stroke-width="1.5"/>
+              <text x="340" y="32" text-anchor="middle" font-size="12.5" font-weight="600" fill="#19211f">Agent 顶层调度</text>
+              <rect x="16" y="68" width="220" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.5"/>
+              <text x="126" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">1. LLM 写 3D 代码</text>
+              <text x="126" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">Blender / Three.js / CAD</text>
+              <path d="M236 102 L274 102" stroke="#245b56" stroke-width="2"/>
+            </g>
+            <!-- Highlighted Proxy Interface + DiT Renderer -->
+            <rect x="460" y="12" width="330" height="32" rx="16" fill="#245b56"/>
+            <text x="625" y="33" text-anchor="middle" font-size="12" font-weight="600" fill="#ffffff">★ 本文核心：统一多粒度接口 + 流式 DiT 蒸馏</text>
+            <path d="M530 44 L440 64" stroke="#84693a" stroke-width="2"/>
+            <path d="M680 44 L680 64" stroke="#245b56" stroke-width="2.4"/>
+
+            <rect x="276" y="68" width="252" height="68" rx="9" fill="#faf4e6" stroke="#84693a" stroke-width="2.8"/>
+            <text x="402" y="96" text-anchor="middle" font-size="14" font-weight="700" fill="#84693a">2. 6 类粗细草模 Proxy</text>
+            <text x="402" y="119" text-anchor="middle" font-size="11.5" font-weight="600" fill="#64746f">稀疏框 → 色块 → 白模 → 稠密深度</text>
+
+            <path d="M528 102 L568 102" stroke="#245b56" stroke-width="2.6"/>
+            <text x="548" y="92" text-anchor="middle" font-size="10.5" font-weight="600" fill="#245b56">+首帧图</text>
+
+            <rect x="570" y="68" width="220" height="68" rx="9" fill="#d5ebe4" stroke="#245b56" stroke-width="3"/>
+            <text x="680" y="96" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1a433f">3. Invoker-Render</text>
+            <text x="680" y="119" text-anchor="middle" font-size="11.5" font-weight="600" fill="#245b56">33B 流式 DiT · 18 FPS</text>
+
+            <path d="M790 102 L822 102" stroke="#245b56" stroke-width="2.4"/>
+            <rect x="824" y="68" width="120" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="2"/>
+            <text x="884" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">真实成片</text>
+            <text x="884" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">30min 不糊屏</text>
+          </svg>
+        </div>
+
+        <div class="svg-card" style="padding:12px 16px;">
+          <svg viewBox="0 0 960 142" role="img" aria-label="6 proxy granularities">
+            <text x="16" y="22" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#84693a">← 极粗草模（建模省事 · 自动脑补细节）</text>
+            <text x="690" y="22" font-family="JetBrains Mono" font-size="12" font-weight="600" fill="#245b56">极细草模（逐像素严锁透视）→</text>
+
+            <rect x="16" y="36" width="146" height="90" rx="10" fill="#faf4e6" stroke="#d9c396"/>
+            <text x="30" y="68" font-size="14" font-weight="600" fill="#84693a">稀疏 3D 框</text>
+            <text x="30" y="96" font-size="12" fill="#64746f">平移方块→迈步行人</text>
+
+            <rect x="174" y="36" width="146" height="90" rx="10" fill="#faf4e6" stroke="#d9c396"/>
+            <text x="188" y="68" font-size="14" font-weight="600" fill="#84693a">语义色块</text>
+            <text x="188" y="96" font-size="12" fill="#64746f">色块→水面波纹反光</text>
+
+            <rect x="332" y="36" width="146" height="90" rx="10" fill="#faf4e6" stroke="#d9c396"/>
+            <text x="346" y="68" font-size="14" font-weight="600" fill="#84693a">主体掩码</text>
+            <text x="346" y="96" font-size="12" fill="#64746f">粗轮廓区隔前景</text>
+
+            <rect x="490" y="36" width="146" height="90" rx="10" fill="#e7f1ee" stroke="#245b56"/>
+            <text x="504" y="68" font-size="14" font-weight="600" fill="#245b56">简化白模</text>
+            <text x="504" y="96" font-size="12" fill="#64746f">低模赋予真实材质</text>
+
+            <rect x="648" y="36" width="146" height="90" rx="10" fill="#e7f1ee" stroke="#245b56"/>
+            <text x="662" y="68" font-size="14" font-weight="600" fill="#245b56">框 + 骨架</text>
+            <text x="662" y="96" font-size="12" fill="#64746f">精确控制肢体动作</text>
+
+            <rect x="806" y="36" width="138" height="90" rx="10" fill="#e7f1ee" stroke="#245b56" stroke-width="1.8"/>
+            <text x="820" y="68" font-size="14" font-weight="600" fill="#245b56">稠密深度</text>
+            <text x="820" y="96" font-size="12" fill="#64746f">逐像素锁街道透视</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- P35 · Code World Model 2.0 (2/2) -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · CWM 2.0：ProForcing 实时流式">
+      <div class="in">
+        <div class="kick">RQ4 · CWM 2.0 训练与案例</div>
+        <h2 class="head"><span class="en">ProForcing</span> 四步蒸馏：18 FPS 稳态流式不糊屏</h2>
+        <div class="cols">
+          <div>
+            <div class="pill-row" style="margin:0 0 12px;">
+              <span class="pill">1. 多粒度流匹配</span>
+              <span class="pill pine">2. 因果分块适配</span>
+              <span class="pill brass">3. ProForcing 四步蒸馏 + 自生成历史训练</span>
+            </div>
+            <div class="kv">
+              <div><b>18 FPS</b><span>1344×768 (8 卡)</span></div>
+              <div><b>1232.0</b><span>140 序列 SOTA</span></div>
+              <div class="brass"><b>30 min</b><span>连续驾驶不糊屏</span></div>
+            </div>
+            <div class="vid-pair" style="margin-top:10px;">
+              <figure>
+                <div class="frame zoomable"><img src="assets/city-ref.jpg" alt="City RGB ref"></div>
+                <figcaption>夜间车流参考图</figcaption>
+              </figure>
+              <figure>
+                <div class="frame"><video src="assets/city-proxy.mp4" autoplay loop muted playsinline controls></video></div>
+                <figcaption>73 帧时序深度 Proxy</figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <figure class="tall">
+            <div class="frame zoomable">
+              <img src="assets/tower-grid.jpg" alt="Tower Dive two routes">
+            </div>
+            <figcaption>高楼双俯冲路线：上方两条 Proxy，下方渲染成片（点击放大）</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- P36 · Coda-DaVinci (1/2) — Highlight Top Agent Router & Proxy Boundary -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · Coda-DaVinci：适度建模边界">
+      <div class="in">
+        <div class="kick">RQ4 · 工作三 · Coda-DaVinci (KlingAI Research · 2026 Nov)</div>
+        <h2 class="head" style="margin-bottom:12px;">Coda-DaVinci：Agent 自主决策用不用代码、Proxy 建多细</h2>
+        <div class="svg-card" style="padding:10px 14px;margin-bottom:14px;">
+          <svg viewBox="0 0 960 146" role="img" aria-label="Highlight Coda-DaVinci module">
+            <g opacity="0.32">
+              <rect x="16" y="68" width="220" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.5"/>
+              <text x="126" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">1. LLM 写 3D 代码</text>
+              <text x="126" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">Blender 建模与仿真</text>
+              <path d="M236 102 L274 102" stroke="#245b56" stroke-width="2"/>
+              <rect x="570" y="68" width="220" height="68" rx="9" fill="#fff" stroke="#245b56" stroke-width="1.5"/>
+              <text x="680" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#19211f">3. 条件视频 DiT 渲染</text>
+              <text x="680" y="119" text-anchor="middle" font-size="11.5" fill="#3a4743">固定后端 (Seedance 2.5)</text>
+              <path d="M790 102 L822 102" stroke="#245b56" stroke-width="2"/>
+              <rect x="824" y="68" width="120" height="68" rx="9" fill="#e7f1ee" stroke="#245b56" stroke-width="1.5"/>
+              <text x="884" y="96" text-anchor="middle" font-size="14" font-weight="600" fill="#245b56">真实成片</text>
+            </g>
+            <!-- Highlighted Top Agent + Proxy Granularity Boundary -->
+            <rect x="220" y="6" width="520" height="40" rx="9" fill="#faf4e6" stroke="#84693a" stroke-width="3"/>
+            <text x="480" y="31" text-anchor="middle" font-size="13.5" font-weight="700" fill="#84693a">★ 本文核心：Agent 路由（直生 vs 写码）&amp; 按实体分配粗细粒度</text>
+            <path d="M350 46 L130 68" stroke="#84693a" stroke-width="2" stroke-dasharray="4 3"/>
+            <path d="M440 46 L402 68" stroke="#84693a" stroke-width="2.4"/>
+            <path d="M610 46 L680 68" stroke="#84693a" stroke-width="2" stroke-dasharray="4 3"/>
+
+            <rect x="276" y="68" width="252" height="68" rx="9" fill="#f7ecd2" stroke="#84693a" stroke-width="2.8"/>
+            <text x="402" y="96" text-anchor="middle" font-size="14" font-weight="700" fill="#84693a">2. 适度建模 Proxy 边界</text>
+            <text x="402" y="119" text-anchor="middle" font-size="11.5" font-weight="600" fill="#64746f">环境建中模 · 人物仅建粗圆柱</text>
+            <path d="M528 102 L568 102" stroke="#84693a" stroke-width="2.2"/>
+          </svg>
+        </div>
+
+        <div class="cols top">
+          <div class="card pine" style="padding:14px 18px;">
+            <div class="tag-top">写进 Blender 草模（硬约束）</div>
+            <h4>只锁死「绝对不能错」的骨架</h4>
+            <ul class="kw">
+              <li class="ok">定轨相机与空间地标坐标</li>
+              <li class="ok">刚体碰撞 · 单摆周期 · 水位守恒</li>
+              <li class="ok">屏外持续状态（转开镜头落叶照吹）</li>
+            </ul>
+          </div>
+          <div class="card brass" style="padding:14px 18px;">
+            <div class="tag-top">留白给视频 DiT（软细节）</div>
+            <h4>自然质感交给生成先验</h4>
+            <ul class="kw">
+              <li class="ok">人物五官、手指关节与衣物褶皱</li>
+              <li class="bad">全代码硬写细部 → 动作僵硬带“塑料感”</li>
+              <li>无硬约束普通镜头 → 直接路由纯 DiT</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P37 · Coda-DaVinci (2/2) -->
+    <section class="slide" data-chap="rq4" data-title="RQ4 · Coda-DaVinci：案例与跑分">
+      <div class="in" data-sync-group>
+        <div class="vid-bar">
+          <div class="kick" style="margin:0;">RQ4 · 草模 Proxy vs 最终成片</div>
+          <button type="button" class="sync-btn" data-sync-play>▶ 同步播放四路视频</button>
+        </div>
+        <h2 class="head" style="margin-bottom:14px;">锁住屏外进度与重访地标，同一后端全面刷榜</h2>
+        <div class="cols top" style="gap:16px;">
+          <div class="card" style="padding:12px 14px;">
+            <div class="tag-top">25s 台阶吹落叶（镜头转开 15s 再回看）</div>
+            <div class="vid-pair">
+              <figure>
+                <div class="frame"><video src="assets/leaves-proxy.mp4" muted loop playsinline controls></video></div>
+                <figcaption>Blender 草模 Proxy</figcaption>
+              </figure>
+              <figure>
+                <div class="frame"><video src="assets/leaves-final.mp4" muted loop playsinline controls></video></div>
+                <figcaption>Seedance 2.5 成片</figcaption>
+              </figure>
+            </div>
+          </div>
+          <div class="card" style="padding:12px 14px;">
+            <div class="tag-top">30s 科幻广场定轨多次回访</div>
+            <div class="vid-pair">
+              <figure>
+                <div class="frame"><video src="assets/plaza-proxy.mp4" muted loop playsinline controls></video></div>
+                <figcaption>Blender 地标 Proxy</figcaption>
+              </figure>
+              <figure>
+                <div class="frame"><video src="assets/plaza-final.mp4" muted loop playsinline controls></video></div>
+                <figcaption>Seedance 2.5 成片</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+        <div class="kv" style="margin-top:12px;">
+          <div><b>57.8 → 65.5</b><span>Last Exam 物理 SOTA</span></div>
+          <div><b>0.88 – 1.01</b><span>R2M 空间重访 SOTA</span></div>
+          <div><b>59.2% → 11.1%</b><span>VTR 动态文字词错率 ↓</span></div>
+          <div class="brass"><b>0 重训</b><span>固定同一 Seedance 2.5</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- P38 · Discussion 2 Divider -->
+    <section class="slide divider" data-chap="d2" data-title="D2 · 现有工作的缺点与未来方向">
+      <div class="in">
+        <div class="kick">Discussion 2 · 实测与讨论</div>
+        <div class="rqbig">D2</div>
+        <h2>现有工作的缺点与未来方向</h2>
+        <div class="pill-row">
+          <span class="pill pine"><b>对比实测</b> Invoker-Render vs. Seedance 2.5 同输入失忆</span>
+          <span class="pill brass"><b>方案 01</b> Agent 动态组织分段与重访参考图</span>
+          <span class="pill"><b>方案 02</b> 接口直接升维至显式 3D 资产</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- P39 · D2 Unified Comparison: Invoker-Render vs Commercial Seedance 2.5 -->
+    <section class="slide" data-chap="d2" data-title="D2 · 代表工作 vs 商业模型对比">
+      <div class="in">
+        <div class="kick">Discussion 2 · 字节级相同输入（起点参考图 + 1344×768 深度流）</div>
+        <h2 class="head" style="margin-bottom:12px;">代表工作 vs. 商业模型：空间重访双双失忆换皮</h2>
+        <figure style="margin-bottom:12px;">
+          <div class="frame">
+            <video src="assets/seedance-3way.mp4" style="max-height:22vh;" autoplay loop muted playsinline controls></video>
+          </div>
+          <figcaption>左：1344×768 深度输入 ｜ 中：Invoker-Render (CWM 2.0) ｜ 右：Seedance 2.5</figcaption>
+        </figure>
+        <div style="display:grid;grid-template-columns:0.94fr 0.74fr 1.32fr;gap:14px;align-items:center;">
+          <ul class="kw" style="font-size:0.93rem;gap:11px;">
+            <li class="bad"><b>机位锁定变弱</b> · 商业模型近似回访帧 <span class="en">~2.58s / ~12.25s</span></li>
+            <li class="bad"><b>立面双双换皮</b> · <code>Invoker</code> 窗带重画（<span class="en">SSIM 0.47</span>）；<code>Seedance 2.5</code> 横窗 → 无窗灰墙</li>
+            <li><b>共同瓶颈</b> · 仅喂单条几何视频，开源专用与商业旗舰双双失忆</li>
+          </ul>
+          <figure>
+            <div class="frame zoomable">
+              <img src="assets/urban-canyon-routes.png" style="max-height:31vh;" alt="Urban Canyon two camera loops">
+            </div>
+            <figcaption>路线图：A 出发双环折返（点击放大）</figcaption>
+          </figure>
+          <figure>
+            <div class="frame zoomable">
+              <img src="assets/invoker-vs-seedance.jpg" style="max-height:31vh;" alt="Invoker vs Seedance 2.5">
+            </div>
+            <figcaption>上：Invoker-Render ｜ 下：Seedance 2.5（点击放大）</figcaption>
+          </figure>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>看中间路线图：相机从 A 出发沿 B/C 环路绕城市街区一圈回到完全相同的位姿 A（只给起点参考图防泄题）。把字节级完全相同的深度视频喂给该工作（CWM 2.0 的 Invoker-Render）和商业旗舰 Seedance 2.5：无论开源专用还是商业旗舰，第一次路过时脑补的建筑窗带纹理，绕一圈回来全都换了一套皮肤。</p>
+      </aside>
+    </section>
+
+    <!-- P40 · D2 Possible Solutions: Redesigning the Proxy Interface -->
+    <section class="slide" data-chap="d2" data-title="D2 · 可能方案：改造 Proxy 接口">
+      <div class="in">
+        <div class="kick">Discussion 2 · 可能方案（改造 Proxy）</div>
+        <h2 class="head">怎么守住长程外观？改造送入 DiT 的 <code>Proxy</code> 接口</h2>
+        <div class="cols top">
+          <div class="card pine">
+            <div class="tag-top">方案 01 · 免改 DiT 底座</div>
+            <h4>由 Agent 动态决定「把什么送入 DiT」</h4>
+            <ul class="kw">
+              <li class="ok"><b>不只单条白模视频</b> · 按空间重访动态分段生成</li>
+              <li class="ok"><b>首次画面回传</b> · 截出重复场景首次生成帧，作后续参考图</li>
+              <li class="ok"><b>预先设计参考图</b> · 提前为重复地标生成参考图，全程按图生成</li>
+              <li><b>现有三篇均未做</b> · 仅锁单张首图，或取上段尾帧顺延</li>
+            </ul>
+          </div>
+
+          <div class="card brass">
+            <div class="tag-top">方案 02 · 远期高难度探索</div>
+            <h4>直接把接口变成「显式 3D 资产」？</h4>
+            <ul class="kw">
+              <li class="ok"><b>接口升维</b> · 2D 草模视频 → 带纹理 <code>3DGS / Mesh / 体素</code></li>
+              <li class="ok"><b>根源治本</b> · 外观绑定三维表面坐标，彻底消除重访换皮</li>
+              <li class="bad"><b>落地难度极高</b> · 视频 DiT 原生吃二维 Token，缺大规模动态 3D 配对数据</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>针对刚才暴露的外观失忆问题，提出两条改造 Proxy 的可能方案：第一条不改底层 DiT，由顶层 Agent 决定把什么送进 DiT——不只喂单个白模视频，而是分段生成并回传重复场景第一次出现时的生成画面，或者事先为重复出现的地标预先设计好参考图、全程按图生成（核查过目前三篇代表作都还没有这样做）；第二条更彻底但难度极高的，是干脆把中间接口从二维视频直接升级成带纹理的 3D 资产。</p>
+      </aside>
+    </section>
+
+    <!-- P41 · Takeaways Unfolded from Left Dock -->
+    <section class="slide divider takeaway-stage" data-chap="d2" data-title="总结 · Takeaways">
+      <div class="in">
+        <div class="tk-stage-head">
+          <div>
+            <div class="kick" style="margin-bottom:6px;">Takeaways · 全场脉络释放</div>
+            <h2 style="margin:0;">全场核心 Takeaway</h2>
+          </div>
+          <p class="tk-stage-links">谢谢 · 欢迎交流讨论 &ensp;|&ensp; <a href="../index.html">← 组会目录</a> &ensp;·&ensp; <a href="../../index.html">主页</a></p>
+        </div>
+
+        <div class="tk-stage-grid" id="tk-stage-grid">
+          <!-- Card 1: P05 State Loop -->
+          <div class="tk-final-card pine" style="--slot:0; --from-x:-34vw; --from-y:8vh;" data-jump="4">
+            <div class="tk-fc-head">
+              <span class="tk-fc-badge">01 · RQ1 定义（P05）</span>
+              <b>三功能器闭环与 <span class="m"><i>s<sub>t</sub></i> ≠ <i>o<sub>t</sub></i></span></b>
+            </div>
+            <svg viewBox="0 0 420 246" role="img" aria-label="P05 Circular State Loop">
+              <defs>
+                <marker id="p41-pine" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#245b56"/></marker>
+                <marker id="p41-brass" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#84693a"/></marker>
+              </defs>
+              <circle cx="210" cy="132" r="94" fill="none" stroke="#dce7e2" stroke-width="1.8"/>
+              <path d="M 116 134 A 94 94 0 0 1 163 51" fill="none" stroke="#245b56" stroke-width="2.2" marker-end="url(#p41-pine)"/>
+              <text x="104" y="84" text-anchor="end" font-size="12" font-weight="600" fill="#245b56">动作 <tspan class="sm">a</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+              <path d="M 257 51 A 94 94 0 0 1 304 134" fill="none" stroke="#245b56" stroke-width="2.2" marker-end="url(#p41-pine)"/>
+              <text x="316" y="84" text-anchor="start" font-size="12" font-weight="600" fill="#245b56">状态 <tspan class="sm">s</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+              <path d="M 250 215 A 94 94 0 0 1 170 215" fill="none" stroke="#84693a" stroke-width="2.2" marker-end="url(#p41-brass)"/>
+              <text x="210" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#84693a">观测 <tspan class="sm">o</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+              <path d="M 176 164 A 52 52 0 0 1 244 164" fill="none" stroke="#84693a" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#p41-brass)"/>
+              <text x="210" y="146" text-anchor="middle" font-size="11" font-weight="600" fill="#84693a">视角 <tspan class="sm">c</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+              <circle cx="210" cy="52" r="44" fill="#e7f1ee" stroke="#245b56" stroke-width="2"/>
+              <text x="210" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#245b56">Simulator</text>
+              <text x="210" y="66" text-anchor="middle" font-size="11.5" fill="#19211f">状态演化</text>
+
+              <circle cx="282" cy="174" r="44" fill="#faf4e6" stroke="#84693a" stroke-width="2"/>
+              <text x="282" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#84693a">Renderer</text>
+              <text x="282" y="188" text-anchor="middle" font-size="11.5" fill="#19211f">观测合成</text>
+
+              <circle cx="138" cy="174" r="44" fill="#eef4f2" stroke="#43645f" stroke-width="2"/>
+              <text x="138" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#43645f">Planner</text>
+              <text x="138" y="188" text-anchor="middle" font-size="11.5" fill="#19211f">能动决策</text>
+            </svg>
+          </div>
+
+          <!-- Card 2: P07 4 Traditional Routes (Names Only) -->
+          <div class="tk-final-card brass" style="--slot:1; --from-x:-62vw; --from-y:8vh;" data-jump="6">
+            <div class="tk-fc-head">
+              <span class="tk-fc-badge">02 · RQ2 传统派别（P07）</span>
+              <b>四种主流技术路线</b>
+            </div>
+            <div class="tk-name-grid">
+              <div class="tk-name-pill muted"><span>路线 0</span><b>单次视频生成</b></div>
+              <div class="tk-name-pill pine"><span>路线 1</span><b>流式像素交互派</b></div>
+              <div class="tk-name-pill brass"><span>路线 2</span><b>显式 3D 记忆派</b></div>
+              <div class="tk-name-pill slate"><span>路线 3</span><b>无像素潜空间派</b></div>
+            </div>
+          </div>
+
+          <!-- Card 3: P21 4 Benchmark Dimensions (Names Only) -->
+          <div class="tk-final-card slate" style="--slot:2; --from-x:-34vw; --from-y:-18vh;" data-jump="20">
+            <div class="tk-fc-head">
+              <span class="tk-fc-badge">03 · RQ3 评测维度（P21）</span>
+              <b>四关递进评测标尺</b>
+            </div>
+            <div class="tk-name-grid">
+              <div class="tk-name-pill"><span>第 1 关</span><b>表观与物理常识</b></div>
+              <div class="tk-name-pill brass"><span>第 2 关</span><b>视角与空间持久</b></div>
+              <div class="tk-name-pill pine"><span>第 3 关</span><b>动作与反事实分叉</b></div>
+              <div class="tk-name-pill pine"><span>第 4 关</span><b>闭环任务成功率</b></div>
+            </div>
+          </div>
+
+          <!-- Card 4: P31 Agentic Paradigm Schematic -->
+          <div class="tk-final-card pine" style="--slot:3; --from-x:-62vw; --from-y:-18vh;" data-jump="30">
+            <div class="tk-fc-head">
+              <span class="tk-fc-badge">04 · RQ4 Agentic 范式（P31）</span>
+              <b>草模视频驱动 DiT</b>
+            </div>
+            <svg viewBox="0 0 540 165" role="img" aria-label="P31 Agentic Paradigm">
+              <rect x="72" y="10" width="396" height="36" rx="8" fill="#eef4f2" stroke="#43645f" stroke-width="1.6"/>
+              <text x="270" y="33" text-anchor="middle" font-size="12.5" font-weight="600" fill="#19211f">Agent 顶层调度 · 任务路由 &amp; 粒度控制</text>
+              <path d="M 180 46 L 76 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+              <path d="M 270 46 L 234 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+              <path d="M 360 46 L 390 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+
+              <rect x="10" y="72" width="132" height="76" rx="8" fill="#e7f1ee" stroke="#245b56" stroke-width="1.6"/>
+              <text x="76" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245b56">1. 写 3D 代码</text>
+              <text x="76" y="126" text-anchor="middle" font-size="10.5" fill="#3a4743">Blender · CAD</text>
+
+              <path d="M 142 110 L 160 110" stroke="#245b56" stroke-width="2"/>
+
+              <rect x="162" y="72" width="144" height="76" rx="8" fill="#faf4e6" stroke="#84693a" stroke-width="1.6"/>
+              <text x="234" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#84693a">2. 草模 Proxy 视频</text>
+              <text x="234" y="126" text-anchor="middle" font-size="10.5" fill="#64746f">白模 · 深度 · 物理</text>
+
+              <path d="M 306 110 L 326 110" stroke="#84693a" stroke-width="2"/>
+
+              <rect x="328" y="72" width="124" height="76" rx="8" fill="#ffffff" stroke="#245b56" stroke-width="1.6"/>
+              <text x="390" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#19211f">3. 视频 DiT</text>
+              <text x="390" y="126" text-anchor="middle" font-size="10.5" fill="#3a4743">材质 · 光影渲染</text>
+
+              <path d="M 452 110 L 466 110" stroke="#245b56" stroke-width="2"/>
+
+              <rect x="468" y="72" width="62" height="76" rx="8" fill="#e7f1ee" stroke="#245b56" stroke-width="1.6"/>
+              <text x="499" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245b56">成片</text>
+              <text x="499" y="126" text-anchor="middle" font-size="9.5" fill="#3a4743">几何+画质</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <aside class="speaker-note">
+        <p>最后一页把左侧 Takeaway 沿途收集的四块拼图全部展开：从三器状态闭环出发，看清四条传统路线的取舍与四关评测标尺，落到 Agentic Coding 草模视频驱动 DiT 的新范式，并指出下一步通过改造 Proxy 接口解决空间重访外观失忆的方向。</p>
+      </aside>
+    </section>
+
+  </main>
+
+  <!-- Left Collapsible Page-Bound Takeaway Dock -->
+  <aside class="tk-dock is-hidden" id="tk-dock" aria-label="Takeaway 随页笔记">
+    <button type="button" class="tk-handle" id="tk-toggle" aria-expanded="false" title="展开/收起 Takeaway (快捷键 T)">
+      <span class="tk-handle-label">Takeaway</span>
+      <span class="tk-handle-cnt" id="tk-cnt">0/4</span>
+      <span class="tk-handle-dots" id="tk-dots"><i></i><i></i><i></i><i></i></span>
+    </button>
+
+    <div class="tk-toast" id="tk-toast" aria-live="polite"></div>
+
+    <div class="tk-drawer" id="tk-drawer" aria-hidden="true">
+      <div class="tk-drawer-head">
+        <div>
+          <span class="tk-kicker">TAKEAWAY · 随页浓缩</span>
+          <b id="tk-drawer-sub">已收录 0 / 4 项</b>
+        </div>
+        <button type="button" class="chrome-btn" id="tk-close">⟨ 收起</button>
+      </div>
+
+      <div class="tk-drawer-body" id="tk-list">
+        <div class="tk-empty" id="tk-empty">
+          随页面向后推进自动收录关键脉络：<br>
+          <code>P05</code> 状态闭环 · <code>P07</code> 四派别 · <code>P21</code> 四评测维 · <code>P31</code> Agent 范式
+        </div>
+
+        <!-- Drawer Item 1: P05 (unlocked at idx >= 5, i.e., P06+) -->
+        <div class="tk-item" data-tk-min="5" data-jump="4" title="点击回看 P05">
+          <div class="tk-item-head"><span>01 · RQ1 定义</span><em>P05</em></div>
+          <svg viewBox="0 0 420 246" role="img" aria-label="Mini State Loop">
+            <defs>
+              <marker id="tk-pine" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#245b56"/></marker>
+              <marker id="tk-brass" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,1 L9,5 L0,9 z" fill="#84693a"/></marker>
+            </defs>
+            <circle cx="210" cy="132" r="94" fill="none" stroke="#dce7e2" stroke-width="1.8"/>
+            <path d="M 116 134 A 94 94 0 0 1 163 51" fill="none" stroke="#245b56" stroke-width="2.2" marker-end="url(#tk-pine)"/>
+            <text x="104" y="84" text-anchor="end" font-size="12" font-weight="600" fill="#245b56">动作 <tspan class="sm">a</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <path d="M 257 51 A 94 94 0 0 1 304 134" fill="none" stroke="#245b56" stroke-width="2.2" marker-end="url(#tk-pine)"/>
+            <text x="316" y="84" text-anchor="start" font-size="12" font-weight="600" fill="#245b56">状态 <tspan class="sm">s</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <path d="M 250 215 A 94 94 0 0 1 170 215" fill="none" stroke="#84693a" stroke-width="2.2" marker-end="url(#tk-brass)"/>
+            <text x="210" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#84693a">观测 <tspan class="sm">o</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+            <path d="M 176 164 A 52 52 0 0 1 244 164" fill="none" stroke="#84693a" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#tk-brass)"/>
+            <text x="210" y="146" text-anchor="middle" font-size="11" font-weight="600" fill="#84693a">视角 <tspan class="sm">c</tspan><tspan class="sm-sub" font-style="italic">t</tspan></text>
+
+            <circle cx="210" cy="52" r="44" fill="#e7f1ee" stroke="#245b56" stroke-width="2"/>
+            <text x="210" y="48" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#245b56">Simulator</text>
+            <text x="210" y="66" text-anchor="middle" font-size="11.5" fill="#19211f">状态演化</text>
+
+            <circle cx="282" cy="174" r="44" fill="#faf4e6" stroke="#84693a" stroke-width="2"/>
+            <text x="282" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#84693a">Renderer</text>
+            <text x="282" y="188" text-anchor="middle" font-size="11.5" fill="#19211f">观测合成</text>
+
+            <circle cx="138" cy="174" r="44" fill="#eef4f2" stroke="#43645f" stroke-width="2"/>
+            <text x="138" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" font-weight="600" fill="#43645f">Planner</text>
+            <text x="138" y="188" text-anchor="middle" font-size="11.5" fill="#19211f">能动决策</text>
+          </svg>
+        </div>
+
+        <!-- Drawer Item 2: P07 (unlocked at idx >= 7, i.e., P08+) -->
+        <div class="tk-item" data-tk-min="7" data-jump="6" title="点击回看 P07">
+          <div class="tk-item-head"><span>02 · 四种传统派别</span><em>P07</em></div>
+          <ul class="tk-mini-tags">
+            <li><b>0</b> 单次视频生成</li>
+            <li class="pine"><b>1</b> 流式像素交互派</li>
+            <li class="brass"><b>2</b> 显式 3D 记忆派</li>
+            <li class="slate"><b>3</b> 无像素潜空间派</li>
+          </ul>
+        </div>
+
+        <!-- Drawer Item 3: P21 (unlocked at idx >= 21, i.e., P22+) -->
+        <div class="tk-item" data-tk-min="21" data-jump="20" title="点击回看 P21">
+          <div class="tk-item-head"><span>03 · 四关评测维度</span><em>P21</em></div>
+          <ul class="tk-mini-tags">
+            <li><b>1</b> 表观与物理常识</li>
+            <li class="brass"><b>2</b> 视角与空间持久</li>
+            <li class="pine"><b>3</b> 动作与反事实分叉</li>
+            <li class="pine"><b>4</b> 闭环任务成功率</li>
+          </ul>
+        </div>
+
+        <!-- Drawer Item 4: P31 (unlocked at idx >= 31, i.e., P32+) -->
+        <div class="tk-item" data-tk-min="31" data-jump="30" title="点击回看 P31">
+          <div class="tk-item-head"><span>04 · Agentic 范式图</span><em>P31</em></div>
+          <svg viewBox="0 0 540 165" role="img" aria-label="Mini Agentic Paradigm">
+            <rect x="72" y="10" width="396" height="36" rx="8" fill="#eef4f2" stroke="#43645f" stroke-width="1.6"/>
+            <text x="270" y="33" text-anchor="middle" font-size="12.5" font-weight="600" fill="#19211f">Agent 顶层调度 · 任务路由 &amp; 粒度控制</text>
+            <path d="M 180 46 L 76 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <path d="M 270 46 L 234 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <path d="M 360 46 L 390 72" stroke="#43645f" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <rect x="10" y="72" width="132" height="76" rx="8" fill="#e7f1ee" stroke="#245b56" stroke-width="1.6"/>
+            <text x="76" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245b56">1. 写 3D 代码</text>
+            <text x="76" y="126" text-anchor="middle" font-size="10.5" fill="#3a4743">Blender · CAD</text>
+            <path d="M 142 110 L 160 110" stroke="#245b56" stroke-width="2"/>
+            <rect x="162" y="72" width="144" height="76" rx="8" fill="#faf4e6" stroke="#84693a" stroke-width="1.6"/>
+            <text x="234" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#84693a">2. 草模 Proxy 视频</text>
+            <text x="234" y="126" text-anchor="middle" font-size="10.5" fill="#64746f">白模 · 深度 · 物理</text>
+            <path d="M 306 110 L 326 110" stroke="#84693a" stroke-width="2"/>
+            <rect x="328" y="72" width="124" height="76" rx="8" fill="#ffffff" stroke="#245b56" stroke-width="1.6"/>
+            <text x="390" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#19211f">3. 视频 DiT</text>
+            <text x="390" y="126" text-anchor="middle" font-size="10.5" fill="#3a4743">材质 · 光影渲染</text>
+            <path d="M 452 110 L 466 110" stroke="#245b56" stroke-width="2"/>
+            <rect x="468" y="72" width="62" height="76" rx="8" fill="#e7f1ee" stroke="#245b56" stroke-width="1.6"/>
+            <text x="499" y="103" text-anchor="middle" font-size="12.5" font-weight="600" fill="#245b56">成片</text>
+            <text x="499" y="126" text-anchor="middle" font-size="9.5" fill="#3a4743">几何+画质</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Flying Capture Card for Forward-Flip Animation -->
+  <div class="tk-flyer" id="tk-flyer" aria-hidden="true"></div>
+
+  <!-- Sorter (G) -->
+  <div class="sorter" id="sorter" role="dialog" aria-label="页面总览">
+    <div class="sorter-top">
+      <div class="kick" style="margin:0;">Slides Overview · 点击跳页</div>
+      <button type="button" class="chrome-btn" id="sorter-close">Esc</button>
+    </div>
+    <div class="sorter-grid" id="sorter-grid"></div>
+  </div>
+
+  <!-- Notes (N) -->
+  <dialog class="notes-modal" id="notes-modal">
+    <div class="nm-head">
+      <b id="nm-title">口述讲稿</b>
+      <button type="button" class="chrome-btn" id="nm-close">关闭</button>
+    </div>
+    <div class="nm-body" id="nm-body"></div>
+  </dialog>
+
+  <!-- Lightbox -->
+  <div class="lb" id="lb">
+    <img alt="Zoomed">
+    <div class="lb-hint">点击图片切换 1:1 尺寸 · Esc 关闭</div>
+  </div>
+
+  <div class="rail" id="rail" aria-hidden="true"></div>
+  <div class="hud">
+    <button type="button" id="prev" aria-label="上一页">↑</button>
+    <div class="ctr"><span><b id="cur">1</b> / <span id="tot">41</span></span><span class="sec" id="secname"></span></div>
+    <button type="button" id="next" aria-label="下一页">↓</button>
+  </div>
+</body>
+</html>
